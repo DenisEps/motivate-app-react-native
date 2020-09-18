@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import {
@@ -25,12 +25,6 @@ const BottomTabBar = ({ navigation, state }) => (
     <BottomNavigationTab icon={SettingsIcon} title="SETTINGS" />
   </BottomNavigation>
 );
-
-// const styles = StyleSheet.create({
-//   bottomNavigationContainer: {
-//     backgroundColor: 'black',
-//   }
-// })
 
 const TabNavigator = () => {
   return (
