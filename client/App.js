@@ -5,6 +5,7 @@ import * as eva from '@eva-design/eva';
 import { default as theme } from './custom-theme.json';
 import RootNavigator from './src/navigation/RootNavigator';
 
+
 const App = () => {
   return (
     <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
