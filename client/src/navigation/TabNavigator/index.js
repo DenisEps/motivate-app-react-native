@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import {
@@ -37,6 +37,7 @@ const TabNavigator = () => {
     <NavigationContainer>
       <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
         <Screen name="HOME" component={TestHome} />
+
         <Screen name="SETTINGS" component={TestSettings} />
       </Navigator>
     </NavigationContainer>
