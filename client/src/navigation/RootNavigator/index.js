@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { SafeAreaView } from 'react-native';
+import React, { useState } from "react";
+import { SafeAreaView } from "react-native";
 
-import TabNavigator from '../TabNavigator';
-import AuthStackScreen from '../../screens/AuthStackScreen/index';
+import TabNavigator from "../TabNavigator";
+import AuthStackScreen from "../../screens/AuthStackScreen/index";
+import RegistrationForm from "../../components/Auth/RegistrationForm";
 
 const RootNavigator = () => {
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
 
-  return user ? <TabNavigator /> : <AuthStackScreen />;
+  return user ? <TabNavigator /> : <RegistrationForm />;
 };
 
 export default RootNavigator;
