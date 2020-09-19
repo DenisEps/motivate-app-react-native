@@ -14,7 +14,6 @@
 
 // export default Testhome;
 
-
 import React, { useState } from "react";
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, Image, View } from "react-native";
 import { Layout, Icon, Button } from "@ui-kitten/components";
@@ -145,7 +144,7 @@ const Testhome = () => {
   const habits = useSelector((state) => state.habits);
   const dispatch = useDispatch();
 
-  dispatch(setHabits(DATA))
+  dispatch(setHabits(DATA));
 
   const renderItem = ({ item }) => {
     // console.log(navigation)
@@ -172,6 +171,17 @@ const Testhome = () => {
     );
   };
 
+  // const playSound = async () => {
+  //   try {
+  //     await Audio.setIsEnabledAsync(true);
+  //     const soundObject = new Audio.Sound();
+  //     await soundObject.loadAsync(require("../../audio/click.mp3"));
+  //     await soundObject.playAsync();
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
   return (
     <Layout style={styles.container}>
       <View style={{ marginTop: StatusBar.currentHeight || 0 }}>
@@ -183,6 +193,8 @@ const Testhome = () => {
           extraData={selectedId}
         />
         <ProgressBar />
+        {/* sounds button */}
+        {/* <Button onPress={playSound} title="Play sound" /> */}
       </View>
     </Layout>
   );
@@ -202,7 +214,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     height: 110,
     width: 110,
-    // margin: 1,
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "space-between",
@@ -225,5 +236,3 @@ const styles = StyleSheet.create({
 });
 
 export default Testhome;
-
-
