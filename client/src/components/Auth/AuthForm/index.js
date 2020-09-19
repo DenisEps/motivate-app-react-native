@@ -25,15 +25,10 @@ const AuthForm = () => {
       const error = new Error(err)
       setError(error.message)
     } 
-
-
   }
 
-  // useEffect(() => {
-
-  // })
   return (
-    <Layout style={styles.container} level="1">
+    <Layout style={styles.container, { position: "absolute", top: 250, left: 120, minWidth: 200 }} level="1" >
       <Input
         placeholder="Email"
         value={email}

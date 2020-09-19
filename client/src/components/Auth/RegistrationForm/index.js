@@ -1,64 +1,56 @@
 import React, { useEffect, useState } from "react";
-import {StyleSheet} from 'react-native'
+import { StyleSheet } from "react-native";
 import { Layout, Button, Input, Submit, Text } from "@ui-kitten/components";
-import {firebase } from '../../../../firebase';
+import { firebase } from "../../../../firebase";
 
 const RegistrationForm = () => {
   const [error, setError] = React.useState(null);
   const [email, setEmail] = React.useState("");
   const [pass, setPass] = React.useState("");
   const [authUser, setAuthUser] = React.useState(null);
-  const [emailMessage, setEmailMessage] = React.useState(null)
+  const [emailMessage, setEmailMessage] = React.useState(null);
 
   // const provider = new firebase.auth.GoogleAuthProvider()
 
-
   const CreateUser = async (email, pass) => {
     try {
-      const user = await firebase.auth().createUserWithEmailAndPassword(email, pass).then(info => {
-        return firebase.firestore().collection('users').doc(info.user.uid).set({
-          test: 'test'
-        })
-      });
-      const currnetUser = firebase.auth().currentUser
+      const user = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, pass)
+        .then((info) => {
+          return firebase
+            .firestore()
+            .collection("users")
+            .doc(info.user.uid)
+            .set({
+              test: "test",
+            });
+        });
+      const currnetUser = firebase.auth().currentUser;
 
-      currnetUser.sendEmailVerification().then(() => {
-        setEmailMessage('Подтвердите Ваш email на почте');
-      }).catch((err) => {
-        const error = new Error(err)
-        setError(error.message)
-      })
+      currnetUser
+        .sendEmailVerification()
+        .then(() => {
+          setEmailMessage("Подтвердите Ваш email на почте");
+        })
+        .catch((err) => {
+          const error = new Error(err);
+          setError(error.message);
+        });
       // firebase.database().ref('/' + user.user.uid).set({
       //   email: user.user.email,
       //   emailVerified: user.user.emailVerified,
       // })
-      setAuthUser(user.user)
-      setError(null)
-      setEmail('')
-      setPass('')
-      setEmailMessage('')
+      setAuthUser(user.user);
+      setError(null);
+      setEmail("");
+      setPass("");
+      setEmailMessage("");
     } catch (err) {
-      const error = new Error(err)
-      setError(error.message)
+      const error = new Error(err);
+      setError(error.message);
     }
-  }
-
-  // useEffect(async () => {
-  //   const user = await firebase.auth().signInWithPopup(provider).then((result) => {
-  //     const token = result.credential.accessToken
-  //     console.log("token>>>>>>",token);
-  //     const userNow = result.user
-  //     console.log("userNow>>>>>>",userNow);
-  //   })
-  // })
-
-  // useEffect(() => {
-  //   if (authUser) {
-  //     console.log(authUser);
-  //   } else {
-  //     console.log('nothing');
-  //   }
-  // })
+  };
 
   return (
     <Layout style={styles.container} level="1">
@@ -75,12 +67,13 @@ const RegistrationForm = () => {
       />
       <Button onPress={() => CreateUser(email, pass)}>Register</Button>
       {/* message of error */}
-    {error && <Text style={styles.error}>{error}</Text>}
-    {emailMessage && <Text style={styles.message}>{emailMessage}</Text>}
+      {error && <Text style={styles.error}>{error}</Text>}
+      {emailMessage && <Text style={styles.message}>{emailMessage}</Text>}
     </Layout>
   );
 };
-const styles = StyleSheet.create ({
+
+const styles = StyleSheet.create({
   error: {
     marginTop: 16,
     paddingVertical: 8,
@@ -90,7 +83,7 @@ const styles = StyleSheet.create ({
     color: "red",
     textAlign: "center",
     fontSize: 25,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   message: {
     marginTop: 16,
@@ -101,11 +94,11 @@ const styles = StyleSheet.create ({
     color: "green",
     textAlign: "center",
     fontSize: 25,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   container: {
-    flex: 1, 
-  }
-})
+    flex: 1,
+  },
+});
 
 export default RegistrationForm;
