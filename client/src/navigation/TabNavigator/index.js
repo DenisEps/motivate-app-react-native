@@ -10,6 +10,7 @@ import {
 
 import TestHome from '../../screens/TestScreens/testhome';
 import TestSettings from '../../screens/TestScreens/testsettings';
+import Habit from '../../screens/Habit';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -30,8 +31,8 @@ const TabNavigator = () => {
   return (
     <NavigationContainer>
       <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
+        <Screen name="HABIT" component={Habit} />
         <Screen name="HOME" component={TestHome} />
-
         <Screen name="SETTINGS" component={TestSettings} />
       </Navigator>
     </NavigationContainer>
