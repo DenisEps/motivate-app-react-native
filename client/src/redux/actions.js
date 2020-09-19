@@ -1,4 +1,4 @@
-import { SET_HABITS, DEL_HABIT, EDIT_HIBIT } from './action-types';
+import { SET_HABITS, DEL_HABIT, EDIT_HIBIT, SET_IMG } from './action-types';
 
 export function setHabits(habits) {
   return {
@@ -21,5 +21,12 @@ export function editHabit(id, title) {
       id,
       title
     }
+  }
+}
+
+export function setImg(path) {
+  return {
+    type: SET_IMG,
+    payload: path
   }
 }
