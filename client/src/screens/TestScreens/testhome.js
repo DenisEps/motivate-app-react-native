@@ -70,14 +70,14 @@ const DATA = [
 
 
 const icons = [
-  { img: <MaterialIcons name="smoke-free" size={35} color="white" />, name: 'smoke' },
-  { img: <FontAwesome5 name="running" size={35} color="white" />, name: 'sport' },
-  { img: <MaterialCommunityIcons name="cup-water" size={35} color="white" />, name: 'water' },
-  { img: <MaterialCommunityIcons name="food-off" size={35} color="white" />, name: 'fastfood' },
-  { img: <FontAwesome5 name="readme" size={35} color="white" />, name: 'read' },
-  { img: <MaterialCommunityIcons name="brain" size={35} color="white" />, name: 'learn' },
-  { img: <FontAwesome name="code" size={35} color="white" />, name: 'code' },
-  { img: <MaterialIcons name="mood-bad" size={35} color="white" />, name: 'badWords' },
+  { img: <MaterialIcons name="smoke-free" size={35} color="#8389E6" />, name: 'smoke' },
+  { img: <FontAwesome5 name="running" size={35} color="#8389E6" />, name: 'sport' },
+  { img: <MaterialCommunityIcons name="cup-water" size={35} color="#8389E6" />, name: 'water' },
+  { img: <MaterialCommunityIcons name="food-off" size={35} color="#8389E6" />, name: 'fastfood' },
+  { img: <FontAwesome5 name="readme" size={35} color="#8389E6" />, name: 'read' },
+  { img: <MaterialCommunityIcons name="brain" size={35} color="#8389E6" />, name: 'learn' },
+  { img: <FontAwesome name="code" size={35} color="#8389E6" />, name: 'code' },
+  { img: <MaterialIcons name="mood-bad" size={35} color="#8389E6" />, name: 'badWords' },
 ]
 
 function Item({ item, onPress, style, navigation }) {
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 10,
-    color: '#FFFFFF',
+    color: '#B2CEFF',
   },
 });
 
