@@ -2,3 +2,20 @@
 # yarn lockfile v1
 
 
+expo-av@^8.4.0:
+  version "8.4.0"
+  resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-8.4.0.tgz#84881f89df35361893b55e739a639cd51d3ecf04"
+  integrity sha512-yboOV6hlZTKPjcEb7bxqIPAQIZ5SupaPEWvGv7aVzdoPNhmY4/uEceMQ6Pm8d33r72Zofp5fR1a2Alvg18bVUQ==
+  dependencies:
+    lodash "^4.17.15"
+    nullthrows "^1.1.0"
+
+lodash@^4.17.15:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
+
+nullthrows@^1.1.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/nullthrows/-/nullthrows-1.1.1.tgz#7818258843856ae971eae4208ad7d7eb19a431b1"
+  integrity sha512-2vPPEi+Z7WqML2jZYddDIfy5Dqb0r2fze2zTxNNknZaFpVHU3mFB3R+DWeJWGVx0ecvttSGlJTI+WG+8Z4cDWw==

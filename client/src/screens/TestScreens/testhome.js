@@ -14,13 +14,23 @@
 
 // export default Testhome;
 
-
 import React, { useState } from "react";
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, Image, View, Button } from "react-native";
+import {
+  FlatList,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image,
+  View,
+  Button,
+} from "react-native";
 import { Layout } from "@ui-kitten/components";
-import ProgressBar from '../../components/ProgressBar/ProgressBar';
-import { useDispatch, useSelector } from 'react-redux';
-import { setHabits } from '../../redux/actions';
+import ProgressBar from "../../components/ProgressBar/ProgressBar";
+import { useDispatch, useSelector } from "react-redux";
+import { setHabits } from "../../redux/actions";
+import { Audio } from "expo-av";
 
 const DATA = [
   {
@@ -38,7 +48,8 @@ const DATA = [
   {
     id: "586d94a0f-3da1-471f-bd96-145571e29d72",
     title: "ShitWords",
-  }, {
+  },
+  {
     id: "58694ad0f-3da1-471f-bd96-145571e29d72",
     title: "don't kill people after learning react native",
   },
@@ -56,7 +67,6 @@ const Item = ({ item, onPress, style, navigation }) => (
     }}>
       <Text> ⚙️ </Text>
     </View> */}
-
   </TouchableOpacity>
 );
 
@@ -66,7 +76,7 @@ const Testhome = () => {
   const habits = useSelector((state) => state.habits);
   const dispatch = useDispatch();
 
-  dispatch(setHabits(DATA))
+  dispatch(setHabits(DATA));
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#7B8CDE" : "#2B344F";
@@ -87,6 +97,17 @@ const Testhome = () => {
     );
   };
 
+  // const playSound = async () => {
+  //   try {
+  //     await Audio.setIsEnabledAsync(true);
+  //     const soundObject = new Audio.Sound();
+  //     await soundObject.loadAsync(require("../../audio/click.mp3"));
+  //     await soundObject.playAsync();
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
   return (
     <Layout style={styles.container}>
       <View style={{ marginTop: StatusBar.currentHeight || 0 }}>
@@ -98,6 +119,8 @@ const Testhome = () => {
           extraData={selectedId}
         />
         <ProgressBar />
+        {/* sounds button */}
+        {/* <Button onPress={playSound} title="Play sound" /> */}
       </View>
     </Layout>
   );
@@ -115,17 +138,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     height: 110,
     width: 110,
-    // margin: 1,
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "center",
   },
   title: {
     fontSize: 16,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
 });
 
 export default Testhome;
-
-
