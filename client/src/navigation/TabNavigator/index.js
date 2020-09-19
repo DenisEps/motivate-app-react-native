@@ -31,6 +31,7 @@ const TabNavigator = () => {
     <NavigationContainer>
       <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
         <Screen name="HOME" component={TestHome} />
+
         <Screen name="SETTINGS" component={TestSettings} />
       </Navigator>
     </NavigationContainer>

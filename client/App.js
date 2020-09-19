@@ -6,15 +6,21 @@ import * as eva from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { default as theme } from './custom-theme.json';
 import RootNavigator from './src/navigation/RootNavigator';
+import store from './src/redux/store';
+import { Provider } from 'react-redux';
+
+
 
 const App = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
-        <RootNavigator />
-      </ApplicationProvider>
-    </SafeAreaView>
+    <Provider store={store}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <IconRegistry icons={EvaIconsPack} />
+        <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
+          <RootNavigator />
+        </ApplicationProvider>
+      </SafeAreaView>
+    </Provider>
   );
 };
 
