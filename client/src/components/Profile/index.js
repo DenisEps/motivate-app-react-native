@@ -1,4 +1,7 @@
 import React from 'react';
+import { StyleSheet } from 'react-native'
+import { Layout, Button, Input, Submit, Text, Image } from "@ui-kitten/components";
+import TabNavigator from '../../navigation/TabNavigator';
 
 function Profile() {
   useEffect(() => {
@@ -6,15 +9,16 @@ function Profile() {
   }, []);
   return (
     <>
-      <p>Edit Profile</p>
-      <img src=""></img>
-      <button>Photo</button>
-      <p>Login</p>
-      <input value="#"></input>
-      <p>Email Address</p>
-      <input value="#"></input>
-      <p>Phone</p>
-      <input value="#"></input>
+      <Text>Edit Profile</Text>
+      <Image source=""></Image>
+      <Button>Photo</Button>
+      <Text>Login</Text>
+      <Input value="#"></Input>
+      <Text>Email Address</Text>
+      <Input value="#"></Input>
+      <Text>Phone</Text>
+      <Input value="#"></Input>
+      <TabNavigator />
     </>
   )
 }

@@ -25,12 +25,12 @@ function StartForm() {
     if (form === 'signIn') {
       setbtnSIColor('blue');
       setbtnSUColor('white');
-      setTimeout(() => {
+      // setTimeout(() => {
         Animated.timing(opacitySUAnim, {
           toValue: 0,
           duration: 1000
         }).start();
-      }, 1000);
+      // }, 1000);
       Animated.timing(opacitySIAnim, {
         toValue: 1,
         duration: 1000
@@ -41,13 +41,13 @@ function StartForm() {
     if (form === 'signUp') {
       setbtnSUColor('blue');
       setbtnSIColor('white');
-      setTimeout(() => {
+      // setTimeout(() => {
         Animated.timing(opacitySIAnim, {
           toValue: 0,
           duration: 1000
         }).start();
         setSignIn(false);
-      }, 2000)
+      // }, 2000)
       Animated.timing(opacitySUAnim, {
         toValue: 1,
         duration: 1000
