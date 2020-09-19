@@ -25,6 +25,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 const DATA = [
   {
@@ -53,9 +56,9 @@ const DATA = [
   },
   {
     id: "58694ad0f-3da1-471f-bd96-145571e29d72",
-    title: "Meditate",
+    title: "Water",
     goals: ['lose', 'win', 'win', 'win', 'lose', 'lose', 'win'],
-    icon: { name: 'meditate' }
+    icon: { name: 'water' }
   },
   {
     id: "58694a0ff-3da1-471f-bd96-145571e29d72",
@@ -66,32 +69,29 @@ const DATA = [
 ];
 
 
-// const icons = [
-//   { img: require('../../img/badwords.png'), name: 'sport' },
-//   { img: require('../../img/coding.png'), name: 'smoke' },
-//   { img: require('../../img/food.png'), name: 'meditate' },
-//   { img: require('../../img/learning.png'), name: 'water' },
-//   { img: require('../../img/meditation.png'), name: 'fastfood' },
-//   { img: require('../../img/reading.png'), name: 'read' },
-//   { img: require('../../img/smoking.png'), name: 'learn' },
-//   { img: require('../../img/sport.png'), name: 'code' },
-//   { img: require('../../img/water.png'), name: 'badWords' },
-// ]
+const icons = [
+  { img: <MaterialIcons name="smoke-free" size={35} color="white" />, name: 'smoke' },
+  { img: <FontAwesome5 name="running" size={35} color="white" />, name: 'sport' },
+  { img: <MaterialCommunityIcons name="cup-water" size={35} color="white" />, name: 'water' },
+  { img: <MaterialCommunityIcons name="food-off" size={35} color="white" />, name: 'fastfood' },
+  { img: <FontAwesome5 name="readme" size={35} color="white" />, name: 'read' },
+  { img: <MaterialCommunityIcons name="brain" size={35} color="white" />, name: 'learn' },
+  { img: <FontAwesome name="code" size={35} color="white" />, name: 'code' },
+  { img: <MaterialIcons name="mood-bad" size={35} color="white" />, name: 'badWords' },
+]
 
 function Item({ item, onPress, style, navigation }) {
-  const habits = useSelector((state) => state.habits);
-  const dispatch = useDispatch();
+  // const habits = useSelector((state) => state.habits);
+  // const dispatch = useDispatch();
 
-  // dispatch(setImg(icons.find(({ name }) => name === item.icon.name).img))
-  // const img = useSelector((state) => state.image)
-  // console.log(img);
+  const img = icons.find(({ name }) => name === item.icon.name).img
+
   return (
     < TouchableOpacity onPress={onPress} style={[styles.item, style]} >
       <Text style={styles.title}>{item.title}</Text>
-      {/* <Image
-        style={{ width: 50, height: 50 }}
-        source={require('../../img/water.png')}
-      /> */}
+
+      {img}
+
       <View style={styles.goals}>
         {item.goals.map((goal) => {
           let color = ''
