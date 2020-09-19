@@ -33,7 +33,7 @@ const AuthForm = () => {
 
   })
   return (
-    <Layout style={styles.container} level="1">
+    <Layout style={styles.container, { position: "absolute", top: 250, left: 120, minWidth: 200 }} level="1" >
       <Input
         placeholder="Email"
         value={email}
@@ -47,7 +47,7 @@ const AuthForm = () => {
       />
       <Button onPress={Submit}>Register</Button>
 
-    </Layout>
+    </Layout >
   );
 };
 
