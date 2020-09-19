@@ -1,25 +1,67 @@
 import React, { useState } from 'react';
-import { StyleSheet, Alert } from 'react-native';
+import { StyleSheet, Alert, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import {
+  Calendar,
   Icon,
   Layout,
   MenuItem,
   OverflowMenu,
+  Card,
   TopNavigation,
   TopNavigationAction,
+  Text,
 } from '@ui-kitten/components';
 
+// ICONS
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 const EditIcon = (props) => <Icon {...props} name="edit" />;
 const MenuIcon = (props) => <Icon {...props} name="more-vertical" />;
 
+// CALENDAR
+const CellStatus = ({ date }, style) => {
+  return (
+    <View style={[styles.dayContainer, style.container]}>
+      <Text style={style.text}>{`${date.getDate()}`}</Text>
+      <Text style={[style.text, styles.value]}>
+        {`${date.getDate()}.${date.getMonth() + 1}`}
+      </Text>
+    </View>
+  );
+};
+
+const CalendarComponent = () => {
+  const [date, setDate] = React.useState(null);
+
+  return (
+    <Calendar
+      date={date}
+      onSelect={(nextDate) => setDate(nextDate)}
+      renderDay={CellStatus}
+      style={styles.calendar}
+    />
+  );
+};
+
+// ALERT
 const CreateHabitAlert = () => {
   Alert.alert('Habit menu', 'What would you like to do?', [
     { text: 'Delete', onPress: () => console.log('Delete'), style: 'cancel' },
     { text: 'Cancel', onPress: () => console.log('Delete'), style: 'default' },
   ]);
 };
+
+// TITLE CARD
+const Header = (props) => (
+  <View {...props}>
+    <Text category="s1">Habit Title:</Text>
+  </View>
+);
+const TitleCard = () => (
+  <Card style={styles.card} header={Header}>
+    <Text category="h6">Don't smoke</Text>
+  </Card>
+);
 
 const Habit = () => {
   const renderRightActions = () => (
@@ -32,24 +74,34 @@ const Habit = () => {
   const renderBackAction = () => <TopNavigationAction icon={BackIcon} />;
 
   return (
-    <Layout style={styles.container} level="1">
-      <TopNavigation
-        alignment="center"
-        accessoryLeft={renderBackAction}
-        accessoryRight={renderRightActions}
-      />
+    <Layout style={styles.container}>
+      <Layout style={styles.navContainer} level="1">
+        <TopNavigation
+          alignment="center"
+          accessoryLeft={renderBackAction}
+          accessoryRight={renderRightActions}
+        />
+      </Layout>
+
       <Layout style={styles.iconLayout}>
         <Layout style={styles.circle}>
           <MaterialIcons name="smoke-free" size={100} color="#7983a4" />
         </Layout>
+      </Layout>
+
+      <TitleCard />
+
+      <Layout style={styles.calendarLayout}>
+        <CalendarComponent />
       </Layout>
     </Layout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    minHeight: 128,
+  container: {},
+  navContainer: {
+    // minHeight: 128,
   },
   iconLayout: {
     flex: 1,
@@ -70,6 +122,23 @@ const styles = StyleSheet.create({
     borderRadius: 200 / 2,
     borderWidth: 10,
     borderColor: '#7b8cde',
+  },
+  card: { marginTop: 25, marginBottom: 25 },
+  calendarLayout: {},
+  calendar: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  dayContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    aspectRatio: 1,
+  },
+  value: {
+    fontSize: 12,
+    fontWeight: '400',
+    color: '#f39b6d',
   },
 });
 
