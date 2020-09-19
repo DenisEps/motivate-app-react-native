@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Input, Button, Layout, Text } from "@ui-kitten/components";
-// import auth from '@react-native-firebase/auth';
-import * as firebase from "../../../../firebase";
-// import  "@firebase/firestore";
-// import "@firebase/auth";
+import {firebase} from "../../../../firebase";
+
 
 // const AuthForm = () => {
 //   const [login, setLogin] = React.useState('');
@@ -35,12 +33,14 @@ function AuthForm() {
 
   // Handle user state changes
   function onAuthStateChanged(user) {
+    console.log(user);
     setUser(user);
     if (initializing) setInitializing(false);
   }
 
   useEffect(() => {
     const subscriber = firebase.firebase.auth().onAuthStateChanged(onAuthStateChanged);
+    console.log(subscriber)
     return subscriber; // unsubscribe on unmount
   }, []);
 
