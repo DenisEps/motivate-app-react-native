@@ -1,12 +1,15 @@
 import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Button, Input, Text } from '@ui-kitten/components';
 
 function Profile() {
-  useEffect(() => {
-    //Login, Email, phone, avatar
-  }, []);
-  // return (
+  // useEffect(() => {
 
-  // )
-}
+  // }, []);
+  return (
+  );
+};
+
+
 
 export default Profile;
