@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+// import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
   BottomNavigation,
   BottomNavigationTab,
@@ -9,8 +10,10 @@ import {
 } from '@ui-kitten/components';
 
 import TestHome from '../../screens/TestScreens/testhome';
+import Habit from '../../screens/TestScreens/Habit';
 import TestSettings from '../../screens/TestScreens/testsettings';
 import Habit from '../../screens/Habit';
+import { useSelector } from 'react-redux';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -28,12 +31,15 @@ const BottomTabBar = ({ navigation, state }) => (
 );
 
 const TabNavigator = () => {
+  // const habits = useSelector((state) => state.habits);
+
   return (
     <NavigationContainer>
       <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
         <Screen name="HABIT" component={Habit} />
         <Screen name="HOME" component={TestHome} />
         <Screen name="SETTINGS" component={TestSettings} />
+        {/* <Screen name="HABIT" component={Habit} /> */}
       </Navigator>
     </NavigationContainer>
   );
