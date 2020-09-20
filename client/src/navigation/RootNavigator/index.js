@@ -5,11 +5,12 @@ import TabNavigator from "../TabNavigator";
 import AuthStackScreen from "../../screens/AuthStackScreen/index";
 import RegistrationForm from "../../components/Auth/RegistrationForm";
 import AuthForm from '../../components/Auth/AuthForm'
+import PushNotifications from '../../components/TestDb/TestPushNotifications'
 
 const RootNavigator = () => {
   const [user, setUser] = useState(false);
 
-  return user ? <TabNavigator /> : <AuthForm />;
+  return user ? <TabNavigator /> : <PushNotifications />;
 };
 
 export default RootNavigator;
