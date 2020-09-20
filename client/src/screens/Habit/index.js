@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, Alert, View } from 'react-native';
+import { StyleSheet, Alert, View, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import firebase from '@react-native-firebase/app'
 import {
   Calendar,
   Icon,
@@ -63,7 +64,37 @@ const TitleCard = () => (
   </Card>
 );
 
-const Habit = () => {
+const Habit = ({ navigation, route }) => {
+  const [loading, setLoading] = React.useState(false);
+  const [habit, setHabit] = React.useState(false);
+
+  const {
+    params: { id },
+  } = route;
+
+  React.useEffect(() => {
+    console.log(id);
+    // TODO: donwload habit from server here
+    const fetchHabitById = async () => {
+      setLoading(true)
+        
+      const habit = await firebase
+          .firestore()
+          .collection(userId) // брать from redux - id аутентифифрованного юзера
+          .doc('habits')
+          // .collection('treatments')
+          // .orderBy('date', 'desc')
+          setHabit(habit)
+          setLoading(false)
+    }
+    
+    fetchHabitById()
+  }, [id]);
+
+  const back = () => {
+    navigation.goBack();
+  };
+
   const renderRightActions = () => (
     <React.Fragment>
       <TopNavigationAction icon={EditIcon} />
@@ -71,7 +102,26 @@ const Habit = () => {
     </React.Fragment>
   );
 
-  const renderBackAction = () => <TopNavigationAction icon={BackIcon} />;
+  const renderBackAction = () => (
+    <TopNavigationAction onPress={back} icon={BackIcon} />
+  );
+
+  if (loading) {
+    return (
+      <Layout style={styles.container}>
+        <Layout style={styles.navContainer} level="1">
+          <TopNavigation
+            alignment="center"
+            accessoryLeft={renderBackAction}
+            accessoryRight={renderRightActions}
+          />
+        </Layout>
+        <Layout style={{ flex: 1, justifyContent: 'center' }}>
+          <ActivityIndicator color={'#000'} />
+        </Layout>
+      </Layout>
+    );
+  }
 
   return (
     <Layout style={styles.container}>
@@ -82,18 +132,19 @@ const Habit = () => {
           accessoryRight={renderRightActions}
         />
       </Layout>
-
-      <Layout style={styles.iconLayout}>
-        <Layout style={styles.circle}>
-          <MaterialIcons name="smoke-free" size={100} color="#7983a4" />
+      <ScrollView>
+        <Layout style={styles.iconLayout}>
+          <Layout style={styles.circle}>
+            <MaterialIcons name="smoke-free" size={100} color="#7983a4" />
+          </Layout>
         </Layout>
-      </Layout>
 
-      <TitleCard />
+        <TitleCard />
 
-      <Layout style={styles.calendarLayout}>
-        <CalendarComponent />
-      </Layout>
+        <Layout style={styles.calendarLayout}>
+          <CalendarComponent />
+        </Layout>
+      </ScrollView>
     </Layout>
   );
 };

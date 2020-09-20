@@ -8,11 +8,10 @@ import {
   BottomNavigationTab,
   Icon,
 } from '@ui-kitten/components';
-
-import TestHome from '../../screens/TestScreens/testhome';
+import { ROUTES } from '../routes'
 // import Habit from '../../screens/TestScreens/Habit';
+import { HomeStackScreen } from '../HomeStack/HomeStack'
 import TestSettings from '../../screens/TestScreens/testsettings';
-import Habit from '../../screens/Habit';
 import { useSelector } from 'react-redux';
 
 const { Navigator, Screen } = createBottomTabNavigator();
@@ -30,14 +29,16 @@ const BottomTabBar = ({ navigation, state }) => (
   </BottomNavigation>
 );
 
+
+
 const TabNavigator = () => {
   // const habits = useSelector((state) => state.habits);
 
   return (
     <NavigationContainer>
       <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
-        <Screen name="HOME" component={TestHome} />
-        <Screen name="SETTINGS" component={TestSettings} />
+        <Screen name={ROUTES.homeTab} component={HomeStackScreen} />
+        <Screen name={ROUTES.settingsTab} component={TestSettings} />
         {/* <Screen name="HABIT" component={Habit} /> */}
         {/* <Screen name="HABIT" component={Habit} /> */}
       </Navigator>
