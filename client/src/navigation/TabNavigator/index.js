@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+// import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
   BottomNavigation,
   BottomNavigationTab,
@@ -35,14 +36,14 @@ const BottomTabBar = ({ navigation, state }) => (
 // })
 
 const TabNavigator = () => {
-  const habits = useSelector((state) => state.habits);
+  // const habits = useSelector((state) => state.habits);
 
   return (
     <NavigationContainer>
       <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
         <Screen name="HOME" component={TestHome} />
         <Screen name="SETTINGS" component={TestSettings} />
-        <Screen name="HABIT" component={Habit} />
+        {/* <Screen name="HABIT" component={Habit} /> */}
       </Navigator>
     </NavigationContainer>
   );

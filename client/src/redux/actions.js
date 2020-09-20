@@ -1,4 +1,4 @@
-import { SET_HABITS, DEL_HABIT, EDIT_HIBIT, SET_IMG } from './action-types';
+import { SET_HABITS, DEL_HABIT, EDIT_HIBIT, SET_ICONS, SET_SETTINGSSCREEN } from './action-types';
 
 export function setHabits(habits) {
   return {
@@ -24,9 +24,16 @@ export function editHabit(id, title) {
   }
 }
 
-export function setImg(path) {
+export function setIcons(arr) {
   return {
-    type: SET_IMG,
-    payload: path
+    type: SET_ICONS,
+    payload: arr
+  }
+}
+
+export function setSettingsScreen(flag) {
+  return {
+    type: SET_SETTINGSSCREEN,
+    payload: flag
   }
 }

@@ -1,10 +1,12 @@
 import { createStore, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { habitReducer, imageReducer } from './reducers';
+import { habitReducer, iconReducer, settingsScreenReducer } from './reducers';
 
 const store = createStore(combineReducers({
   habits: habitReducer,
-  image: imageReducer,
+  icons: iconReducer,
+  settingsScreen: settingsScreenReducer
 }), composeWithDevTools());
 
 export default store;
+

@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-function TheHabit({ route }) {
+function Habit({ route }) {
 
   // const { id, title } = route.params
   const title = 'hui tebe'
@@ -18,4 +18,4 @@ function TheHabit({ route }) {
   )
 }
 
-export default TheHabit
+export default Habit

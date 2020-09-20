@@ -14,21 +14,20 @@
 
 // export default Testhome;
 
-
 import React, { useState } from "react";
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, Image, View } from "react-native";
 import { Layout, Icon, Button } from "@ui-kitten/components";
 import ProgressBar from '../../components/ProgressBar/ProgressBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { setHabits, setImg } from '../../redux/actions';
+import { setHabits, setIcons, setSettingsScreen } from '../../redux/actions';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-
+// import Item from '../../components/Home/Item'
+// import Habit from './Habit'
 const DATA = [
   {
     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
@@ -68,7 +67,6 @@ const DATA = [
   }
 ];
 
-
 const icons = [
   { img: <MaterialIcons name="smoke-free" size={35} color="#8389E6" />, name: 'smoke' },
   { img: <FontAwesome5 name="running" size={35} color="#8389E6" />, name: 'sport' },
@@ -81,16 +79,18 @@ const icons = [
 ]
 
 function Item({ item, onPress, style, navigation }) {
-  // const habits = useSelector((state) => state.habits);
-  // const dispatch = useDispatch();
+  const habits = useSelector((state) => state.habits);
+  const dispatch = useDispatch();
+  dispatch(setIcons(icons))
+  const iconStore = useSelector((state) => state.icons)
 
-  const img = icons.find(({ name }) => name === item.icon.name).img
+  const icon = iconStore.find(({ name }) => name === item.icon.name).img
 
   return (
     < TouchableOpacity onPress={onPress} style={[styles.item, style]} >
       <Text style={styles.title}>{item.title}</Text>
 
-      {img}
+      {icon}
 
       <View style={styles.goals}>
         {item.goals.map((goal) => {
@@ -116,36 +116,40 @@ function Item({ item, onPress, style, navigation }) {
 }
 
 
-const SettingsIcon = (props) => <Icon fill="black" {...props} name="settings-outline" />;
+const SettingsIcon = (props) => <Icon fill="black" {...props} name="maximize-outline" />;
 
-const ItemBack = ({ item, onPress, style, navigation }) => (
-  < TouchableOpacity onPress={() => {
-    onPress();
-    // console.log(item)
-  }} style={[styles.itemBack, style]} >
-    <Button
-      style={{ width: 20, height: 20 }}
-      appearance='ghost'
-      accessoryLeft={SettingsIcon}
-      onPress={() => {
-        navigation.navigate('HABIT', {
-          title: item.title,
-          id: item.id
-        })
-      }}
-    />
-    <Text>OPTIfONS</Text>
-  </TouchableOpacity >
-);
+function ItemBack({ item, onPress, style, navigation }) {
+
+  const dispatch = useDispatch();
+
+
+  return (
+    < TouchableOpacity onPress={() => {
+      onPress();
+      // console.log(item)
+    }} style={[styles.itemBack, style]} >
+      <Button
+        style={{ width: 20, height: 20 }}
+        appearance='ghost'
+        accessoryLeft={SettingsIcon}
+        onPress={() => dispatch(setSettingsScreen(false))}
+      />
+      <Text>DETAILS</Text>
+    </TouchableOpacity >
+  );
+}
+
 
 
 const Testhome = () => {
   const [selectedId, setSelectedId] = useState(null);
-
+  // const [settingScreen, SetSettingsScreen] = useState(false)
   const habits = useSelector((state) => state.habits);
+  const settingScreen = useSelector((state) => state.settingsScreen)
+  console.log(settingScreen);
   const dispatch = useDispatch();
-
-  dispatch(setHabits(DATA))
+  dispatch(setIcons(icons))
+  dispatch(setHabits(DATA));
 
   const renderItem = ({ item }) => {
     // console.log(navigation)
@@ -172,9 +176,21 @@ const Testhome = () => {
     );
   };
 
+  // const playSound = async () => {
+  //   try {
+  //     await Audio.setIsEnabledAsync(true);
+  //     const soundObject = new Audio.Sound();
+  //     await soundObject.loadAsync(require("../../audio/click.mp3"));
+  //     await soundObject.playAsync();
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
   return (
     <Layout style={styles.container}>
-      <View style={{ marginTop: StatusBar.currentHeight || 0 }}>
+
+      {settingScreen ? (<View style={{ marginTop: StatusBar.currentHeight || 0 }}>
         <FlatList
           numColumns={2}
           data={habits}
@@ -183,7 +199,13 @@ const Testhome = () => {
           extraData={selectedId}
         />
         <ProgressBar />
-      </View>
+        {/* sounds button */}
+        {/* <Button onPress={playSound} title="Play sound" /> */}
+      </View>) : (
+          <View style={{ width: 300, height: 500, backgroundColor: 'white', borderRadius: 15 }}>
+            <Button title="poiti na tri huya" onPress={() => dispatch(setSettingsScreen(true))} />
+          </View>
+        )}
     </Layout>
   );
 };
@@ -194,7 +216,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
   },
   item: {
     padding: 10,
@@ -202,7 +224,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     height: 110,
     width: 110,
-    // margin: 1,
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "space-between",
@@ -225,5 +246,3 @@ const styles = StyleSheet.create({
 });
 
 export default Testhome;
-
-
