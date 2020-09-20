@@ -13,6 +13,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar barStyle="dark-content" />
         <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
           <RootNavigator />
