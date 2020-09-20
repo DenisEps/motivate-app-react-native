@@ -22,6 +22,7 @@
     "@ui-kitten/eva-icons": "^5.0.0",
     "expo": "~38.0.8",
     "expo-av": "^8.4.0",
+    "expo-google-app-auth": "^8.1.2",
     "expo-status-bar": "^1.0.2",
     "firebase": "7.9.0",
     "react": "~16.11.0",

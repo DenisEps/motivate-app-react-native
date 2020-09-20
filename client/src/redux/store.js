@@ -1,9 +1,10 @@
 import { createStore, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { habitReducer } from './reducers';
+import { habitReducer, imageReducer } from './reducers';
 
 const store = createStore(combineReducers({
-  habits: habitReducer
+  habits: habitReducer,
+  image: imageReducer,
 }), composeWithDevTools());
 
 export default store;
