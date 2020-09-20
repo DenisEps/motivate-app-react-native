@@ -33,7 +33,7 @@ export default {
   iconReducer
 }
 
-export function settingsScreenReducer(state = false, action) {
+export function settingsScreenReducer(state = true, action) {
   switch (action.type) {
     case SET_SETTINGSSCREEN:
       return action.payload

@@ -26,8 +26,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-// import Item from '../../components/Home/Item'
-// import Habit from './Habit'
+import Habit from '../Habit';
+
 const DATA = [
   {
     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
@@ -202,9 +202,10 @@ const Testhome = () => {
         {/* sounds button */}
         {/* <Button onPress={playSound} title="Play sound" /> */}
       </View>) : (
-          <View style={{ width: 300, height: 500, backgroundColor: 'white', borderRadius: 15 }}>
-            <Button title="poiti na tri huya" onPress={() => dispatch(setSettingsScreen(true))} />
-          </View>
+          // <View style={{ width: 300, height: 500, backgroundColor: 'white', borderRadius: 15 }}>
+          //   <Button title="poiti na tri huya" onPress={() => dispatch(setSettingsScreen(true))} />
+          // </View>
+          <Habit />
         )}
     </Layout>
   );
