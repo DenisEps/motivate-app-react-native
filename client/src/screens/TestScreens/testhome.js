@@ -13,7 +13,7 @@
 // };
 
 // export default Testhome;
-
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import React, { useState } from 'react';
 import {
   FlatList,
@@ -178,13 +178,11 @@ const Testhome = (props) => {
             handleOpen={handleOpenHabit}
           ></ItemBack>
         ) : (
-            <>
-              <Item
-                item={item}
-                onPress={() => setSelectedId(item.id)}
-                style={{ backgroundColor }}
-              ></Item>
-            </>
+            <Item
+              item={item}
+              onPress={() => setSelectedId(item.id)}
+              style={{ backgroundColor }}
+            ></Item>
           )}
       </View>
     );
@@ -203,19 +201,40 @@ const Testhome = (props) => {
 
   return (
     <Layout style={styles.container}>
-    
-        <View style={{ marginTop: StatusBar.currentHeight || 0 }}>
-          <FlatList
-            numColumns={2}
-            data={habits}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            extraData={selectedId}
-          />
-          <ProgressBar />
-          {/* sounds button */}
-          {/* <Button onPress={playSound} title="Play sound" /> */}
-        </View>
+      <View style={{ marginTop: StatusBar.currentHeight || 0 }}>
+        <FlatList
+          numColumns={2}
+          data={habits}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          extraData={selectedId}
+        />
+
+        {/* sounds button */}
+        {/* <Button onPress={playSound} title="Play sound" /> */}
+      </View>
+      <Layout>
+        <AnimatedCircularProgress
+          size={110}
+          width={15}
+          backgroundWidth={5}
+          fill={40}
+          tintColor="#F39B6D"
+          tintColorSecondary="#7FC29B"
+          backgroundColor="rgba(243,155,109,0.5)"
+          arcSweepAngle={240}
+          rotation={240}
+          lineCap="round"
+        >
+          {
+            (fill) => (
+              <Text>
+                {`${Math.round(fill)}%`}
+              </Text>
+            )
+          }
+        </AnimatedCircularProgress>
+      </Layout>
     </Layout>
   );
 };
@@ -226,7 +245,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
   item: {
     padding: 10,
