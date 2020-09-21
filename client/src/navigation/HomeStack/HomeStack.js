@@ -7,6 +7,8 @@ import {
 import { ROUTES } from '../routes';
 import TestHome from '../../screens/TestScreens/testhome';
 import Habit from '../../screens/Habit';
+
+import IconSelect from '../../components/IconSelect';
 import EditHabit from '../../screens/Habit/EditHabit';
 
 const HomeStack = createStackNavigator();
@@ -24,7 +26,7 @@ const HomeStackScreen = () => {
       {/* ROUTES.createNewHabit */}
       <HomeStack.Screen
         name={ROUTES.habitDetails}
-        component={Habit}
+        component={IconSelect}
         options={{
           headerShown: false,
           ...TransitionPresets.SlideFromRightIOS,

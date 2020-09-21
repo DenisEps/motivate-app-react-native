@@ -78,12 +78,11 @@ const DATA = [
   },
 ];
 
+console.log(Object.keys(vectorIcons));
+
 function Item({ item, onPress, style, handleOpen }) {
   const habits = useSelector((state) => state.habits);
 
-  const handlePress = () => {
-    handleOpen(item.id)
-  }
 
   const iconName = item.icon.name;
 
@@ -91,7 +90,7 @@ function Item({ item, onPress, style, handleOpen }) {
   const icon = vectorIcons[iconName]({ size: 35, color: '#8389E6' });
 
   return (
-    <TouchableOpacity onPress={handlePress} style={[styles.item, style]}>
+    <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
       <Text style={styles.title}>{item.title}</Text>
 
       {icon}
@@ -118,9 +117,12 @@ const SettingsIcon = (props) => (
   <Icon fill="black" {...props} name="maximize-outline" />
 );
 
-function ItemBack({ item, onPress, style, navigation }) {
+function ItemBack({ item, onPress, style, navigation, handleOpen }) {
   const dispatch = useDispatch();
 
+  const handlePress = () => {
+    handleOpen(item.id)
+  }
   return (
     <TouchableOpacity
       onPress={() => {
@@ -132,7 +134,7 @@ function ItemBack({ item, onPress, style, navigation }) {
         style={{ width: 20, height: 20 }}
         appearance="ghost"
         accessoryLeft={SettingsIcon}
-        onPress={() => dispatch(setSettingsScreen(false))}
+        onPress={handlePress}
       />
       <Text>DETAILS</Text>
     </TouchableOpacity>
@@ -140,7 +142,7 @@ function ItemBack({ item, onPress, style, navigation }) {
 }
 
 const Testhome = (props) => {
-  const {navigation} = props
+  const { navigation } = props
   const [selectedId, setSelectedId] = useState(null);
   // const [settingScreen, SetSettingsScreen] = useState(false)
   const habits = useSelector((state) => state.habits);
@@ -168,17 +170,17 @@ const Testhome = (props) => {
             item={item}
             onPress={() => setSelectedId('')}
             style={{ backgroundColor }}
+            handleOpen={handleOpenHabit}
           ></ItemBack>
         ) : (
-          <>
-            <Item
-              item={item}
-              handleOpen={handleOpenHabit}
-              onPress={() => setSelectedId(item.id)}
-              style={{ backgroundColor }}
-            ></Item>
-          </>
-        )}
+            <>
+              <Item
+                item={item}
+                onPress={() => setSelectedId(item.id)}
+                style={{ backgroundColor }}
+              ></Item>
+            </>
+          )}
       </View>
     );
   };
@@ -210,11 +212,11 @@ const Testhome = (props) => {
           {/* <Button onPress={playSound} title="Play sound" /> */}
         </View>
       ) : (
-        // <View style={{ width: 300, height: 500, backgroundColor: 'white', borderRadius: 15 }}>
-        //   <Button title="poiti na tri huya" onPress={() => dispatch(setSettingsScreen(true))} />
-        // </View>
-        <Habit />
-      )}
+          // <View style={{ width: 300, height: 500, backgroundColor: 'white', borderRadius: 15 }}>
+          //   <Button title="poiti na tri huya" onPress={() => dispatch(setSettingsScreen(true))} />
+          // </View>
+          <Habit />
+        )}
     </Layout>
   );
 };
