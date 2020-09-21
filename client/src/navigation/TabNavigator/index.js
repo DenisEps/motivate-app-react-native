@@ -33,7 +33,7 @@ const BottomTabBar = ({ navigation, state }) => (
 
 const TabNavigator = () => {
   // const habits = useSelector((state) => state.habits);
-
+console.log('`,,,,,,,,,,,,,,,,tab');
   return (
     <NavigationContainer>
       <Navigator tabBar={(props) => <BottomTabBar {...props} />}>

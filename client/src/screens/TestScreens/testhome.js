@@ -198,7 +198,7 @@ const Testhome = (props) => {
 
   return (
     <Layout style={styles.container}>
-      {settingScreen ? (
+    
         <View style={{ marginTop: StatusBar.currentHeight || 0 }}>
           <FlatList
             numColumns={2}
@@ -211,12 +211,6 @@ const Testhome = (props) => {
           {/* sounds button */}
           {/* <Button onPress={playSound} title="Play sound" /> */}
         </View>
-      ) : (
-          // <View style={{ width: 300, height: 500, backgroundColor: 'white', borderRadius: 15 }}>
-          //   <Button title="poiti na tri huya" onPress={() => dispatch(setSettingsScreen(true))} />
-          // </View>
-          <Habit />
-        )}
     </Layout>
   );
 };

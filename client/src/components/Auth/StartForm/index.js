@@ -66,10 +66,10 @@ function StartForm() {
         </ButtonGroup>
       </Animated.View>
       <Animated.View style={{ top: fadeAnim, opacity: opacitySIAnim }}>
-        {signIn ? <AuthForm /> : false}
+        {signIn && <AuthForm />}
       </Animated.View>
       <Animated.View style={{ top: fadeAnim, opacity: opacitySUAnim }}>
-        {signUp ? <RegistrationForm /> : false}
+        {signUp && <RegistrationForm />}
       </Animated.View>
     </Layout >
   )
