@@ -61,19 +61,21 @@ const RegistrationForm = () => {
 
   }
   return (
-    <Layout style={styles.container, { position: "absolute", top: 250, left: 120, minWidth: 200 }} level="1">
+    <Layout style={{backgroundColor:"white", alignItems: "center", top: 250, minWidth: 200 }} level="1">
       <Input
+        style={{ width: "75%" }}
         placeholder="Email"
         value={email}
         onChangeText={(nextValue) => setEmail(nextValue)}
       />
       <Input
+        style={{ width: "75%" }}
         secureTextEntry={true}
         placeholder="Password"
         value={pass}
         onChangeText={(nextValue) => setPass(nextValue)}
       />
-      <Button onPress={() => CreateUser(email, pass)}>Register</Button>
+      <Button style={{width: "75%"}} onPress={() => CreateUser(email, pass)}>Register</Button>
       {/* message of error */}
       {error && <Text style={styles.error}>{error}</Text>}
       {emailMessage && <Text style={styles.message}>{emailMessage}</Text>}

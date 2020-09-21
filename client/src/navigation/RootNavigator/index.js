@@ -5,10 +5,11 @@ import TabNavigator from "../TabNavigator";
 import AuthStackScreen from "../../screens/AuthStackScreen/index";
 import RegistrationForm from "../../components/Auth/RegistrationForm";
 import StartForm from '../../components/Auth/StartForm'
+import Profile from "../../components/Profile";
 const RootNavigator = () => {
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
 
-  return user ? <TabNavigator /> : <StartForm />;
+  return user ? <TabNavigator /> : <Profile />;
 };
 
 export default RootNavigator;

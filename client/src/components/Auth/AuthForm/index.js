@@ -20,11 +20,11 @@ const AuthForm = () => {
       setEmail('')
       setPass('')
       setTest(true)
-      console.log('currentUser>>>>>>>>>>',currentUser);
+      console.log('currentUser>>>>>>>>>>', currentUser);
     } catch (err) {
       const error = new Error(err)
       setError(error.message)
-    } 
+    }
 
 
   }
@@ -33,19 +33,22 @@ const AuthForm = () => {
 
   // })
   return (
-    <Layout style={styles.container, { position: "absolute", top: 250, left: 120, minWidth: 200 }} level="1" >
+    <Layout style={{backgroundColor:"white", alignItems: "center", top: 250 }} level="1" >
       <Input
+        style={{ width: "75%" }}
         placeholder="Email"
         value={email}
         onChangeText={(nextValue) => setEmail(nextValue)}
       />
       <Input
+
+        style={{ width: "75%" }}
         secureTextEntry={true}
         placeholder="Password"
         value={pass}
         onChangeText={(nextValue) => setPass(nextValue)}
       />
-      <Button onPress={Login}>Register</Button>
+      <Button style={{ width: "75%" }} onPress={Login}>Register</Button>
       {test ? <TestDb /> : null}
     </Layout>
   );
