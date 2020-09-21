@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Layout, Button, Input, Submit, Text } from "@ui-kitten/components";
 import { firebase } from "../../../../firebase";
+import AsyncStorage from "@react-native-community/async-storage";
+import {userAuth} from '../../../redux/actions';
+import {useDispatch} from 'react-redux'
 
 const RegistrationForm = () => {
   const [error, setError] = React.useState(null);
@@ -9,8 +12,19 @@ const RegistrationForm = () => {
   const [pass, setPass] = React.useState("");
   const [authUser, setAuthUser] = React.useState(null);
   const [emailMessage, setEmailMessage] = React.useState(null);
+  const dispatch = useDispatch();
 
   // const provider = new firebase.auth.GoogleAuthProvider()
+
+  const save = async (user) => {
+    try {
+      const objectValue = JSON.stringify(user);
+      await AsyncStorage.setItem("user", objectValue);
+    } catch (e) {
+      const err = new Error(e)
+      setError(err.message);
+    }
+  };
 
   const CreateUser = async (email, pass) => {
     try {
@@ -18,17 +32,20 @@ const RegistrationForm = () => {
         .auth()
         .createUserWithEmailAndPassword(email, pass)
         .then((info) => {
-          return firebase
-            .firestore()
-            .collection("users")
-            .doc(info.user.uid)
-            // .set({
-            //   test: "test",
-            // });
+          return firebase.firestore().collection("users").doc(info.user.uid)
+          .set({
+            email: info.user.email,
+            displayName: info.user.displayName,
+            photoURL: info.user.photoURL,
+            phoneNumber: info.user.phoneNumber,
+            emailVerified: info.user.emailVerified,
+            habits: [],
+          });
         });
-      const currnetUser = firebase.auth().currentUser;
-
-      currnetUser
+      const currentUser = firebase.auth().currentUser;
+        save(currentUser)
+        dispatch(userAuth(true))
+      currentUser
         .sendEmailVerification()
         .then(() => {
           setEmailMessage("Подтвердите Ваш email на почте");
@@ -49,19 +66,31 @@ const RegistrationForm = () => {
   };
 
   return (
-    <Layout style={styles.container} level="1">
+    <Layout
+      style={{
+        backgroundColor: "white",
+        alignItems: "center",
+        top: 250,
+        minWidth: 200,
+      }}
+      level="1"
+    >
       <Input
+        style={{ width: "75%" }}
         placeholder="Email"
         value={email}
         onChangeText={(nextValue) => setEmail(nextValue)}
       />
       <Input
+        style={{ width: "75%" }}
         secureTextEntry={true}
         placeholder="Password"
         value={pass}
         onChangeText={(nextValue) => setPass(nextValue)}
       />
-      <Button onPress={() => CreateUser(email, pass)}>Register</Button>
+      <Button style={{ width: "75%" }} onPress={() => CreateUser(email, pass)}>
+        Register
+      </Button>
       {/* message of error */}
       {error && <Text style={styles.error}>{error}</Text>}
       {emailMessage && <Text style={styles.message}>{emailMessage}</Text>}

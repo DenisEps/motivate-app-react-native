@@ -1,4 +1,4 @@
-import { SET_HABITS, DEL_HABIT, EDIT_HABIT, SET_IMG, SET_USER, DELETE_USER } from './action-types';
+import { SET_HABITS, DEL_HABIT, EDIT_HABIT, SET_IMG, SET_USER, DELETE_USER, USER_AUTH } from './action-types';
 
 export function habitReducer(state = [], action) {
   switch (action.type) {
@@ -43,6 +43,9 @@ export function userReducer(state = null, action) {
 
     case DELETE_USER: 
       return state;
+
+    case USER_AUTH:
+      return action.payload;
 
     default: 
       return state;

@@ -16,25 +16,32 @@ const RootNavigator = () => {
 // console.log('rootNavigation',stateUser);
 const [userStore, setUserStore] = useState(null);
 const [error, setError] = useState(null);
+const auth = useSelector(state => state.user);
+console.log(auth);
+
+console.log('>>>>>>>>>>>>>> USER STORE', userStore)
 
 useEffect(() => {
   load();
-  console.log('>>>>>>>>use in the state',userStore);
-})
+  console.log('>>>>>>>>user in the state!!j!!!!!!!!!!!!!',userStore);
+}, [auth])
 
 const load = async () => {
   try {
     const user = await AsyncStorage.getItem('user');
-    if (user !== null)  setUserStore(user)
-    
+    if (user !== null) {
+      setUserStore(user)
+    } else {
+      setUserStore(null)
+    }
     console.log('>>>>>>>>>>>>>>>rootNav',user);
   } catch (e) {
-    const err = newError(e)
+    const err = new Error(e)
     setError(err.message)
   }
 }
   // return <AuthForm />
-  return userStore ? <TabNavigator /> : <StartForm />;
+  return userStore ? <Profile /> : <StartForm />;
 };
 
 export default RootNavigator;

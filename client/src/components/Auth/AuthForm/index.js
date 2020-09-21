@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, ActivityIndicator } from "react-native";
 import { Input, Button, Layout, Text } from "@ui-kitten/components";
 import { useDispatch } from "react-redux";
-import { setUser, deleteUser } from "../../../redux/actions";
+import { userAuth, deleteUser } from "../../../redux/actions";
 import TestDb from "../../TestDb/TestDb";
 import { firebase } from "../../../../firebase";
 import "@firebase/firestore";
@@ -49,12 +49,12 @@ const AuthForm = () => {
         .auth()
         .signInWithEmailAndPassword(email, pass);
       console.log("user", user.user);
-      const currentUser = await firebase.auth().currentUser;
+      const currentUser = await firebase.auth().currentUser
       setEmail("");
       setPass("");
       setTest(true);
       setUserStore(currentUser)
-      dispatch(setUser(currentUser));
+      dispatch(userAuth(true));
       save(currentUser); // asyncStorage
     } catch (err) {
       const error = new Error(err);
@@ -88,6 +88,8 @@ const AuthForm = () => {
               // setUserStore(userAuth)
               // save(); // asyncStorage
               // dispatch(setUser(userAuth))
+              // console.log('userAuth on sign in>>>>>>>>>>>>>>',userAuth);
+              // save(userAuth)
               await firebase
                 .firestore()
                 .collection("users")
@@ -95,9 +97,10 @@ const AuthForm = () => {
                 .set({
                   email: userAuth.email,
                   displayName: userAuth.displayName,
-                  phoneNumber: userAuth?.phoneNumber,
+                  phoneNumber: userAuth.phoneNumber,
                   photoURL: userAuth.photoURL,
                   emailVerified: userAuth.emailVerified,
+                  habits: [],
                 });
             })
             .catch(function (error) {
@@ -141,7 +144,7 @@ const AuthForm = () => {
 
   async function signInWithGoogleAsync() {
     try {
-      console.log(">>>>>>>>>", firebase.auth().currentUser);
+      // console.log(">>>>>>>>>", firebase.auth().currentUser);
       const result = await Google.logInAsync({
         // androidClientId: YOUR_CLIENT_ID_HERE,
         behavior: "web",
@@ -154,8 +157,11 @@ const AuthForm = () => {
         setError(null)
         onSignIn(result);
         setUserStore(result.user)
+        console.log('here is the save of user');
+        dispatch(userAuth(true));
         save(result.user)
         // dispatch(setUser(result.user));
+        // navigate
         return result.accessToken;
       } else {
         return setError("Something went wrong");
@@ -163,27 +169,30 @@ const AuthForm = () => {
     } catch (e) {
       const error = new Error(e);
       return setError(error.message);
-    }
+    } 
   }
 
   return (
-    <Layout style={styles.container} level="1">
+    <Layout style={{backgroundColor:"white", alignItems: "center", top: 250 }} level="1" >
       <Input
+        style={{ width: "75%" }}
         placeholder="Email"
         value={email}
         onChangeText={(nextValue) => setEmail(nextValue)}
       />
       <Input
+
+        style={{ width: "75%" }}
         secureTextEntry={true}
         placeholder="Password"
         value={pass}
         onChangeText={(nextValue) => setPass(nextValue)}
       />
-      <Button onPress={Login}>Sugn Up</Button>
-      <Button onPress={() => signInWithGoogleAsync()}>
+      <Button style={{ width: "75%", marginBottom: 5 }} onPress={Login}>Sugn Up</Button>
+      <Button style={{ width: "75%", marginBottom: 5 }} onPress={() => signInWithGoogleAsync()}>
         Sign Up With Google
       </Button>
-      <Button onPress={logout}>Logout</Button>
+      <Button style={{ width: "75%", marginBottom: 5 }} onPress={logout}>Logout</Button>
       {test ? <TestDb /> : null}
       {err ? <Text>{err}</Text> : null}
     </Layout>
