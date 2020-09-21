@@ -7,6 +7,7 @@ import {
 import { ROUTES } from '../routes';
 import TestHome from '../../screens/TestScreens/testhome';
 import Habit from '../../screens/Habit';
+import EditHabit from '../../screens/Habit/EditHabit';
 
 const HomeStack = createStackNavigator();
 
@@ -24,6 +25,14 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name={ROUTES.habitDetails}
         component={Habit}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <HomeStack.Screen
+        name={ROUTES.editHabit}
+        component={EditHabit}
         options={{
           headerShown: false,
           ...TransitionPresets.SlideFromRightIOS,

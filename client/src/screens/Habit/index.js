@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, Alert, View, ScrollView } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 import {
   Calendar,
   Icon,
@@ -12,11 +11,8 @@ import {
   TopNavigationAction,
   Text,
 } from '@ui-kitten/components';
-
-// ICONS
-const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
-const EditIcon = (props) => <Icon {...props} name="edit" />;
-const MenuIcon = (props) => <Icon {...props} name="more-vertical" />;
+import { kittenIcons, vectorIcons } from '../../assets/icons';
+import { ROUTES } from '../../navigation/routes';
 
 // CALENDAR
 const CellStatus = ({ date }, style) => {
@@ -93,15 +89,25 @@ const Habit = ({ navigation, route }) => {
     navigation.goBack();
   };
 
+  const handleEditButton = () => {
+    navigation.navigate(ROUTES.editHabit, { id });
+  };
+
   const renderRightActions = () => (
     <React.Fragment>
-      <TopNavigationAction icon={EditIcon} />
-      <TopNavigationAction icon={MenuIcon} onPress={CreateHabitAlert} />
+      <TopNavigationAction
+        icon={kittenIcons.EditIcon}
+        onPress={handleEditButton}
+      />
+      <TopNavigationAction
+        icon={kittenIcons.MenuIcon}
+        onPress={CreateHabitAlert}
+      />
     </React.Fragment>
   );
 
   const renderBackAction = () => (
-    <TopNavigationAction onPress={back} icon={BackIcon} />
+    <TopNavigationAction onPress={back} icon={kittenIcons.BackIcon} />
   );
 
   if (loading) {
@@ -133,7 +139,7 @@ const Habit = ({ navigation, route }) => {
       <ScrollView>
         <Layout style={styles.iconLayout}>
           <Layout style={styles.circle}>
-            <MaterialIcons name="smoke-free" size={100} color="#7983a4" />
+            {vectorIcons.smoke({ size: 75, color: '#7983a4' })}
           </Layout>
         </Layout>
 
@@ -156,9 +162,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: 'center',
     alignItems: 'center',
-    minHeight: 200,
-    marginTop: 25,
-    marginBottom: 25,
+    minHeight: 150,
+    marginTop: 20,
+    marginBottom: 20,
   },
   circle: {
     position: 'relative',
@@ -166,8 +172,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#1f2538',
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
     borderRadius: 200 / 2,
     borderWidth: 10,
     borderColor: '#7b8cde',
