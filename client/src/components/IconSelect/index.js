@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { vectorIcons } from '../../assets/icons';
+import { vectorIcons, kittenIcons } from '../../assets/icons';
+import {
+  Layout,
+  TopNavigation,
+  TopNavigationAction,
+  Input,
+  Button,
+} from '@ui-kitten/components';
 
-
-const Item = ({ item, onPress, style, navigation }) => {
+const Item = ({ item, onPress, style }) => {
 
   if (!vectorIcons[item]) return null;
   const icon = vectorIcons[item]({ size: 35, color: '#FFFFFF' });
@@ -11,15 +17,22 @@ const Item = ({ item, onPress, style, navigation }) => {
   return (
     <TouchableOpacity onPress={() => {
       onPress();
-      // handleSelect();
     }} style={[styles.item, style]}>
       {icon}
     </TouchableOpacity>
   )
 };
 
-const IconSelect = () => {
+const IconSelect = ({ route, navigation }) => {
   const [selectedId, setSelectedId] = useState(null);
+  const { setIcon } = route.params;
+  const renderBackAction = () => (
+    <TopNavigationAction onPress={back} icon={kittenIcons.BackIcon} />
+  );
+
+  const back = () => {
+    navigation.goBack();
+  };
 
   const renderItem = ({ item }) => {
     const backgroundColor = item === selectedId ? "#7E0087" : "#5B58AF";
@@ -27,7 +40,10 @@ const IconSelect = () => {
     return (
       <Item
         item={item}
-        onPress={() => setSelectedId(item)}
+        onPress={() => {
+          setSelectedId(item);
+          setIcon(item)
+        }}
         style={{ backgroundColor }}
       />
     );
@@ -35,6 +51,12 @@ const IconSelect = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Layout style={styles.backButton} level="1">
+        <TopNavigation
+          alignment="center"
+          accessoryLeft={renderBackAction}
+        />
+      </Layout>
       <FlatList
         data={Object.keys(vectorIcons)}
         renderItem={renderItem}
@@ -42,11 +64,14 @@ const IconSelect = () => {
         extraData={selectedId}
         numColumns={3}
       />
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 
 const styles = StyleSheet.create({
+  backButton: {
+    justifyContent: 'flex-start'
+  },
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,

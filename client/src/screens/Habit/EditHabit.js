@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Alert } from 'react-native';
 import {
   Text,
@@ -9,9 +9,16 @@ import {
   Button,
 } from '@ui-kitten/components';
 import { kittenIcons, vectorIcons } from '../../assets/icons';
+import { ROUTES } from '../../navigation/routes';
 
 const EditHabit = ({ navigation }) => {
+  const [icon, setIcon] = useState('smoke')
+  console.log(icon);
   const [titleInput, setTitleInput] = React.useState("Don't smoke");
+
+  const handlePress = () => {
+    navigation.navigate(ROUTES.iconSelect, { setIcon });
+  }
 
   const CreateHabitAlert = () => {
     Alert.alert('Habit menu', 'What would you like to do?', [
@@ -52,12 +59,17 @@ const EditHabit = ({ navigation }) => {
       </Layout>
       <Layout style={styles.iconLayout}>
         <Layout style={styles.circle}>
-          {vectorIcons.smoke({ size: 75, color: '#7983a4' })}
+          {vectorIcons[icon]({ size: 75, color: '#7983a4' })}
+
+
+
           {vectorIcons.menuHorizontal({
             size: 40,
             color: '#f39b6d',
-            style: styles.editIconIcon,
+            onPress: handlePress,
+            style: styles.editIconIcon
           })}
+
         </Layout>
       </Layout>
       <Layout style={styles.titleInputDiv}>
@@ -72,7 +84,7 @@ const EditHabit = ({ navigation }) => {
       <Button style={styles.button} status="primary">
         SAVE
       </Button>
-    </Layout>
+    </Layout >
   );
 };
 
@@ -97,7 +109,11 @@ const styles = StyleSheet.create({
     borderWidth: 10,
     borderColor: '#7b8cde',
   },
-  editIconIcon: { position: 'absolute', bottom: 0, right: -10 },
+  editIconIcon: {
+    position: 'absolute',
+    bottom: 0,
+    right: -10,
+  },
   titleInputDiv: {
     width: '90%',
     marginLeft: 'auto',

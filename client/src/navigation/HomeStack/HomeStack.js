@@ -7,7 +7,6 @@ import {
 import { ROUTES } from '../routes';
 import TestHome from '../../screens/TestScreens/testhome';
 import Habit from '../../screens/Habit';
-
 import IconSelect from '../../components/IconSelect';
 import EditHabit from '../../screens/Habit/EditHabit';
 
@@ -26,7 +25,7 @@ const HomeStackScreen = () => {
       {/* ROUTES.createNewHabit */}
       <HomeStack.Screen
         name={ROUTES.habitDetails}
-        component={IconSelect}
+        component={Habit}
         options={{
           headerShown: false,
           ...TransitionPresets.SlideFromRightIOS,
@@ -35,6 +34,14 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name={ROUTES.editHabit}
         component={EditHabit}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <HomeStack.Screen
+        name={ROUTES.iconSelect}
+        component={IconSelect}
         options={{
           headerShown: false,
           ...TransitionPresets.SlideFromRightIOS,
