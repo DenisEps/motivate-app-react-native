@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { SET_HABITS, DEL_HABIT, EDIT_HIBIT, SET_IMG, SET_USER, DELETE_USER, USER_AUTH } from './action-types';
 
 export function userAuth(bool) {
@@ -20,6 +21,9 @@ export function deleteUser() {
     payload: null,
   }
 }
+=======
+import { SET_HABITS, DEL_HABIT, EDIT_HIBIT, SET_SETTINGSSCREEN } from './action-types';
+>>>>>>> 4a03cf19ba0bd535c971738e533a64daa09f08a1
 
 export function setHabits(habits) {
   return {
@@ -45,9 +49,9 @@ export function editHabit(id, title) {
   }
 }
 
-export function setImg(path) {
+export function setSettingsScreen(flag) {
   return {
-    type: SET_IMG,
-    payload: path
+    type: SET_SETTINGSSCREEN,
+    payload: flag
   }
 }

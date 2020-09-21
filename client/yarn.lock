@@ -697,7 +697,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
-"@babel/plugin-transform-object-assign@^7.0.0", "@babel/plugin-transform-object-assign@^7.10.4":
+"@babel/plugin-transform-object-assign@^7.0.0":
   version "7.10.4"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-object-assign/-/plugin-transform-object-assign-7.10.4.tgz#f7c8f54ce8052ccd8b9da9b3358848423221c338"
   integrity sha512-6zccDhYEICfMeQqIjuY5G09/yhKzG30DKHJeYBQUHIsJH7c2jXSGvgwRalufLAXAq432OSlsEfAOLlzEsQzxVw==
@@ -3501,6 +3501,7 @@ expo-asset@~8.1.7:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
+<<<<<<< HEAD
 expo-av@^8.4.0:
   version "8.4.0"
   resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-8.4.0.tgz#84881f89df35361893b55e739a639cd51d3ecf04"
@@ -3510,6 +3511,9 @@ expo-av@^8.4.0:
     nullthrows "^1.1.0"
 
 expo-constants@9.1.1, expo-constants@^9.1.1, expo-constants@~9.1.1:
+=======
+expo-constants@~9.1.1:
+>>>>>>> 4a03cf19ba0bd535c971738e533a64daa09f08a1
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.1.1.tgz#bca141ee3d4550e308798128f66c6d9c6a206ca1"
   integrity sha512-zCa/wRARODHd6BSwxjBhidmao0AqQnKmLkl0tsVIoZlRyPDHsEaxNR/m+7wqGC7qiC+UpG1qRnvLOLwCGt2ihg==
@@ -6173,6 +6177,14 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
+prop-types@15.5.10:
+  version "15.5.10"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
+  integrity sha1-J5ffwxJhguOpXj37suiT3ddFYVQ=
+  dependencies:
+    fbjs "^0.8.9"
+    loose-envify "^1.3.1"
+
 prop-types@15.7.2, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
@@ -6286,6 +6298,11 @@ react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1, react-
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-lifecycles-compat@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+  integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+
 react-native-animatable@^1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"
@@ -6301,6 +6318,14 @@ react-native-appearance@~0.3.3:
     fbemitter "^2.1.1"
     invariant "^2.2.4"
     use-subscription "^1.0.0"
+
+react-native-card-flip@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/react-native-card-flip/-/react-native-card-flip-1.0.7.tgz#39de7ed22d0b3700e6007762f05fa60251c65503"
+  integrity sha512-SnbuHytwzFfBse7c9cWqw3EbcOcKp4+fxmMQfGg1YqWha48b35bQW57TV7lVXkZ8hB+cwoQtfScDIUOCpsDRVA==
+  dependencies:
+    prop-types "15.5.10"
+    react-lifecycles-compat "^3.0.4"
 
 react-native-eva-icons@^1.3.1:
   version "1.3.1"
@@ -6321,15 +6346,6 @@ react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
-
-react-native-reanimated@^2.0.0-alpha.6:
-  version "2.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-2.0.0-alpha.6.tgz#d3b55127e8202a12b9073c97086dfe85283c9e08"
-  integrity sha512-VlclQ4dlHM7e8F8HBgwqUQTfCNK3k+h13aL/9k/JMqx4CrUAWe2RYdsRWxurV3YrK0RYdjpM4AvmxqGvJKWuWA==
-  dependencies:
-    "@babel/plugin-transform-object-assign" "^7.10.4"
-    fbjs "^1.0.0"
-    string-hash-64 "^1.0.3"
 
 react-native-safe-area-context@~3.0.7:
   version "3.0.7"
@@ -7036,11 +7052,6 @@ strict-uri-encode@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-2.0.0.tgz#b9c7330c7042862f6b142dc274bbcc5866ce3546"
   integrity sha1-ucczDHBChi9rFC3CdLvMWGbONUY=
-
-string-hash-64@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/string-hash-64/-/string-hash-64-1.0.3.tgz#0deb56df58678640db5c479ccbbb597aaa0de322"
-  integrity sha512-D5OKWKvDhyVWWn2x5Y9b+37NUllks34q1dCDhk/vYcso9fmhs+Tl3KR/gE4v5UNj2UA35cnX4KdVVGkG1deKqw==
 
 string-width@^1.0.1:
   version "1.0.2"

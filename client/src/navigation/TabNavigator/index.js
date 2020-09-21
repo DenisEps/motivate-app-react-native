@@ -2,14 +2,15 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+// import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
   BottomNavigation,
   BottomNavigationTab,
   Icon,
 } from '@ui-kitten/components';
-
-import TestHome from '../../screens/TestScreens/testhome';
-import Habit from '../../screens/TestScreens/Habit';
+import { ROUTES } from '../routes'
+// import Habit from '../../screens/TestScreens/Habit';
+import { HomeStackScreen } from '../HomeStack/HomeStack'
 import TestSettings from '../../screens/TestScreens/testsettings';
 import { useSelector } from 'react-redux';
 
@@ -28,21 +29,18 @@ const BottomTabBar = ({ navigation, state }) => (
   </BottomNavigation>
 );
 
-// const styles = StyleSheet.create({
-//   bottomNavigationContainer: {
-//     backgroundColor: 'black',
-//   }
-// })
+
 
 const TabNavigator = () => {
-  const habits = useSelector((state) => state.habits);
+  // const habits = useSelector((state) => state.habits);
 
   return (
     <NavigationContainer>
       <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
-        <Screen name="HOME" component={TestHome} />
-        <Screen name="SETTINGS" component={TestSettings} />
-        <Screen name="HABIT" component={Habit} />
+        <Screen name={ROUTES.homeTab} component={HomeStackScreen} />
+        <Screen name={ROUTES.settingsTab} component={TestSettings} />
+        {/* <Screen name="HABIT" component={Habit} /> */}
+        {/* <Screen name="HABIT" component={Habit} /> */}
       </Navigator>
     </NavigationContainer>
   );
