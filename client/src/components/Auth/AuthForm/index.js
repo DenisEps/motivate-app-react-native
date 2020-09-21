@@ -24,7 +24,6 @@ const AuthForm = () => {
     try {
       const objectValue = JSON.stringify(user)
      await AsyncStorage.setItem('user', objectValue)
-     console.log('user in the store', objectValue);
     } catch(e) {
       const error = new Error(e)
       setError(error.message);
@@ -34,7 +33,6 @@ const AuthForm = () => {
   const remove = async () => {
     try {
       await AsyncStorage.removeItem('user')
-      console.log('remove is okey');
     } catch(e) {
       const error = new Error(e)
       setError(error.message);
@@ -48,7 +46,6 @@ const AuthForm = () => {
       const user = await firebase
         .auth()
         .signInWithEmailAndPassword(email, pass);
-      console.log("user", user.user);
       const currentUser = await firebase.auth().currentUser
       setEmail("");
       setPass("");
@@ -157,7 +154,6 @@ const AuthForm = () => {
         setError(null)
         onSignIn(result);
         setUserStore(result.user)
-        console.log('here is the save of user');
         dispatch(userAuth(true));
         save(result.user)
         // dispatch(setUser(result.user));

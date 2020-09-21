@@ -17,13 +17,9 @@ const RootNavigator = () => {
 const [userStore, setUserStore] = useState(null);
 const [error, setError] = useState(null);
 const auth = useSelector(state => state.user);
-console.log(auth);
-
-console.log('>>>>>>>>>>>>>> USER STORE', userStore)
 
 useEffect(() => {
   load();
-  console.log('>>>>>>>>user in the state!!j!!!!!!!!!!!!!',userStore);
 }, [auth])
 
 const load = async () => {
@@ -34,7 +30,6 @@ const load = async () => {
     } else {
       setUserStore(null)
     }
-    console.log('>>>>>>>>>>>>>>>rootNav',user);
   } catch (e) {
     const err = new Error(e)
     setError(err.message)

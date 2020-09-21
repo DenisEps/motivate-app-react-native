@@ -9,7 +9,6 @@ import {firebase} from '../../../firebase'
  function Profile() {
 
   const user =  firebase.auth().currentUser
-  console.log('>>>>>>>>>>.PROFILE',user);
 
   return (
     <Layout style={{ backgroundColor: "white", alignItems: "center" }}>

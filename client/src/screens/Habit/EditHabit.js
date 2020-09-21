@@ -13,7 +13,6 @@ import { ROUTES } from '../../navigation/routes';
 
 const EditHabit = ({ navigation }) => {
   const [icon, setIcon] = useState('smoke')
-  console.log(icon);
   const [titleInput, setTitleInput] = React.useState("Don't smoke");
 
   const handlePress = () => {
