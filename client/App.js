@@ -9,14 +9,13 @@ import RootNavigator from './src/navigation/RootNavigator';
 import store from './src/redux/store';
 import { Provider } from 'react-redux';
 
-
-
 const App = () => {
   return (
     <Provider store={store}>
       <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar barStyle="dark-content" />
         <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
+        <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
           <RootNavigator />
         </ApplicationProvider>
       </SafeAreaView>

@@ -5,7 +5,8 @@ import TabNavigator from '../../navigation/TabNavigator';
 import { View } from 'react-native-animatable';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
-import {firebase} from '../../../firebase';
+import * as ImageManipulator from 'expo-image-manipulator';
+import { firebase } from '../../../firebase';
 
 function Profile() {
   const [visible, setVisible] = useState(false);
@@ -14,16 +15,21 @@ function Profile() {
 
   async function startGallery() {
     try {
-      const uid = firebase.auth().currentUser.uid
+      const uid = firebase.auth().currentUser.uid;
       const galPhotoUri = await ImagePicker.launchImageLibraryAsync();
       const galPhotoUriFinish = galPhotoUri.uri;
       const varFunct = await FileSystem.getInfoAsync(galPhotoUriFinish);
-      const galPhoto = await FileSystem.readAsStringAsync(varFunct.uri, { encoding: FileSystem.EncodingType.Base64, length: varFunct.size, position: 0 });
-      const user = await firebase.firestore().collection('users').doc(uid).set({
-        photoURL : galPhoto,
+      let compressMult = 800000 / varFunct.size;
+      const smallPhoto = await ImageManipulator.manipulateAsync(
+        varFunct.uri,
+        [],
+        { compress: compressMult, format: 'jpeg' });
+      setPhoto({ uri: smallPhoto.uri });
+      const galPhoto = await FileSystem.readAsStringAsync(smallPhoto.uri, { encoding: FileSystem.EncodingType.Base64 });
+      const user = await firebase.firestore().collection('users').doc(uid).update({
+        photoURL: galPhoto,
       })
-      console.log(user);
-      // setPhoto(galPhotoUri);
+      console.log('123');
     } catch (err) {
       console.error(err);
     }
@@ -57,7 +63,6 @@ function Profile() {
         onBackdropPress={() => setVisible(false)}>
         <Card disabled={true}>
           <Text>Change Photo</Text>
-
           <Button onPress={startGallery}>
             Gallery
           </Button>

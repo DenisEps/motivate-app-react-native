@@ -21,18 +21,21 @@ function StartForm() {
   function buttonsUp(form) {
     Animated.timing(fadeAnim, {
       toValue: 100,
-      duration: 1000
+      duration: 1000,
+      useNativeDriver: false,
     }).start();
     if (form === 'signIn') {
       setbtnSIColor(CustomTheme["color-primary-600"]);
       setbtnSUColor(CustomTheme["color-primary-300"]);
       Animated.timing(opacitySUAnim, {
         toValue: 0,
-        duration: 1000
+        duration: 1000,
+        useNativeDriver: false
       }).start(),
         Animated.timing(opacitySIAnim, {
           toValue: 1,
-          duration: 1000
+          duration: 1000,
+          useNativeDriver: false
         }).start()
       setSignUp(false);
       return setSignIn(true)
@@ -42,11 +45,13 @@ function StartForm() {
       setbtnSIColor(CustomTheme["color-primary-300"]);
       Animated.timing(opacitySIAnim, {
         toValue: 0,
-        duration: 1000
+        duration: 1000,
+        useNativeDriver: false
       }).start(),
         Animated.timing(opacitySUAnim, {
           toValue: 1,
-          duration: 1000
+          duration: 1000,
+          useNativeDriver: false
         }).start()
       setSignIn(false);
       return setSignUp(true)
@@ -61,10 +66,10 @@ function StartForm() {
         </ButtonGroup>
       </Animated.View>
       <Animated.View style={{ top: fadeAnim, opacity: opacitySIAnim }}>
-        {signIn ? <AuthForm /> : null}
+        {signIn ? <AuthForm /> : false}
       </Animated.View>
       <Animated.View style={{ top: fadeAnim, opacity: opacitySUAnim }}>
-        {signUp ? <RegistrationForm /> : null}
+        {signUp ? <RegistrationForm /> : false}
       </Animated.View>
     </Layout >
   )
