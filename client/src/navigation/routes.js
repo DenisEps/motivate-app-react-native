@@ -5,5 +5,6 @@ export const ROUTES = {
   createNewHabit: 'HABIT_CREATE',
   editHabit: 'HABIT_EDIT',
   settingsTab: 'SETTINGS_TAB',
-  iconSelect: 'ICON_SELECT'
+  iconSelect: 'ICON_SELECT',
+  stats: 'STATS'
 };
