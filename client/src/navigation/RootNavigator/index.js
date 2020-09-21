@@ -41,7 +41,7 @@ const load = async () => {
   }
 }
   // return <AuthForm />
-  return userStore ? <Profile /> : <StartForm />;
+  return userStore ? <TabNavigator /> : <StartForm />;
 };
 
 export default RootNavigator;
