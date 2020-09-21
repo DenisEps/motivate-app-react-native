@@ -25,19 +25,14 @@ import {
   Image,
   View,
 } from 'react-native';
+import {firebase} from '../../../firebase';
 import { Layout, Icon, Button } from '@ui-kitten/components';
 import ProgressBar from '../../components/ProgressBar/ProgressBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { setHabits, setSettingsScreen } from '../../redux/actions';
-import { NavigationContainer } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
-import Habit from '../Habit';
+import { setHabits } from '../../redux/actions';
 import { ROUTES } from '../../navigation/routes'
 import { vectorIcons } from '../../assets/icons';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const DATA = [
   {
@@ -77,8 +72,18 @@ const DATA = [
     icon: { name: 'code' },
   },
 ];
+// const uid = firebase.auth().currentUser.uid
+// const user = firebase.firestore().collection('users').doc(uid).get().then(info => console.log(info.data()))
 
-console.log(Object.keys(vectorIcons));
+// const load = async () => {
+//   try {
+//     const user = await AsyncStorage.getItem('user');
+//     console.log(user);
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }
+// load()
 
 function Item({ item, onPress, style, handleOpen }) {
   const habits = useSelector((state) => state.habits);
@@ -265,7 +270,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 10,
-    color: '#B2CEFF',
+    color: '#FFFFFF',
   },
 });
 
