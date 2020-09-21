@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { SET_HABITS, DEL_HABIT, EDIT_HABIT, SET_IMG, SET_USER, DELETE_USER, USER_AUTH } from './action-types';
-=======
-import { SET_HABITS, DEL_HABIT, EDIT_HABIT, SET_SETTINGSSCREEN } from './action-types';
->>>>>>> 4a03cf19ba0bd535c971738e533a64daa09f08a1
 
 export function habitReducer(state = [], action) {
   switch (action.type) {
@@ -34,16 +30,7 @@ export function settingsScreenReducer(state = true, action) {
     default:
       return state
   }
-<<<<<<< HEAD
 }
-
-// const initialUserState = {
-//   displayName: '',
-//   phoneNumber: '',
-//   photoURL: '',
-//   email: '',
-//   habbits: '',
-// }
 
 export function userReducer(state = null, action) {
   switch (action.type) {
@@ -63,6 +50,3 @@ export function userReducer(state = null, action) {
 export default {
   habitReducer,
 }
-=======
-}
->>>>>>> 4a03cf19ba0bd535c971738e533a64daa09f08a1
