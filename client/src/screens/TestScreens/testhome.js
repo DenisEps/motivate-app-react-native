@@ -27,7 +27,6 @@ import {
 } from 'react-native';
 import {firebase} from '../../../firebase';
 import { Layout, Icon, Button } from '@ui-kitten/components';
-import ProgressBar from '../../components/ProgressBar/ProgressBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { setHabits } from '../../redux/actions';
 import { ROUTES } from '../../navigation/routes'
