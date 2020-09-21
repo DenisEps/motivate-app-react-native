@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { Layout, Text, Divider } from '@ui-kitten/components';
+
+const screenWidth = Dimensions.get('window').width;
 
 const StatsMain = () => {
   return (
@@ -27,9 +29,9 @@ const StatsMain = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    width: '90%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    borderWidth: 1,
+    borderColor: 'red',
+    paddingHorizontal: 16,
   },
   overViewContainer: {
     width: '90%',
@@ -43,7 +45,7 @@ const styles = StyleSheet.create({
   overViewBox: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 });
 
