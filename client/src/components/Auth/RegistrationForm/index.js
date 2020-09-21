@@ -22,9 +22,9 @@ const RegistrationForm = () => {
             .firestore()
             .collection("users")
             .doc(info.user.uid)
-            .set({
-              test: "test",
-            });
+            // .set({
+            //   test: "test",
+            // });
         });
       const currnetUser = firebase.auth().currentUser;
 
@@ -37,10 +37,6 @@ const RegistrationForm = () => {
           const error = new Error(err);
           setError(error.message);
         });
-      // firebase.database().ref('/' + user.user.uid).set({
-      //   email: user.user.email,
-      //   emailVerified: user.user.emailVerified,
-      // })
       setAuthUser(user.user);
       setError(null);
       setEmail("");

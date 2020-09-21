@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 10,
-    color: '#B2CEFF',
+    color: '#FFFFFF',
   },
 });
 

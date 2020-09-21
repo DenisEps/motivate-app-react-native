@@ -1,30 +1,61 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, ActivityIndicator } from "react-native";
 import { Input, Button, Layout, Text } from "@ui-kitten/components";
+import { useDispatch } from "react-redux";
+import { setUser, deleteUser } from "../../../redux/actions";
 import TestDb from "../../TestDb/TestDb";
 import { firebase } from "../../../../firebase";
 import "@firebase/firestore";
 import "@firebase/auth";
 import * as Google from "expo-google-app-auth";
+import AsyncStorage from '@react-native-community/async-storage';
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
-const AuthForm = () => {
+const AuthForm = () => { 
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [err, setError] = useState(null);
   const [test, setTest] = useState(false);
+  const [userStore, setUserStore] = useState(null); 
+  const dispatch = useDispatch();
+
+  const save = async (user) => {
+    try {
+      const objectValue = JSON.stringify(user)
+     await AsyncStorage.setItem('user', objectValue)
+     console.log('user in the store', objectValue);
+    } catch(e) {
+      const error = new Error(e)
+      setError(error.message);
+    }
+  }
+
+  const remove = async () => {
+    try {
+      await AsyncStorage.removeItem('user')
+      console.log('remove is okey');
+    } catch(e) {
+      const error = new Error(e)
+      setError(error.message);
+    } finally {
+      setUserStore('');
+    }
+  }
 
   const Login = async () => {
     try {
       const user = await firebase
         .auth()
         .signInWithEmailAndPassword(email, pass);
+      console.log("user", user.user);
       const currentUser = await firebase.auth().currentUser;
       setEmail("");
       setPass("");
       setTest(true);
-      console.log("currentUser>>>>>>>>>>", currentUser);
+      setUserStore(currentUser)
+      dispatch(setUser(currentUser));
+      save(currentUser); // asyncStorage
     } catch (err) {
       const error = new Error(err);
       setError(error.message);
@@ -32,9 +63,11 @@ const AuthForm = () => {
   };
 
   const logout = async () => {
+    dispatch(deleteUser());
+    remove()
     await firebase.auth().signOut();
     const user = firebase.auth().currentUser;
-    return user ? console.log(user) : console.log("signOut");
+    return user ? console.log("logout", user) : console.log("signOut");
   };
 
   const onSignIn = (googleUser) => {
@@ -51,31 +84,38 @@ const AuthForm = () => {
             .auth()
             .signInWithCredential(credential)
             .then(async function (user) {
-              const userAuth = user.user
-              console.log("UUUUUSSSEEERRRR", userAuth);
+              const userAuth = user.user;
+              // setUserStore(userAuth)
+              // save(); // asyncStorage
+              // dispatch(setUser(userAuth))
               await firebase
-              .firestore()
-              .collection('users')
-              .doc(user.user.uid)
-              .set({
-                email: userAuth.email,
-                displayName: userAuth.displayName,
-                phoneNumber: userAuth?.phoneNumber,
-                photoURL: userAuth.photoURL,
-                emailVerified: userAuth.emailVerified,
-              })
+                .firestore()
+                .collection("users")
+                .doc(user.user.uid)
+                .set({
+                  email: userAuth.email,
+                  displayName: userAuth.displayName,
+                  phoneNumber: userAuth?.phoneNumber,
+                  photoURL: userAuth.photoURL,
+                  emailVerified: userAuth.emailVerified,
+                });
             })
             .catch(function (error) {
               const errorCode = error.code;
+              errorCode ? setError(errorCode) : null
               const errorMessage = error.message;
+              errorCode ? setError(errorMessage) : null
               const email = error.email;
+              errorCode ? setError(email) : null
               const credential = error.credential;
+              errorCode ? setError(credential) : null
               console.log(errorCode);
               console.log(errorMessage);
               console.log(email);
               console.log(credential);
             });
         } else {
+          setError("User already signed-in Firebase.")
           console.log("User already signed-in Firebase.");
         }
       });
@@ -111,14 +151,18 @@ const AuthForm = () => {
       });
 
       if (result.type === "success") {
+        setError(null)
         onSignIn(result);
+        setUserStore(result.user)
+        save(result.user)
+        // dispatch(setUser(result.user));
         return result.accessToken;
       } else {
-        return { cancelled: true };
+        return setError("Something went wrong");
       }
     } catch (e) {
-      console.log("error", e);
-      return { error: true };
+      const error = new Error(e);
+      return setError(error.message);
     }
   }
 
@@ -141,6 +185,7 @@ const AuthForm = () => {
       </Button>
       <Button onPress={logout}>Logout</Button>
       {test ? <TestDb /> : null}
+      {err ? <Text>{err}</Text> : null}
     </Layout>
   );
 };

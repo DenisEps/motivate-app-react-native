@@ -20,20 +20,23 @@ function StartForm() {
   function buttonsUp(form) {
     Animated.timing(fadeAnim, {
       toValue: 100,
-      duration: 1000
+      duration: 1000,
+      useNativeDriver: false,
     }).start();
     if (form === 'signIn') {
       setbtnSIColor('blue');
       setbtnSUColor('white');
-      setTimeout(() => {
+      // setTimeout(() => {
         Animated.timing(opacitySUAnim, {
           toValue: 0,
-          duration: 1000
+          duration: 1000,
+          useNativeDriver: false
         }).start();
-      }, 1000);
+      // }, 1000);
       Animated.timing(opacitySIAnim, {
         toValue: 1,
-        duration: 1000
+        duration: 1000,
+        useNativeDriver: false
       }).start();
       setSignUp(false);
       return setSignIn(true)
@@ -41,16 +44,18 @@ function StartForm() {
     if (form === 'signUp') {
       setbtnSUColor('blue');
       setbtnSIColor('white');
-      setTimeout(() => {
+      // setTimeout(() => {
         Animated.timing(opacitySIAnim, {
           toValue: 0,
-          duration: 1000
+          duration: 1000,
+          useNativeDriver: false
         }).start();
         setSignIn(false);
-      }, 2000)
+      // }, 2000)
       Animated.timing(opacitySUAnim, {
         toValue: 1,
-        duration: 1000
+        duration: 1000,
+        useNativeDriver: false
       }).start();
       return setSignUp(true)
     }

@@ -1,4 +1,18 @@
-import { SET_HABITS, DEL_HABIT, EDIT_HIBIT, SET_IMG } from './action-types';
+import { SET_HABITS, DEL_HABIT, EDIT_HIBIT, SET_IMG, SET_USER, DELETE_USER } from './action-types';
+
+export function setUser(user) {
+  return {
+    type: SET_USER,
+    payload: user,
+  }
+}
+
+export function deleteUser() {
+  return {
+    type: DELETE_USER,
+    payload: null,
+  }
+}
 
 export function setHabits(habits) {
   return {

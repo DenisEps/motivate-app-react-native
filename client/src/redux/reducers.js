@@ -1,4 +1,4 @@
-import { SET_HABITS, DEL_HABIT, EDIT_HABIT, SET_IMG } from './action-types';
+import { SET_HABITS, DEL_HABIT, EDIT_HABIT, SET_IMG, SET_USER, DELETE_USER } from './action-types';
 
 export function habitReducer(state = [], action) {
   switch (action.type) {
@@ -28,7 +28,26 @@ export function imageReducer(state = '', action) {
   }
 }
 
+// const initialUserState = {
+//   displayName: '',
+//   phoneNumber: '',
+//   photoURL: '',
+//   email: '',
+//   habbits: '',
+// }
+
+export function userReducer(state = null, action) {
+  switch (action.type) {
+    case SET_USER:
+      return action.payload;
+
+    case DELETE_USER: 
+      return state;
+
+    default: 
+      return state;
+  }
+}
 export default {
   habitReducer,
-
 }
