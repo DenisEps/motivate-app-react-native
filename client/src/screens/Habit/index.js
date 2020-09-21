@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Alert, View, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import firebase from '@react-native-firebase/app'
 import {
   Calendar,
   Icon,
@@ -72,24 +71,23 @@ const Habit = ({ navigation, route }) => {
     params: { id },
   } = route;
 
-  React.useEffect(() => {
-    console.log(id);
-    // TODO: donwload habit from server here
-    const fetchHabitById = async () => {
-      setLoading(true)
-        
-      const habit = await firebase
-          .firestore()
-          .collection(userId) // брать from redux - id аутентифифрованного юзера
-          .doc('habits')
-          // .collection('treatments')
-          // .orderBy('date', 'desc')
-          setHabit(habit)
-          setLoading(false)
-    }
-    
-    fetchHabitById()
-  }, [id]);
+  // React.useEffect(() => {
+
+  //   const fetchHabitById = async () => {
+  //     setLoading(true)
+
+  //     const habit = await firebase
+  //         .firestore()
+  //         .collection(userId) // брать from redux - id аутентифифрованного юзера
+  //         .doc('habits')
+  //         .collection('treatments')
+  //         .orderBy('date', 'desc')
+  //         setHabit(habit)
+  //         setLoading(false)
+  //   }
+
+  //   fetchHabitById()
+  // }, [id]);
 
   const back = () => {
     navigation.goBack();
