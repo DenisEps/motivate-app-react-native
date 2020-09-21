@@ -9,7 +9,7 @@ import Profile from "../../components/Profile";
 const RootNavigator = () => {
   const [user, setUser] = useState(false);
 
-  return user ? <TabNavigator /> : <Profile />;
+  return user ? <TabNavigator /> : <StartForm />;
 };
 
 export default RootNavigator;
