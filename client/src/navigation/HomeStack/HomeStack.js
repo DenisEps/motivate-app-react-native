@@ -5,7 +5,7 @@ import {
   TransitionPresets,
 } from '@react-navigation/stack';
 import { ROUTES } from '../routes';
-import TestHome from '../../screens/TestScreens/testhome';
+import Home from '../../screens/Home';
 import Habit from '../../screens/Habit';
 import IconSelect from '../../components/IconSelect';
 import EditHabit from '../../screens/Habit/EditHabit';
@@ -17,7 +17,7 @@ const HomeStackScreen = () => {
     <HomeStack.Navigator>
       <HomeStack.Screen
         name={ROUTES.home}
-        component={TestHome}
+        component={Home}
         options={{
           headerShown: false,
         }}

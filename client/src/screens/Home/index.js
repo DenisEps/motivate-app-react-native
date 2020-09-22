@@ -1,18 +1,3 @@
-// import React from 'react';
-// import { SafeAreaView } from 'react-native';
-// import { Layout, Text } from '@ui-kitten/components';
-
-// const Testhome = () => {
-//   return (
-//     <Layout
-//       style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-//     >
-//       <Text category="h1">Test Home</Text>
-//     </Layout>
-//   );
-// };
-
-// export default Testhome;
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
@@ -31,7 +16,7 @@ import { ROUTES } from '../../navigation/routes';
 import { vectorIcons } from '../../assets/icons';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const DATA = [
+const habits = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
     title: 'Smoking',
@@ -83,16 +68,14 @@ const DATA = [
 // load()
 
 const { width } = Dimensions.get('window');
-const PADDING = 10;
-const SIZE = (width - PADDING * 2) / 2 - PADDING;
+const PADDING = 15;
+const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
 
 function Item({ item, onPress, style, handleOpen }) {
-  const habits = useSelector((state) => state.habits);
-
   const iconName = item.icon.name;
 
   if (!vectorIcons[iconName]) return null;
-  const icon = vectorIcons[iconName]({ size: 35, color: '#8389E6' });
+  const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
 
   return (
     <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
@@ -100,7 +83,7 @@ function Item({ item, onPress, style, handleOpen }) {
 
       {icon}
 
-      <View style={styles.goals}>
+      <Layout style={styles.goals}>
         {item.goals.map((goal, i) => {
           let color = '';
           let type = '';
@@ -113,7 +96,7 @@ function Item({ item, onPress, style, handleOpen }) {
           }
           return <Icon key={i} style={styles.icon} fill={color} name={type} />;
         })}
-      </View>
+      </Layout>
     </TouchableOpacity>
   );
 }
@@ -123,8 +106,6 @@ const SettingsIcon = (props) => (
 );
 
 function ItemBack({ item, onPress, style, navigation, handleOpen }) {
-  const dispatch = useDispatch();
-
   const handlePress = () => {
     handleOpen(item.id);
   };
@@ -146,15 +127,11 @@ function ItemBack({ item, onPress, style, navigation, handleOpen }) {
   );
 }
 
-const Testhome = (props) => {
+const Home = (props) => {
   const { navigation } = props;
   const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
   const [selectedId, setSelectedId] = useState(null);
-  // const [settingScreen, SetSettingsScreen] = useState(false)
-  const habits = useSelector((state) => state.habits);
-  const settingScreen = useSelector((state) => state.settingsScreen);
   const dispatch = useDispatch();
-  dispatch(setHabits(DATA));
 
   const handleOpenHabit = (id) => {
     navigation.navigate(ROUTES.habitDetails, {
@@ -202,19 +179,10 @@ const Testhome = (props) => {
 
   return (
     <Layout style={[styles.container, { paddingTop }]}>
-      <View
-      // style={{ marginTop: StatusBar.currentHeight || 0 }}
-      >
+      <View>
         <Layout style={{ alignItems: 'center' }}>
           <Text category="h4">HEADER HERE</Text>
         </Layout>
-        {/* <FlatList
-          numColumns={2}
-          data={habits}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          extraData={selectedId}
-        /> */}
 
         <Layout
           style={{
@@ -226,7 +194,6 @@ const Testhome = (props) => {
             return <Layout key={h.id}>{renderItem({ item: h })}</Layout>;
           })}
         </Layout>
-
         {/* sounds button */}
         {/* <Button onPress={playSound} title="Play sound" /> */}
       </View>
@@ -252,31 +219,29 @@ const Testhome = (props) => {
 
 const styles = StyleSheet.create({
   goals: { flexDirection: 'row' },
-  icon: { width: 10, height: 10 },
+  icon: { width: 20, height: 20 },
   container: {
     flex: 1,
   },
   item: {
     padding: PADDING,
     marginVertical: PADDING,
-    // marginHorizontal: 16,
     marginHorizontal: PADDING,
-    height: SIZE,
-    width: SIZE,
-    borderRadius: 15,
+    height: ITEM_SIZE,
+    width: ITEM_SIZE,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   itemBack: {
     padding: PADDING,
     marginVertical: PADDING,
-    // marginHorizontal: 16,
-    height: SIZE,
-    width: SIZE,
-    // margin: 1,
-    borderRadius: 15,
+    marginHorizontal: PADDING,
+    height: ITEM_SIZE,
+    width: ITEM_SIZE,
+    borderRadius: 20,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 10,
@@ -284,4 +249,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Testhome;
+export default Home;

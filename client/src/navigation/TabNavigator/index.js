@@ -11,7 +11,6 @@ import { ROUTES } from '../routes';
 import { HomeStackScreen } from '../HomeStack/HomeStack';
 import { StatsStackScreen } from '../StatsStack';
 import { vectorIcons, kittenIcons } from '../../assets/icons';
-import TestSettings from '../../screens/TestScreens/testsettings';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -39,7 +38,7 @@ const TabNavigator = () => {
     <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
       <Screen name={ROUTES.homeTab} component={HomeStackScreen} />
       <Screen name={ROUTES.stats} component={StatsStackScreen} />
-      <Screen name={ROUTES.settingsTab} component={TestSettings} />
+      {/* <Screen name={} component={} /> */}
     </Navigator>
   );
 };

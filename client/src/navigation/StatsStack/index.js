@@ -14,7 +14,7 @@ const StatsStackScreen = () => {
       <StatsStack.Screen
         name={ROUTES.stats}
         component={StatsMain}
-        options={{ headerShown: true }}
+        options={{ headerShown: false }}
       />
     </StatsStack.Navigator>
   );
