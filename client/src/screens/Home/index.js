@@ -21,37 +21,37 @@ const habits = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
     title: 'Smoking',
-    goals: ['lose', 'win', 'win', 'win', 'lose', 'lose', 'win'],
+    goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'smoke' },
   },
   {
     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
     title: 'Fastfood',
-    goals: ['lose', 'win', 'win', 'win', 'lose', 'lose', 'win'],
+    goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'fastfood' },
   },
   {
     id: '58694a0f-3da1-471f-bd96-145571e29d72',
     title: 'Learning',
-    goals: ['lose', 'win', 'win', 'win', 'lose', 'lose', 'win'],
+    goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'learn' },
   },
   {
     id: '586d94a0f-3da1-471f-bd96-145571e29d72',
     title: 'Bad Words',
-    goals: ['lose', 'win', 'win', 'win', 'lose', 'lose', 'win'],
+    goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'badwords' },
   },
   {
     id: '58694ad0f-3da1-471f-bd96-145571e29d72',
     title: 'Water',
-    goals: ['lose', 'win', 'win', 'win', 'lose', 'lose', 'win'],
+    goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'water' },
   },
   {
     id: '58694a0ff-3da1-471f-bd96-145571e29d72',
     title: 'Code',
-    goals: ['lose', 'win', 'win', 'win', 'lose', 'lose', 'win'],
+    goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'code' },
   },
 ];
@@ -68,17 +68,18 @@ const habits = [
 // }
 // load()
 
-const { width } = Dimensions.get('window');
-const PADDING = 15;
+const { width, height } = Dimensions.get('window');
+const PADDING = width / 24;
 const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
 
 function Item({ item, onPress, style, handleOpen }) {
+  console.log(width);
   const iconName = item.icon.name;
   const [spinner, setSpinner] = useState(false);
   const [check, setCheck] = useState(false);
   if (!vectorIcons[iconName]) return null;
   const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
-
+  const downsize = 20;
   return (
     <>
       <TouchableOpacity
@@ -90,17 +91,20 @@ function Item({ item, onPress, style, handleOpen }) {
           setTimeout(() => {
             setSpinner(false);
             setCheck(true);
-          }, 1000);
+          }, 700);
+        }}
+        onLongPress={() => {
+          item.goals[4] = 1;
+        }}
+        onPressOut={() => {
+          setSpinner(false);
           setTimeout(() => {
             setCheck(false);
-          }, 2200);
+          }, 1000);
         }}
-        onPressOut={() => setSpinner(false)}
         style={[styles.item, style]}
       >
-        <Text category="s1" style={styles.title}>
-          {item.title}
-        </Text>
+        <Text style={styles.title}>{item.title}</Text>
 
         {icon}
 
@@ -110,8 +114,9 @@ function Item({ item, onPress, style, handleOpen }) {
               width: ITEM_SIZE,
               height: ITEM_SIZE,
               left: 0,
-              bottom: 105,
+              bottom: 0,
               zIndex: 1,
+              position: 'absolute',
             }}
             source={require('../../img/spinner4.gif')}
           />
@@ -120,13 +125,14 @@ function Item({ item, onPress, style, handleOpen }) {
         {check && (
           <Image
             style={{
-              width: ITEM_SIZE - 50,
-              height: ITEM_SIZE - 50,
-              left: 0,
-              bottom: 80,
+              width: ITEM_SIZE - downsize,
+              height: ITEM_SIZE - downsize,
+              left: downsize / 2,
+              bottom: downsize / 2,
               zIndex: 1,
+              position: 'absolute',
             }}
-            source={require('../../img/check.png')}
+            source={require('../../img/check1.png')}
           />
         )}
 
@@ -134,11 +140,11 @@ function Item({ item, onPress, style, handleOpen }) {
           {item.goals.map((goal, i) => {
             let color = '';
             let type = '';
-            if (goal === 'lose') {
-              color = '#DE4E57';
+            if (goal === 1) {
+              color = '#8BEE88';
               type = 'checkmark';
             } else {
-              color = '#8BEE88';
+              color = '#DE4E57';
               type = 'close';
             }
             return (
@@ -270,6 +276,7 @@ const styles = StyleSheet.create({
   icon: { width: 20, height: 20 },
   container: {
     flex: 1,
+    position: 'relative',
   },
   item: {
     padding: PADDING,
