@@ -11,6 +11,7 @@ import {
   TopNavigationAction,
   Text,
 } from '@ui-kitten/components';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { kittenIcons, vectorIcons } from '../../assets/icons';
 import { ROUTES } from '../../navigation/routes';
 
@@ -62,6 +63,7 @@ const TitleCard = () => (
 const Habit = ({ navigation, route }) => {
   const [loading, setLoading] = React.useState(false);
   const [habit, setHabit] = React.useState(false);
+  const { top } = useSafeAreaInsets();
 
   const {
     params: { id },
@@ -112,7 +114,7 @@ const Habit = ({ navigation, route }) => {
 
   if (loading) {
     return (
-      <Layout style={styles.container}>
+      <Layout style={[styles.container, { paddingTop: top }]}>
         <Layout style={styles.navContainer} level="1">
           <TopNavigation
             alignment="center"
@@ -128,7 +130,7 @@ const Habit = ({ navigation, route }) => {
   }
 
   return (
-    <Layout style={styles.container}>
+    <Layout style={[styles.container, { paddingTop: top }]}>
       <Layout style={styles.navContainer} level="1">
         <TopNavigation
           alignment="center"
@@ -154,7 +156,9 @@ const Habit = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+  },
   navContainer: {
     // minHeight: 128,
   },

@@ -1,40 +1,22 @@
-// import React from 'react';
-// import { SafeAreaView } from 'react-native';
-// import { Layout, Text } from '@ui-kitten/components';
-
-// const Testhome = () => {
-//   return (
-//     <Layout
-//       style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-//     >
-//       <Text category="h1">Test Home</Text>
-//     </Layout>
-//   );
-// };
-
-// export default Testhome;
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { firebase } from '../../../firebase';
 import {
-  FlatList,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
+  Layout,
+  Icon,
+  Button,
   Text,
-  TouchableOpacity,
-  Image,
-  View,
-} from 'react-native';
-import {firebase} from '../../../firebase';
-import { Layout, Icon, Button } from '@ui-kitten/components';
-import ProgressBar from '../../components/ProgressBar/ProgressBar';
+  Layout as View,
+} from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import { setHabits } from '../../redux/actions';
-import { ROUTES } from '../../navigation/routes'
+import { ROUTES } from '../../navigation/routes';
 import { vectorIcons } from '../../assets/icons';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const DATA = [
+const habits = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
     title: 'Smoking',
@@ -85,14 +67,15 @@ const DATA = [
 // }
 // load()
 
+const { width } = Dimensions.get('window');
+const PADDING = 15;
+const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
+
 function Item({ item, onPress, style, handleOpen }) {
-  const habits = useSelector((state) => state.habits);
-
-
   const iconName = item.icon.name;
 
   if (!vectorIcons[iconName]) return null;
-  const icon = vectorIcons[iconName]({ size: 35, color: '#8389E6' });
+  const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
 
   return (
     <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
@@ -100,7 +83,7 @@ function Item({ item, onPress, style, handleOpen }) {
 
       {icon}
 
-      <View style={styles.goals}>
+      <Layout style={styles.goals}>
         {item.goals.map((goal, i) => {
           let color = '';
           let type = '';
@@ -113,7 +96,7 @@ function Item({ item, onPress, style, handleOpen }) {
           }
           return <Icon key={i} style={styles.icon} fill={color} name={type} />;
         })}
-      </View>
+      </Layout>
     </TouchableOpacity>
   );
 }
@@ -123,11 +106,9 @@ const SettingsIcon = (props) => (
 );
 
 function ItemBack({ item, onPress, style, navigation, handleOpen }) {
-  const dispatch = useDispatch();
-
   const handlePress = () => {
-    handleOpen(item.id)
-  }
+    handleOpen(item.id);
+  };
   return (
     <TouchableOpacity
       onPress={() => {
@@ -146,24 +127,21 @@ function ItemBack({ item, onPress, style, navigation, handleOpen }) {
   );
 }
 
-const Testhome = (props) => {
-  const { navigation } = props
+const Home = (props) => {
+  const { navigation } = props;
+  const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
   const [selectedId, setSelectedId] = useState(null);
-  // const [settingScreen, SetSettingsScreen] = useState(false)
-  const habits = useSelector((state) => state.habits);
-  const settingScreen = useSelector((state) => state.settingsScreen);
   const dispatch = useDispatch();
-  dispatch(setHabits(DATA));
 
   const handleOpenHabit = (id) => {
     navigation.navigate(ROUTES.habitDetails, {
       id,
-    })
-  }
+    });
+  };
 
   const handleCreateNew = () => {
-    navigation.navigate(ROUTES.createNewHabit)
-  }
+    navigation.navigate(ROUTES.createNewHabit);
+  };
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#7B8CDE' : '#2B344F';
@@ -176,14 +154,14 @@ const Testhome = (props) => {
             onPress={() => setSelectedId('')}
             style={{ backgroundColor }}
             handleOpen={handleOpenHabit}
-          ></ItemBack>
+          />
         ) : (
-            <Item
-              item={item}
-              onPress={() => setSelectedId(item.id)}
-              style={{ backgroundColor }}
-            ></Item>
-          )}
+          <Item
+            item={item}
+            onPress={() => setSelectedId(item.id)}
+            style={{ backgroundColor }}
+          />
+        )}
       </View>
     );
   };
@@ -200,20 +178,26 @@ const Testhome = (props) => {
   // };
 
   return (
-    <Layout style={styles.container}>
-      <View style={{ marginTop: StatusBar.currentHeight || 0 }}>
-        <FlatList
-          numColumns={2}
-          data={habits}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          extraData={selectedId}
-        />
+    <Layout style={[styles.container, { paddingTop }]}>
+      <View>
+        <Layout style={{ alignItems: 'center' }}>
+          <Text category="h4">HEADER HERE</Text>
+        </Layout>
 
+        <Layout
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+          }}
+        >
+          {habits.map((h) => {
+            return <Layout key={h.id}>{renderItem({ item: h })}</Layout>;
+          })}
+        </Layout>
         {/* sounds button */}
         {/* <Button onPress={playSound} title="Play sound" /> */}
       </View>
-      <Layout>
+      <Layout style={{ alignItems: 'center' }}>
         <AnimatedCircularProgress
           size={110}
           width={15}
@@ -226,13 +210,7 @@ const Testhome = (props) => {
           rotation={240}
           lineCap="round"
         >
-          {
-            (fill) => (
-              <Text>
-                {`${Math.round(fill)}%`}
-              </Text>
-            )
-          }
+          {(fill) => <Text>{`${Math.round(fill)}%`}</Text>}
         </AnimatedCircularProgress>
       </Layout>
     </Layout>
@@ -241,32 +219,29 @@ const Testhome = (props) => {
 
 const styles = StyleSheet.create({
   goals: { flexDirection: 'row' },
-  icon: { width: 10, height: 10 },
+  icon: { width: 20, height: 20 },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-around',
   },
   item: {
-    padding: 10,
-    marginVertical: 10,
-    marginHorizontal: 16,
-    height: 110,
-    width: 110,
-    borderRadius: 15,
+    padding: PADDING,
+    marginVertical: PADDING,
+    marginHorizontal: PADDING,
+    height: ITEM_SIZE,
+    width: ITEM_SIZE,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   itemBack: {
-    padding: 10,
-    marginVertical: 10,
-    marginHorizontal: 16,
-    height: 110,
-    width: 110,
-    // margin: 1,
-    borderRadius: 15,
+    padding: PADDING,
+    marginVertical: PADDING,
+    marginHorizontal: PADDING,
+    height: ITEM_SIZE,
+    width: ITEM_SIZE,
+    borderRadius: 20,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 10,
@@ -274,4 +249,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Testhome;
+export default Home;
