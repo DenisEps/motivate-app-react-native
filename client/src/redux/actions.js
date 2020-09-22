@@ -1,4 +1,12 @@
-import { SET_HABITS, DEL_HABIT, EDIT_HIBIT, SET_IMG, SET_USER, DELETE_USER, USER_AUTH } from './action-types';
+
+import { SET_HABITS, DEL_HABIT, EDIT_HIBIT, SET_IMG, SET_USER, DELETE_USER, USER_AUTH, SET_LOADER } from './action-types';
+
+export function setLoader(boolean) {
+  return {
+    type: SET_LOADER,
+    payload: boolean,
+  }
+}
 
 export function userAuth(bool) {
   return {

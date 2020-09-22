@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { StyleSheet } from "react-native";
 import { Layout, Button, Input, Submit, Text } from "@ui-kitten/components";
 import { firebase } from "../../../../firebase";
 import AsyncStorage from "@react-native-community/async-storage";
-import {userAuth} from '../../../redux/actions';
-import {useDispatch} from 'react-redux'
+import { userAuth } from "../../../redux/actions";
+import { useDispatch } from "react-redux";
 
 const RegistrationForm = () => {
   const [error, setError] = React.useState(null);
@@ -21,7 +21,7 @@ const RegistrationForm = () => {
       const objectValue = JSON.stringify(user);
       await AsyncStorage.setItem("user", objectValue);
     } catch (e) {
-      const err = new Error(e)
+      const err = new Error(e);
       setError(err.message);
     }
   };
@@ -32,19 +32,30 @@ const RegistrationForm = () => {
         .auth()
         .createUserWithEmailAndPassword(email, pass)
         .then((info) => {
-          return firebase.firestore().collection("users").doc(info.user.uid)
-          .set({
-            email: info.user.email,
-            displayName: info.user.displayName,
-            photoURL: info.user.photoURL,
-            phoneNumber: info.user.phoneNumber,
-            emailVerified: info.user.emailVerified,
-            habits: [],
-          });
+          return firebase
+            .firestore()
+            .collection("users")
+            .doc(info.user.uid)
+            .set({
+              email: info.user.email == null ? '' : info.user.email,
+              displayName: info.user.displayName == null ? '' : info.user.displayName,
+              photoURL: info.user.photoURL == null ? '' : info.user.photoURL,
+              phoneNumber: info.user.phoneNumber == null ? '' : info.user.phoneNumber,
+              emailVerified: info.user.emailVerified == null ? '' : info.user.emailVerified,
+              habits: [],
+              level: 1,
+            });
         });
       const currentUser = firebase.auth().currentUser;
-        save(currentUser)
-        dispatch(userAuth(true))
+      const uid = firebase.auth().currentUser.uid;
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(uid)
+        .get()
+        .then((info) => save(info.data()));
+      console.log(uid);
+      dispatch(userAuth(true));
       currentUser
         .sendEmailVerification()
         .then(() => {
@@ -54,7 +65,8 @@ const RegistrationForm = () => {
           const error = new Error(err);
           setError(error.message);
         });
-      setAuthUser(user.user);
+      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> test');
+      setAuthUser(user);
       setError(null);
       setEmail("");
       setPass("");
@@ -62,13 +74,14 @@ const RegistrationForm = () => {
     } catch (err) {
       const error = new Error(err);
       setError(error.message);
+      console.log(error);
+
     }
   };
 
   return (
     <Layout
       style={{
-        backgroundColor: "white",
         alignItems: "center",
         top: 250,
         minWidth: 200,
@@ -91,9 +104,8 @@ const RegistrationForm = () => {
       <Button style={{ width: "75%" }} onPress={() => CreateUser(email, pass)}>
         Register
       </Button>
-      {/* message of error */}
-      {error && <Text style={styles.error}>{error}</Text>}
-      {emailMessage && <Text style={styles.message}>{emailMessage}</Text>}
+      {/* {error && <Text style={styles.error}>{error}</Text>}
+      {emailMessage && <Text style={styles.message}>{emailMessage}</Text>} */}
     </Layout>
   );
 };
