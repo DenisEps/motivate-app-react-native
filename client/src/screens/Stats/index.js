@@ -2,11 +2,59 @@ import React from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
 import { Layout, Text, Divider } from '@ui-kitten/components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart,
+} from 'react-native-chart-kit';
+
+const PADDING = 16;
 
 const screenWidth = Dimensions.get('window').width;
 
+// const data =[
+//   { x: new Date(1986, 1, 1), y: 2 },
+//   { x: new Date(1996, 1, 1), y: 3 },
+//   { x: new Date(2006, 1, 1), y: 5 },
+//   { x: new Date(2016, 1, 1), y: 4 }
+// ];
+
+const data = {
+  labels: ['WEEK 1', 'WEEK 2', 'WEEK 3', 'WEEK 4'],
+  datasets: [
+    {
+      data: [
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+      ],
+    },
+  ],
+};
+
+const chartConfig = {
+  backgroundColor: '#e26a00',
+  backgroundGradientFrom: '#667eea',
+  backgroundGradientTo: '#764ba2',
+  decimalPlaces: 2, // optional, defaults to 2dp
+  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+  labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+  style: {
+    borderRadius: 16,
+  },
+  propsForDots: {
+    r: '6',
+    strokeWidth: '3',
+    stroke: '#9CABEB',
+  },
+};
+
 const StatsMain = () => {
-  const {top: paddingTop, bottom: paddingBottom} = useSafeAreaInsets();
+  const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
   return (
     <Layout style={[styles.mainContainer, { paddingTop }]}>
       <Layout style={styles.overviewContainer}>
@@ -24,6 +72,18 @@ const StatsMain = () => {
         </Layout>
       </Layout>
       <Divider />
+
+      <Layout style={styles.chartContainer}>
+        <LineChart
+          style={{ borderRadius: 10 }}
+          data={data}
+          width={screenWidth}
+          height={256}
+          verticalLabelRotation={0}
+          chartConfig={chartConfig}
+          bezier
+        />
+      </Layout>
     </Layout>
   );
 };
@@ -31,7 +91,7 @@ const StatsMain = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: PADDING,
   },
   overviewContainer: {
     flexDirection: 'row',
@@ -43,6 +103,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  chartContainer: {
+    marginTop: 15,
   },
 });
 
