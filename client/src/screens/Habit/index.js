@@ -10,6 +10,7 @@ import {
   TopNavigation,
   TopNavigationAction,
   Text,
+  Divider,
 } from '@ui-kitten/components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { kittenIcons, vectorIcons } from '../../assets/icons';
@@ -49,15 +50,12 @@ const CreateHabitAlert = () => {
 };
 
 // TITLE CARD
-const Header = (props) => (
-  <View {...props}>
-    <Text category="s1">Habit Title:</Text>
-  </View>
-);
+const Header = (props) => <View {...props}></View>;
 const TitleCard = () => (
-  <Card style={styles.card} header={Header}>
-    <Text category="h6">Don't smoke</Text>
-  </Card>
+  <Layout style={styles.titleCard}>
+    <Text category="s1">Habit Title:</Text>
+    <Text category="h5">Don't smoke</Text>
+  </Layout>
 );
 
 const Habit = ({ navigation, route }) => {
@@ -145,7 +143,11 @@ const Habit = ({ navigation, route }) => {
           </Layout>
         </Layout>
 
+        <Divider />
+
         <TitleCard />
+
+        <Divider />
 
         <Layout style={styles.calendarLayout}>
           <CalendarComponent />
@@ -182,7 +184,7 @@ const styles = StyleSheet.create({
     borderWidth: 10,
     borderColor: '#7b8cde',
   },
-  card: { marginTop: 25, marginBottom: 25 },
+  titleCard: { marginTop: 25, marginBottom: 25, paddingHorizontal: 15 },
   calendarLayout: {},
   calendar: {
     marginLeft: 'auto',

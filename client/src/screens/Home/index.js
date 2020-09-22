@@ -13,7 +13,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { setHabits } from '../../redux/actions';
 import { ROUTES } from '../../navigation/routes';
-import { vectorIcons } from '../../assets/icons';
+import { TopNavMain } from '../../components/Header'
+import { vectorIcons, vectorIconsUtility } from '../../assets/icons';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const habits = [
@@ -83,7 +84,7 @@ function Item({ item, onPress, style, handleOpen }) {
       <TouchableOpacity
         onPress={onPress}
         onPressIn={() => {
-          setTimeout(() => { setSpinner(true) }, 100);
+          setTimeout(() => { setSpinner(true) }, 200);
           setTimeout(() => { setSpinner(false); setCheck(true) }, 1000);
           setTimeout(() => { setCheck(false) }, 2200);
         }}
@@ -93,9 +94,9 @@ function Item({ item, onPress, style, handleOpen }) {
 
         {icon}
 
-        {spinner && (<Image style={{ width: ITEM_SIZE, height: ITEM_SIZE, left: 0, bottom: 105, zIndex: 3 }} source={require('../../img/spinner4.gif')} />)}
+        {spinner && (<Image style={{ width: ITEM_SIZE, height: ITEM_SIZE, left: 0, bottom: 105, zIndex: 1 }} source={require('../../img/spinner4.gif')} />)}
 
-        {check && (<Image style={{ width: ITEM_SIZE - 50, height: ITEM_SIZE - 50, left: 0, bottom: 80, zIndex: 3 }} source={require('../../img/check.png')} />)}
+        {check && (<Image style={{ width: ITEM_SIZE - 50, height: ITEM_SIZE - 50, left: 0, bottom: 80, zIndex: 1 }} source={require('../../img/check.png')} />)}
 
         <Layout style={styles.goals}>
           {item.goals.map((goal, i) => {
@@ -116,14 +117,13 @@ function Item({ item, onPress, style, handleOpen }) {
   );
 }
 
-const SettingsIcon = (props) => (
-  <Icon fill="black" {...props} name="maximize-outline" />
-);
-
 function ItemBack({ item, onPress, style, navigation, handleOpen }) {
   const handlePress = () => {
     handleOpen(item.id);
   };
+  const renderZoomIcon = () => {
+    return vectorIconsUtility.menuHorizontal({ size: 50, color: '#090D20' });
+  }
   return (
     <TouchableOpacity
       onPress={() => {
@@ -132,12 +132,13 @@ function ItemBack({ item, onPress, style, navigation, handleOpen }) {
       style={[styles.itemBack, style]}
     >
       <Button
-        style={{ width: 20, height: 20 }}
         appearance="ghost"
-        accessoryLeft={SettingsIcon}
+        accessoryLeft={renderZoomIcon}
         onPress={handlePress}
       />
-      <Text>DETAILS</Text>
+      <Text category="s1" style={{ color: '#090D20' }}>
+        DETAILS
+      </Text>
     </TouchableOpacity>
   );
 }
@@ -195,9 +196,8 @@ const Home = (props) => {
   return (
     <Layout style={[styles.container, { paddingTop }]}>
       <View>
-        <Layout style={{ alignItems: 'center' }}>
-          <Text category="h4">HEADER HERE</Text>
-        </Layout>
+
+        <TopNavMain />
 
         <Layout
           style={{
@@ -233,7 +233,7 @@ const Home = (props) => {
 };
 
 const styles = StyleSheet.create({
-  goals: { flexDirection: 'row' },
+  goals: { flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0)' },
   icon: { width: 20, height: 20 },
   container: {
     flex: 1,
@@ -256,11 +256,11 @@ const styles = StyleSheet.create({
     width: ITEM_SIZE,
     borderRadius: 20,
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 10,
-    color: '#FFFFFF',
+    color: '#fff',
   },
 });
 
