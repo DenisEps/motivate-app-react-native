@@ -45,23 +45,26 @@ const AuthForm = () => {
 
   const Login = async () => {
     try {
-      const user = await firebase
+      await firebase
         .auth()
         .signInWithEmailAndPassword(email, pass);
-      const uid = await firebase.auth().currentUser.uid;
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(uid)
-        .get()
-        .then((info) => {
-          console.log(info.data);
-          save(info.data())});
-      setEmail("");
-      setPass("");
-      setTest(true);
-      // setUserStore(currentUser)
-      dispatch(userAuth(true));
+      // const uid = await firebase.auth().currentUser.uid;
+      // await firebase
+      //   .firestore()
+      //   .collection("users")
+      //   .doc(uid)
+      //   .get()
+      //   .then((info) => {
+      //     console.log(info.data);
+      //     save(info.data())});
+      
+      // console.log('here')
+      
+      // setEmail("");
+      // setPass("");
+      // setTest(true);
+      // // setUserStore(currentUser)
+      // dispatch(userAuth(true));
       // save(currentUser); // asyncStorage
     } catch (err) {
       const error = new Error(err);
@@ -80,9 +83,11 @@ const AuthForm = () => {
   const onSignIn = (googleUser) => {
     const unsubscribe = firebase
       .auth()
+      // TODO: переделать ?
       .onAuthStateChanged(function (firebaseUser) {
         unsubscribe();
         if (!isUserEqual(googleUser, firebaseUser)) {
+          // start here ⚠️
           const credential = firebase.auth.GoogleAuthProvider.credential(
             googleUser.idToken,
             googleUser.accessToken
@@ -112,6 +117,7 @@ const AuthForm = () => {
                     // habits: [],
                     // level: 1,
                   });
+              // finish here ⚠️
                 await firebase
                   .firestore()
                   .collection("users")
@@ -220,6 +226,8 @@ const AuthForm = () => {
       <Input
         style={{ width: "75%" }}
         placeholder="Email"
+        autoCapitalize='none'
+        autoCorrect={false}
         value={email}
         onChangeText={(nextValue) => setEmail(nextValue)}
       />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   Avatar,
   Icon,
@@ -44,16 +45,28 @@ export const TopNavMain = ({ navigation }) => {
       : console.log('logout is successfullllllll');
   };
 
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log('focused ✅');
+      return () => {
+        console.log('unfocused ❌');
+      };
+    }, [])
+  );
+
   useEffect(() => {
-    (async function () {
-      const user = await firebase
-        .firestore()
-        .collection('users')
-        .doc(firebase.auth().currentUser.uid)
-        .get()
-        .then((info) => info.data());
-      setDisplayName(user.displayName);
-    })();
+    const unsubscribe = firebase
+      .firestore()
+      .collection('users')
+      .doc(firebase.auth().currentUser.uid)
+      .onSnapshot((snap) => {
+        const user = snap.data();
+        setDisplayName(user.displayName);
+      });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const toggleMenu = () => {

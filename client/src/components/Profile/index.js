@@ -95,19 +95,18 @@ function Profile() {
     }
   }
 
-
-  const remove = async () => {
-    try {
-      await AsyncStorage.removeItem('user');
-    } catch (e) {
-      const err = new Error(e);
-      setError(err.message);
-    }
-  }
+  // const remove = async () => {
+  //   try {
+  //     await AsyncStorage.removeItem('user');
+  //   } catch (e) {
+  //     const err = new Error(e);
+  //     setError(err.message);
+  //   }
+  // }
 
   const logout = async () => {
     dispatch(deleteUser())
-    remove()
+    // remove()
     await firebase.auth().signOut();
     const user = firebase.auth().currentUser;
     return user ? console.log('somthing went wrong') : console.log('logout is successfullllllll');
