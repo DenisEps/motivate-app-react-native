@@ -37,6 +37,7 @@ const AuthForm = () => {
       console.log('remove is okey');
     } catch(e) {
       const error = new Error(e)
+      console.log('error>>>>>>>>',error);
       setError(error.message);
     } finally {
       setUserStore('');
@@ -49,13 +50,14 @@ const AuthForm = () => {
         .auth()
         .signInWithEmailAndPassword(email, pass);
       console.log("user", user.user);
-      const currentUser = await firebase.auth().currentUser
+      const uid = await firebase.auth().currentUser.uid
+       await firebase.firestore().collection('users').doc(uid).get().then(info => save(info.data()))
       setEmail("");
       setPass("");
       setTest(true);
-      setUserStore(currentUser)
+      // setUserStore(currentUser)
       dispatch(userAuth(true));
-      save(currentUser); // asyncStorage
+      // save(currentUser); // asyncStorage
     } catch (err) {
       const error = new Error(err);
       setError(error.message);
@@ -85,11 +87,6 @@ const AuthForm = () => {
             .signInWithCredential(credential)
             .then(async function (user) {
               const userAuth = user.user;
-              // setUserStore(userAuth)
-              // save(); // asyncStorage
-              // dispatch(setUser(userAuth))
-              // console.log('userAuth on sign in>>>>>>>>>>>>>>',userAuth);
-              // save(userAuth)
               await firebase
                 .firestore()
                 .collection("users")
@@ -144,7 +141,6 @@ const AuthForm = () => {
 
   async function signInWithGoogleAsync() {
     try {
-      // console.log(">>>>>>>>>", firebase.auth().currentUser);
       const result = await Google.logInAsync({
         // androidClientId: YOUR_CLIENT_ID_HERE,
         behavior: "web",
@@ -157,11 +153,8 @@ const AuthForm = () => {
         setError(null)
         onSignIn(result);
         setUserStore(result.user)
-        console.log('here is the save of user');
         dispatch(userAuth(true));
         save(result.user)
-        // dispatch(setUser(result.user));
-        // navigate
         return result.accessToken;
       } else {
         return setError("Something went wrong");
@@ -188,9 +181,9 @@ const AuthForm = () => {
         value={pass}
         onChangeText={(nextValue) => setPass(nextValue)}
       />
-      <Button style={{ width: "75%", marginBottom: 5 }} onPress={Login}>Sugn Up</Button>
+      <Button style={{ width: "75%", marginBottom: 5 }} onPress={Login}>Sugn In</Button>
       <Button style={{ width: "75%", marginBottom: 5 }} onPress={() => signInWithGoogleAsync()}>
-        Sign Up With Google
+        Sign In With Google
       </Button>
       <Button style={{ width: "75%", marginBottom: 5 }} onPress={logout}>Logout</Button>
       {test ? <TestDb /> : null}
