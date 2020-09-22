@@ -128,7 +128,7 @@ const AuthForm = () => {
                   .update({
                     email: userAuth.email == null ? "" : userAuth.email,
                     displayName:
-                      userAuth.displayName == null ? "" : userAuth.displayName,
+                      userAuth.displayName == null ? "Anonymous" : userAuth.displayName,
                     phoneNumber:
                       userAuth.phoneNumber == null ? "" : userAuth.phoneNumber,
                     photoURL:

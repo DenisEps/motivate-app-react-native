@@ -38,7 +38,7 @@ const RegistrationForm = () => {
             .doc(info.user.uid)
             .set({
               email: info.user.email == null ? '' : info.user.email,
-              displayName: info.user.displayName == null ? '' : info.user.displayName,
+              displayName: info.user.displayName == null ? 'Anonymous' : info.user.displayName,
               photoURL: info.user.photoURL == null ? '' : info.user.photoURL,
               phoneNumber: info.user.phoneNumber == null ? '' : info.user.phoneNumber,
               emailVerified: info.user.emailVerified == null ? '' : info.user.emailVerified,

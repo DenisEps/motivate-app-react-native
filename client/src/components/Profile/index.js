@@ -21,7 +21,6 @@ function Profile() {
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -117,7 +116,9 @@ function Profile() {
   }
 
   const passwordChange = async () => {
-
+    const email = await firebase.auth().currentUser.email
+    const auth = await firebase.auth()
+    auth.sendPasswordResetEmail(email).then(() => console.log('email has been sended fro password')).catch(err => setError(err))
   }
 
   return (
@@ -136,9 +137,9 @@ function Profile() {
           <Input style={{ marginBottom: 10 }} value={email} onChangeText={nextValue => setEmail(nextValue)} ></Input>
           {/* <Text style={{ marginBottom: 5 }}>Password</Text>
           <Input style={{ marginBottom: 10 }} value={password} onChangeText={nextValue => setPassword(nextValue)} ></Input> */}
-          <Button style={{ marginBottom: 10 }}>Change password</Button>
+          <Button style={{ marginBottom: 10 }} onPress={passwordChange}>Change password</Button>
           <Button style={{ marginBottom: 10 }} onPress={saveChanges}>Save Changes</Button>
-          <Button onPress={logout} >Logout</Button>
+          <Button onPress={logout}>Logout</Button>
         </Layout>
       </Layout>
       <Modal
@@ -204,6 +205,7 @@ export default Profile;
 //           {
 //             name: "meditation",
 //             type: "positive",
+//             icon: 'meditation',
 //             date: {
 //               "09.1": 1,
 //               "09.2": 0,
@@ -239,6 +241,7 @@ export default Profile;
 //           },
 //           {
 //             name: "water",
+//             icon: 'water',
 //             type: "positive",
 //             date: {
 //               "09.1": 0,
@@ -275,6 +278,7 @@ export default Profile;
 //           },
 //           {
 //             name: 'smoking',
+//             icon: 'smoke',
 //             type: 'negative',
 //             date: {
 //               '09.1': 1,
@@ -311,6 +315,7 @@ export default Profile;
 //           },
 //           {
 //             name: 'fastfood',
+//             icon: 'fastfood',
 //             type: 'negative',
 //             date: {
 //               '09.1': 0,
