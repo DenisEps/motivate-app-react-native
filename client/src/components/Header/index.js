@@ -14,12 +14,13 @@ import {
 import { firebase } from '../../../firebase';
 import { deleteUser } from '../../redux/actions';
 import AsyncStorage from '@react-native-community/async-storage';
+import { ROUTES } from '../../navigation/routes';
 
 const MenuIcon = (props) => <Icon {...props} name="more-vertical" />;
 const InfoIcon = (props) => <Icon {...props} name="info" />;
 const LogoutIcon = (props) => <Icon {...props} name="log-out" />;
 
-export const TopNavMain = () => {
+export const TopNavMain = ({ navigation }) => {
   const [menuVisible, setMenuVisible] = React.useState(false);
   const [displayName, setDisplayName] = useState('anonymous');
   const dispatch = useDispatch();
@@ -79,9 +80,11 @@ export const TopNavMain = () => {
     </React.Fragment>
   );
 
+  const navigateToProfile = () => navigation.navigate(ROUTES.profile);
+
   const renderTitle = (props) => (
     <View style={styles.titleContainer}>
-      <TouchableOpacity onPress={() => console.log('avatar')}>
+      <TouchableOpacity onPress={navigateToProfile}>
         <Avatar
           style={styles.logo}
           source={{

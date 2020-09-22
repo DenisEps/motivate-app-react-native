@@ -241,8 +241,7 @@ const Home = (props) => {
   return (
     <Layout style={[styles.container, { paddingTop }]}>
       <View>
-        <TopNavMain />
-
+        <TopNavMain navigation={navigation} />
         <Layout
           style={{
             flexDirection: 'row',

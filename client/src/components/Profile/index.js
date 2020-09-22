@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Animated } from 'react-native';
 import { useDispatch } from 'react-redux';

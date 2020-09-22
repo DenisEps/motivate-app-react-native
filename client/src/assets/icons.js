@@ -50,4 +50,5 @@ export const kittenIcons = {
   HomeOutline: (props) => <Icon {...props} name="home-outline" />,
   SettingsIcon: (props) => <Icon {...props} name="settings-outline" />,
   PieChart: (props) => <Icon {...props} name="pie-chart-outline" />,
+  profile: (props) => <Icon {...props} name="person-outline" />,
 };
