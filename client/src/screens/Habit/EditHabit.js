@@ -9,15 +9,18 @@ import {
   Button,
 } from '@ui-kitten/components';
 import { kittenIcons, vectorIcons } from '../../assets/icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ROUTES } from '../../navigation/routes';
 
 const EditHabit = ({ navigation }) => {
-  const [icon, setIcon] = useState('smoke')
+  const [icon, setIcon] = useState('smoke');
   const [titleInput, setTitleInput] = React.useState("Don't smoke");
+
+  const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
 
   const handlePress = () => {
     navigation.navigate(ROUTES.iconSelect, { setIcon });
-  }
+  };
 
   const CreateHabitAlert = () => {
     Alert.alert('Habit menu', 'What would you like to do?', [
@@ -48,7 +51,7 @@ const EditHabit = ({ navigation }) => {
   );
 
   return (
-    <Layout style={styles.container}>
+    <Layout style={[styles.container, { paddingTop }]}>
       <Layout style={styles.navContainer} level="1">
         <TopNavigation
           alignment="center"
@@ -60,15 +63,12 @@ const EditHabit = ({ navigation }) => {
         <Layout style={styles.circle}>
           {vectorIcons[icon]({ size: 75, color: '#7983a4' })}
 
-
-
           {vectorIcons.menuHorizontal({
             size: 40,
             color: '#f39b6d',
             onPress: handlePress,
-            style: styles.editIconIcon
+            style: styles.editIconIcon,
           })}
-
         </Layout>
       </Layout>
       <Layout style={styles.titleInputDiv}>
@@ -79,19 +79,17 @@ const EditHabit = ({ navigation }) => {
           onChangeText={(nextValue) => setTitleInput(nextValue)}
           style={styles.titleInput}
         />
+        <Button style={styles.button} status="primary">
+          <Text category="h6">SAVE</Text>
+        </Button>
       </Layout>
-      <Button style={styles.button} status="primary">
-        SAVE
-      </Button>
-    </Layout >
+    </Layout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: { flex: 1 },
   iconLayout: {
-    flex: 1,
-    alignContent: 'center',
     alignItems: 'center',
     minHeight: 150,
     marginTop: 20,
@@ -114,9 +112,7 @@ const styles = StyleSheet.create({
     right: -10,
   },
   titleInputDiv: {
-    width: '90%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    paddingHorizontal: 10,
     marginTop: 40,
   },
   titleInput: {
@@ -124,9 +120,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
-    width: '90%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
   },
 });
 
