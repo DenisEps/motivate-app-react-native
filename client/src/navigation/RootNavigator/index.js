@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 import { SafeAreaView } from "react-native";
 
 import TabNavigator from "../TabNavigator";
@@ -12,31 +12,31 @@ import StartForm from '../../components/Auth/StartForm'
 import AsyncStorage from '@react-native-community/async-storage';
 
 const RootNavigator = () => {
-// const stateUser = useSelector(state => state.user)
-// console.log('rootNavigation',stateUser);
-const [userStore, setUserStore] = useState(null);
-const [error, setError] = useState(null);
-const auth = useSelector(state => state.user);
+  // const stateUser = useSelector(state => state.user)
+  // console.log('rootNavigation',stateUser);
+  const [userStore, setUserStore] = useState(null);
+  const [error, setError] = useState(null);
+  const auth = useSelector(state => state.user);
 
-useEffect(() => {
-  load();
-}, [auth])
+  useEffect(() => {
+    load();
+  }, [auth])
 
-const load = async () => {
-  try {
-    const user = await AsyncStorage.getItem('user');
-    if (user !== null) {
-      setUserStore(user)
-    } else {
-      setUserStore(null)
+  const load = async () => {
+    try {
+      const user = await AsyncStorage.getItem('user');
+      if (user !== null) {
+        setUserStore(user)
+      } else {
+        setUserStore(null)
+      }
+    } catch (e) {
+      const err = new Error(e)
+      setError(err.message)
     }
-  } catch (e) {
-    const err = new Error(e)
-    setError(err.message)
   }
-}
   // return <AuthForm />
-  return userStore ? <TabNavigator /> : <StartForm />;
+  return true ? <TabNavigator /> : <StartForm />;
 };
 
 export default RootNavigator;
