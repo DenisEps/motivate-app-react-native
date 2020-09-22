@@ -8,7 +8,11 @@ import {
   Input,
   Button,
 } from '@ui-kitten/components';
-import { kittenIcons, vectorIcons } from '../../assets/icons';
+import {
+  kittenIcons,
+  vectorIcons,
+  vectorIconsUtility,
+} from '../../assets/icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ROUTES } from '../../navigation/routes';
 
@@ -63,9 +67,9 @@ const EditHabit = ({ navigation }) => {
         <Layout style={styles.circle}>
           {vectorIcons[icon]({ size: 75, color: '#7983a4' })}
 
-          {vectorIcons.menuHorizontal({
+          {vectorIconsUtility.edit({
             size: 40,
-            color: '#f39b6d',
+            color: '#A1A8CE',
             onPress: handlePress,
             style: styles.editIconIcon,
           })}
@@ -108,8 +112,8 @@ const styles = StyleSheet.create({
   },
   editIconIcon: {
     position: 'absolute',
-    bottom: 0,
-    right: -10,
+    top: -15,
+    right: -50,
   },
   titleInputDiv: {
     paddingHorizontal: 10,
