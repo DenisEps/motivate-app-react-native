@@ -23,7 +23,7 @@ const habits = [
     title: 'Smoking',
     goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'smoke' },
-    status: true
+    status: false
   },
   {
     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
@@ -44,7 +44,7 @@ const habits = [
     title: 'Bad Words',
     goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'badwords' },
-    status: true
+    status: false
   },
   // {
   //   id: '58694ad0f-3da1-471f-bd96-145571e29d72',
@@ -82,82 +82,114 @@ function Item({ item, onPress, style, handleOpen }) {
   const iconName = item.icon.name;
   const [spinner, setSpinner] = useState(false);
   const [check, setCheck] = useState(false);
+  const [styleOnStatys, setStyleOnStatys] = useState({})
   if (!vectorIcons[iconName]) return null;
   const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
   const downsize = 20;
   return (
     <>
-      <TouchableOpacity
-        onPress={onPress}
-        onPressIn={() => {
-          setTimeout(() => {
-            setSpinner(true);
-          }, 200);
-          setTimeout(() => {
+      {!item.status ?
+        (<TouchableOpacity
+          onPress={onPress}
+          onPressIn={() => {
+            setTimeout(() => {
+              setSpinner(true);
+            }, 200);
+            setTimeout(() => {
+              setSpinner(false);
+              setCheck(true);
+            }, 700);
+          }}
+          onLongPress={() => {
+            item.goals[4] = 1;
+            setTimeout(() => {
+              item.status = true;
+            }, 1000)
+          }}
+          onPressOut={() => {
             setSpinner(false);
-            setCheck(true);
-          }, 700);
-        }}
-        onLongPress={() => {
-          item.goals[4] = 1;
-        }}
-        onPressOut={() => {
-          setSpinner(false);
-          setTimeout(() => {
-            setCheck(false);
-          }, 1000);
-        }}
-        style={[styles.item, style]}
-      >
-        {!check && <Text style={styles.title}>{item.title}</Text>}
+            setTimeout(() => {
+              setCheck(false);
+            }, 1000);
+          }}
+          style={[styles.item, style]}
+        >
+          {!check && <Text style={styles.title}>{item.title}</Text>}
 
-        {!check && icon}
+          {!check && icon}
 
-        {spinner && (
-          <Image
-            style={{
-              width: ITEM_SIZE,
-              height: ITEM_SIZE,
-              left: 0,
-              bottom: 0,
-              zIndex: 1,
-              position: 'absolute',
-            }}
-            source={require('../../img/spinner4.gif')}
-          />
-        )}
+          {spinner && (
+            <Image
+              style={{
+                width: ITEM_SIZE,
+                height: ITEM_SIZE,
+                left: 0,
+                bottom: 0,
+                zIndex: 1,
+                position: 'absolute',
+              }}
+              source={require('../../img/spinner4.gif')}
+            />
+          )}
 
-        {check && (
-          <Image
-            style={{
-              width: ITEM_SIZE - downsize,
-              height: ITEM_SIZE - downsize,
-              left: downsize / 2,
-              bottom: downsize / 2,
-              zIndex: 1,
-              position: 'absolute',
-            }}
-            source={require('../../img/check1.png')}
-          />
-        )}
+          {check && (
+            <Image
+              style={{
+                width: ITEM_SIZE - downsize,
+                height: ITEM_SIZE - downsize,
+                left: downsize / 2,
+                bottom: downsize / 2,
+                zIndex: 1,
+                position: 'absolute',
+              }}
+              source={require('../../img/check1.png')}
+            />
+          )}
 
-        {!check && <Layout style={styles.goals}>
-          {item.goals.map((goal, i) => {
-            let color = '';
-            let type = '';
-            if (goal === 1) {
-              color = '#8BEE88';
-              type = 'checkmark';
-            } else {
-              color = '#DE4E57';
-              type = 'close';
-            }
-            return (
-              <Icon key={i} style={styles.icon} fill={color} name={type} />
-            );
-          })}
-        </Layout>}
-      </TouchableOpacity>
+          {!check && <Layout style={styles.goals}>
+            {item.goals.map((goal, i) => {
+              let color = '';
+              let type = '';
+              if (goal === 1) {
+                color = '#8BEE88';
+                type = 'checkmark';
+              } else {
+                color = '#DE4E57';
+                type = 'close';
+              }
+              return (
+                <Icon key={i} style={styles.icon} fill={color} name={type} />
+              );
+            })}
+          </Layout>}
+        </TouchableOpacity>) :
+
+        (<TouchableOpacity
+          onPress={onPress}
+          style={[styles.item, style, { backgroundColor: '#00664B' }]}
+        >
+          <Text style={styles.title}>{item.title}</Text>
+
+          {icon}
+
+          <Layout style={styles.goals}>
+            {item.goals.map((goal, i) => {
+              let color = '';
+              let type = '';
+              if (goal === 1) {
+                color = '#8BEE88';
+                type = 'checkmark';
+              } else {
+                color = '#DE4E57';
+                type = 'close';
+              }
+              return (
+                <Icon key={i} style={styles.icon} fill={color} name={type} />
+              );
+            })}
+          </Layout>
+        </TouchableOpacity>)
+      }
     </>
   );
 }
