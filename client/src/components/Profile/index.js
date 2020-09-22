@@ -14,7 +14,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 function Profile() {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
-  const [photo, setPhoto] = useState(require('../../photo/startavatar.jpeg'));
+  const [photo, setPhoto] = useState(FileSystem.documentDirectory + 'avatar.jpeg');
   const [err, setError] = useState(null);
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
@@ -23,32 +23,42 @@ function Profile() {
 
   useEffect(() => {
     (async () => {
-      const dataFromStorage = JSON.parse(await AsyncStorage.getItem('user'));
-      setDisplayName(dataFromStorage.displayName);
-      setEmail(dataFromStorage.email);
-      setPhone(dataFromStorage.phone);
-      const photoFromStorage = await FileSystem.writeAsStringAsync(require('../../photo/avatar.jpeg'), dataFromStorage.photoURL, { encoding: FileSystem.EncodingType.Base64 });
-      setPhoto('SET PHOTO',photoFromStorage);
+      try {
+        const dataFromStorage = JSON.parse(await AsyncStorage.getItem('user'));
+        setDisplayName(dataFromStorage.displayName);
+        setEmail(dataFromStorage.email);
+        setPhone(dataFromStorage.phoneNumber);
+        await FileSystem.writeAsStringAsync(FileSystem.documentDirectory + 'avatar.jpeg', dataFromStorage.photoURL, { encoding: FileSystem.EncodingType.Base64 });
+        // console.log(FileSystem.documentDirectory + 'avatar.jpeg');
+        setPhoto(FileSystem.documentDirectory + 'avatar.jpeg');
+      } catch (err) {
+        console.error(err);
+      }
     })();
+
   }, []);
 
   async function photoPreparation(galPhotoUri) {
-    const galPhotoUriFinish = galPhotoUri.uri;
-    const varFunct = await FileSystem.getInfoAsync(galPhotoUriFinish);
-    let smallPhoto;
-    if (varFunct.size >= 1048486) {
-      let compressMult = 800000 / varFunct.size;
-      smallPhoto = await ImageManipulator.manipulateAsync(
-        varFunct.uri,
-        [],
-        { compress: compressMult, format: 'jpeg' }
-      );
-    } else {
-      smallPhoto = varFunct;
+    try {
+      const galPhotoUriFinish = galPhotoUri.uri;
+      const varFunct = await FileSystem.getInfoAsync(galPhotoUriFinish);
+      let smallPhoto = '';
+      if (varFunct.size >= 1048486) {
+        let compressMult = 800000 / varFunct.size;
+        smallPhoto = await ImageManipulator.manipulateAsync(
+          varFunct.uri,
+          [],
+          { compress: compressMult, format: 'jpeg' }
+        );
+        smallPhoto = smallPhoto.uri;
+      } else {
+        smallPhoto = varFunct.uri;
+      }
+      setPhoto(smallPhoto);
+      setVisible(false);
+    } catch (err) {
+      console.error(err);
     }
-    setPhoto({ uri: smallPhoto.uri });
-    setVisible(false);
-
   }
 
   async function startGallery() {
@@ -62,8 +72,9 @@ function Profile() {
 
   async function launchCamera() {
     try {
+      ImagePicker.requestCameraRollPermissionsAsync();
       const newPhoto = await ImagePicker.launchCameraAsync();
-      photoPreparation(newPhoto);
+      console.log(newPhoto);
     } catch (err) {
       console.error(err);
     }
@@ -72,9 +83,11 @@ function Profile() {
   async function saveChanges() {
     try {
       let galPhoto = '';
-      galPhoto = await FileSystem.readAsStringAsync(photo.uri, { encoding: FileSystem.EncodingType.Base64 });
-      const currentUser = await firebase.auth().currentUser;
-      const check = await firebase.firestore().collection('users').doc(currentUser.uid).update({
+      galPhoto = await FileSystem.readAsStringAsync(photo, { encoding: FileSystem.EncodingType.Base64 });
+      const currentUser = firebase.auth().currentUser;
+      console.log('555');
+      console.log(currentUser);
+      await firebase.firestore().collection('users').doc(currentUser.uid).update({
         displayName: displayName,
         phoneNumber: phone,
         photoURL: galPhoto,
@@ -92,6 +105,7 @@ function Profile() {
     } catch (e) {
       const error = new Error(e);
       setError(error.message);
+      console.log('PROBLEM THIS');
       console.log(err);
     }
   }
@@ -119,7 +133,7 @@ function Profile() {
       <Layout style={styles.container}>
         <Layout style={styles.containerInn}>
           <Text style={{ textAlign: "center", marginBottom: 25, color: "black", fontSize: 40 }}>Edit Profile</Text>
-          <Avatar style={{ width: 300, height: 300, borderWidth: 10, borderColor: "orange" }} size="giant" source={photo}></Avatar>
+          <Avatar style={{ width: 300, height: 300, borderWidth: 10, borderColor: "orange" }} size="giant" source={{ uri: photo }}></Avatar>
           <Button style={{ width: 50, height: 50, top: -50, left: 250, borderRadius: 50 }} onPress={() => setVisible(true)}>
           </Button>
           <Text style={{ marginBottom: 5 }}>Display Name</Text>

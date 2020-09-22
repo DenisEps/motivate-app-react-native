@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, ActivityIndicator } from "react-native";
 import { Input, Button, Layout, Text } from "@ui-kitten/components";
-import { useDispatch } from "react-redux";
-import { userAuth, deleteUser } from "../../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { userAuth, deleteUser, setLoader } from "../../../redux/actions";
 import TestDb from "../../TestDb/TestDb";
 import { firebase } from "../../../../firebase";
 import "@firebase/firestore";
@@ -19,11 +19,14 @@ const AuthForm = () => {
   const [test, setTest] = useState(false);
   const [userStore, setUserStore] = useState(null);
   const dispatch = useDispatch();
+  // const loader = useSelector(state => state.loader)
+  // console.log('LOADER >>>>>>>>>>>>>>>>>>>>>', loader);
 
   const save = async (user) => {
     try {
       const objectValue = JSON.stringify(user);
       await AsyncStorage.setItem("user", objectValue);
+      // dispatch(setLoader(true))
     } catch (e) {
       const error = new Error(e);
       setError(error.message);
@@ -256,6 +259,7 @@ const AuthForm = () => {
       </Button>
       {test ? <TestDb /> : null}
       {err ? <Text>{err}</Text> : null}
+      {/* <ActivityIndicator animating={loader} /> */}
     </Layout>
   );
 };
