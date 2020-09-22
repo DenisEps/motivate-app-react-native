@@ -37,7 +37,7 @@ const load = async () => {
     setError(err.message)
   }
 }
-  return auth ? <TabNavigator /> : <StartForm />;
+  return auth ? <StartForm /> : <StartForm />;
 };
 
 export default RootNavigator;
