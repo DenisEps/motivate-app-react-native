@@ -75,9 +75,9 @@ const StatsMain = () => {
 
       <Layout style={styles.chartContainer}>
         <LineChart
-          style={{ borderRadius: 10 }}
+          style={styles.chart}
           data={data}
-          width={screenWidth}
+          width={screenWidth - PADDING * 4}
           height={256}
           verticalLabelRotation={0}
           chartConfig={chartConfig}
@@ -106,6 +106,11 @@ const styles = StyleSheet.create({
   },
   chartContainer: {
     marginTop: 15,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  chart: {
+    borderRadius: 10,
   },
 });
 
