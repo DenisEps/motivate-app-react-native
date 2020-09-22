@@ -82,9 +82,11 @@ function Item({ item, onPress, style, handleOpen }) {
   const iconName = item.icon.name;
   const [spinner, setSpinner] = useState(false);
   const [check, setCheck] = useState(false);
-  const [styleOnStatys, setStyleOnStatys] = useState({})
+  // const [styleOnStatys, setStyleOnStatys] = useState('#8389E6')
+
   if (!vectorIcons[iconName]) return null;
   const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
+  const iconActive = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#2B344F' });
   const downsize = 20;
   return (
     <>
@@ -166,11 +168,11 @@ function Item({ item, onPress, style, handleOpen }) {
 
         (<TouchableOpacity
           onPress={onPress}
-          style={[styles.item, style, { backgroundColor: '#00664B' }]}
+          style={[styles.item, style, { backgroundColor: '#7B8CDE' }]}
         >
           <Text style={styles.title}>{item.title}</Text>
 
-          {icon}
+          {iconActive}
 
           <Layout style={styles.goals}>
             {item.goals.map((goal, i) => {
@@ -273,7 +275,8 @@ const Home = (props) => {
   return (
     <Layout style={[styles.container, { paddingTop }]}>
       <View>
-        <TopNavMain navigation={navigation} />
+        <TopNavMain />
+
         <Layout
           style={{
             flexDirection: 'row',
