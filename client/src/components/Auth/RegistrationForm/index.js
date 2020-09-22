@@ -82,7 +82,6 @@ const RegistrationForm = () => {
   return (
     <Layout
       style={{
-        backgroundColor: "white",
         alignItems: "center",
         top: 250,
         minWidth: 200,

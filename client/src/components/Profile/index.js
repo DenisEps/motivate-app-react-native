@@ -28,6 +28,7 @@ function Profile() {
       setEmail(dataFromStorage.email);
       setPhone(dataFromStorage.phone);
       const photoFromStorage = await FileSystem.writeAsStringAsync(require('../../photo/avatar.jpeg'), dataFromStorage.photoURL, { encoding: FileSystem.EncodingType.Base64 });
+      setPhoto('SET PHOTO',photoFromStorage);
     })();
   }, []);
 
@@ -70,23 +71,29 @@ function Profile() {
 
   async function saveChanges() {
     try {
-    galPhoto = '';
-    const galPhoto = await FileSystem.readAsStringAsync(photo, { encoding: FileSystem.EncodingType.Base64 });
-    const currentUser = firebase.auth();
-    console.log(firebase.auth().currentUser);
-    await firebase.firestore().collection('users').doc(currentUser.uid).update({
-      displayName,
-      phoneNumber: phone,
-      photoURL: galPhoto,
-    });
-    // if (currentUser.email !== email) {
-    //   await firebase.firestore().collection('users').doc(currentUser.uid).update({
+      let galPhoto = '';
+      galPhoto = await FileSystem.readAsStringAsync(photo.uri, { encoding: FileSystem.EncodingType.Base64 });
+      const currentUser = await firebase.auth().currentUser;
+      const check = await firebase.firestore().collection('users').doc(currentUser.uid).update({
+        displayName: displayName,
+        phoneNumber: phone,
+        photoURL: galPhoto,
+      });
+      // if (currentUser.email !== email) {
+      //   await firebase.firestore().collection('users').doc(currentUser.uid).update({
 
-    //   });
-    // }
-  } catch(error) {
-    setError(error.message);
-  }
+      //   });
+      // }
+      // if (password) {
+      // await firebase.firestore().collection('users').doc(currentUser.uid).update({
+
+      //   });
+      // }
+    } catch (e) {
+      const error = new Error(e);
+      setError(error.message);
+      console.log(err);
+    }
   }
 
 
@@ -112,16 +119,16 @@ function Profile() {
       <Layout style={styles.container}>
         <Layout style={styles.containerInn}>
           <Text style={{ textAlign: "center", marginBottom: 25, color: "black", fontSize: 40 }}>Edit Profile</Text>
-          <Avatar style={{ width: 300, height: 300 }} size="giant" source={photo}></Avatar>
+          <Avatar style={{ width: 300, height: 300, borderWidth: 10, borderColor: "orange" }} size="giant" source={photo}></Avatar>
           <Button style={{ width: 50, height: 50, top: -50, left: 250, borderRadius: 50 }} onPress={() => setVisible(true)}>
           </Button>
-          <Text style={{ marginBottom: 5, color: "black" }}>Display Name</Text>
+          <Text style={{ marginBottom: 5 }}>Display Name</Text>
           <Input style={{ marginBottom: 10 }} value={displayName} onChangeText={nextValue => setDisplayName(nextValue)}></Input>
-          <Text style={{ marginBottom: 5, color: "black" }}>Phone</Text>
-          <Input style={{ marginBottom: 10 }} value={phone} onChangeText={nextValue => setPhoto(nextValue)}></Input>
-          <Text style={{ marginBottom: 5, color: "black" }}>Email</Text>
+          <Text style={{ marginBottom: 5 }}>Phone</Text>
+          <Input style={{ marginBottom: 10 }} value={phone} onChangeText={nextValue => setPhone(nextValue)}></Input>
+          <Text style={{ marginBottom: 5 }}>Email</Text>
           <Input style={{ marginBottom: 10 }} value={email} onChangeText={nextValue => setEmail(nextValue)} ></Input>
-          <Text style={{ marginBottom: 5, color: "black" }}>Password</Text>
+          <Text style={{ marginBottom: 5 }}>Password</Text>
           <Input style={{ marginBottom: 10 }} value={password} onChangeText={nextValue => setPassword(nextValue)} ></Input>
           <Button style={{ marginBottom: 10 }} onPress={saveChanges}>Save Changes</Button>
           <Button onPress={logout} >Logout</Button>
@@ -151,11 +158,9 @@ function Profile() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
     alignItems: "center",
   },
   containerInn: {
-    backgroundColor: "white",
     width: "75%",
   },
   backdrop: {

@@ -45,8 +45,22 @@ const AuthForm = () => {
     try {
       const user = await firebase
         .auth()
-        .signInWithEmailAndPassword(email, pass);
+        .signInWithEmailAndPassword(email, pass)
+        // .then((info) => {
+        //  const user =  await firebase.firestore().collection('users').doc(info.user.uid).update({
+        //     email: info.user.email == null ? '' : info.user.email,
+        //     displayName: info.user.displayName == null ? '' : info.user.displayName,
+        //     photoURL: info.user.photoURL == null ? '' : info.user.photoURL,
+        //     phoneNumber: info.user.phoneNumber == null ? '' : info.user.phoneNumber,
+        //     emailVerified: info.user.emailVerified == null ? '' : info.user.emailVerified,
+        //   })
+        //   console.log('UPDATED USER ?????????',user);
+        //   save(user)
+        // })
+        // console.log("!!39*389842839353573258!!!!!>>>>>>",user);
       const uid = await firebase.auth().currentUser.uid;
+      const us = await firebase.auth().currentUser
+      // console.log("USSSSS>>>>> ??????>>>>>> TYTA", us);
       await firebase
         .firestore()
         .collection("users")
@@ -212,7 +226,7 @@ const AuthForm = () => {
 
   return (
     <Layout
-      style={{ backgroundColor: "white", alignItems: "center", top: 250 }}
+      style={{ alignItems: "center", top: 250 }}
       level="1"
     >
       <Input
@@ -229,7 +243,7 @@ const AuthForm = () => {
         onChangeText={(nextValue) => setPass(nextValue)}
       />
       <Button style={{ width: "75%", marginBottom: 5 }} onPress={Login}>
-        Sugn In
+        Sign In
       </Button>
       <Button
         style={{ width: "75%", marginBottom: 5 }}
