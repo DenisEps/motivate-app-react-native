@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { SafeAreaView } from "react-native";
 
 import TabNavigator from "../TabNavigator";
@@ -15,10 +15,10 @@ import {firebase} from '../../../firebase'
 
 
 const RootNavigator = () => {
-const [error, setError] = useState(null);
-const dispatch = useDispatch();
-const auth = useSelector(state => state.user);
-console.log('>>>>AUTH', auth);
+  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const auth = useSelector(state => state.user);
+  console.log('>>>>AUTH', auth);
 
 
 useEffect(() => {
@@ -32,20 +32,21 @@ useEffect(() => {
   // }
 }, [])
 
-const load = async () => {
-  try {
-    const user = JSON.parse(await AsyncStorage.getItem('user'));
+  const load = async () => {
+    try {
+      const user = JSON.parse(await AsyncStorage.getItem('user'));
 
-    console.log('>>>>>>>>>>>>>>>>>ASYNCSTORAGE',user);
-    if (user !== null) {
-      dispatch(userAuth(true));
+      console.log('>>>>>>>>>>>>>>>>>ASYNCSTORAGE', user);
+      if (user !== null) {
+        dispatch(userAuth(true));
+      }
+    } catch (error) {
+      const err = new Error(error)
+      setError(err.message);
     }
-  } catch (e) {
-    const err = new Error(e)
-    setError(err.message)
   }
-}
-  return auth ? <TabNavigator /> : <StartForm />;
+  // return <AuthForm />
+  return auth ? <Profile /> : <StartForm />;
 };
 
 export default RootNavigator;

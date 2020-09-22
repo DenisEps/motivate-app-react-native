@@ -60,7 +60,7 @@ function StartForm() {
     }
   }
   return (
-    <Layout style={{ backgroundColor: "white", width: "100%" }}>
+    <Layout style={{ width: "100%" }}>
       <Animated.View style={{ top: fadeAnim }}>
         <ButtonGroup style={{ justifyContent: "center" }}>
           <Button style={{ backgroundColor: btnSIColor }} onPress={() => buttonsUp('signIn')}>Sign in</Button>
