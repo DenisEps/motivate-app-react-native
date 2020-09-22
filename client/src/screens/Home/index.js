@@ -218,7 +218,7 @@ const Home = (props) => {
 };
 
 const styles = StyleSheet.create({
-  goals: { flexDirection: 'row' },
+  goals: { flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0)' },
   icon: { width: 20, height: 20 },
   container: {
     flex: 1,
