@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import {
   Avatar,
   Icon,
@@ -11,6 +12,8 @@ import {
   Layout,
 } from '@ui-kitten/components';
 import { firebase } from '../../../firebase';
+import { deleteUser } from '../../redux/actions';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const MenuIcon = (props) => <Icon {...props} name="more-vertical" />;
 const InfoIcon = (props) => <Icon {...props} name="info" />;
@@ -18,13 +21,37 @@ const LogoutIcon = (props) => <Icon {...props} name="log-out" />;
 
 export const TopNavMain = () => {
   const [menuVisible, setMenuVisible] = React.useState(false);
-
   const [displayName, setDisplayName] = useState('anonymous');
+  const dispatch = useDispatch();
+
+  const remove = async () => {
+    try {
+      await AsyncStorage.removeItem('user');
+    } catch (e) {
+      const err = new Error(e);
+      setError(err.message);
+    }
+  };
+
+  const logout = async () => {
+    dispatch(deleteUser());
+    remove();
+    await firebase.auth().signOut();
+    const user = firebase.auth().currentUser;
+    return user
+      ? console.log('somthing went wrong')
+      : console.log('logout is successfullllllll');
+  };
 
   useEffect(() => {
     (async function () {
-     const user =  await firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).get().then(info => info.data())
-     setDisplayName(user.displayName)
+      const user = await firebase
+        .firestore()
+        .collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .get()
+        .then((info) => info.data());
+      setDisplayName(user.displayName);
     })();
   }, []);
 
@@ -43,20 +70,26 @@ export const TopNavMain = () => {
         onBackdropPress={toggleMenu}
       >
         <MenuItem accessoryLeft={InfoIcon} title="About" />
-        <MenuItem accessoryLeft={LogoutIcon} title="Logout" />
+        <MenuItem
+          onPress={() => logout()}
+          accessoryLeft={LogoutIcon}
+          title="Logout"
+        />
       </OverflowMenu>
     </React.Fragment>
   );
 
   const renderTitle = (props) => (
     <View style={styles.titleContainer}>
-      <Avatar
-        style={styles.logo}
-        source={{
-          uri:
-            'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=100&q=100',
-        }}
-      />
+      <TouchableOpacity onPress={() => console.log('avatar')}>
+        <Avatar
+          style={styles.logo}
+          source={{
+            uri:
+              'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=100&q=100',
+          }}
+        />
+      </TouchableOpacity>
       <Text {...props}>Hi {displayName}</Text>
     </View>
   );
