@@ -23,37 +23,43 @@ const habits = [
     title: 'Smoking',
     goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'smoke' },
+    status: true
   },
   {
     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
     title: 'Fastfood',
     goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'fastfood' },
+    status: false
   },
   {
     id: '58694a0f-3da1-471f-bd96-145571e29d72',
     title: 'Learning',
     goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'learn' },
+    status: false
   },
   {
     id: '586d94a0f-3da1-471f-bd96-145571e29d72',
     title: 'Bad Words',
     goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'badwords' },
+    status: true
   },
-  {
-    id: '58694ad0f-3da1-471f-bd96-145571e29d72',
-    title: 'Water',
-    goals: [0, 1, 1, 1, 0, 0, 1],
-    icon: { name: 'water' },
-  },
-  {
-    id: '58694a0ff-3da1-471f-bd96-145571e29d72',
-    title: 'Code',
-    goals: [0, 1, 1, 1, 0, 0, 1],
-    icon: { name: 'code' },
-  },
+  // {
+  //   id: '58694ad0f-3da1-471f-bd96-145571e29d72',
+  //   title: 'Water',
+  //   goals: [0, 1, 1, 1, 0, 0, 1],
+  //   icon: { name: 'water' },
+  // status: true
+  // },
+  // {
+  //   id: '58694a0ff-3da1-471f-bd96-145571e29d72',
+  //   title: 'Code',
+  //   goals: [0, 1, 1, 1, 0, 0, 1],
+  //   icon: { name: 'code' },
+  // status: true
+  // },
 ];
 // const uid = firebase.auth().currentUser.uid
 // const user = firebase.firestore().collection('users').doc(uid).get().then(info => console.log(info.data()))
@@ -103,9 +109,9 @@ function Item({ item, onPress, style, handleOpen }) {
         }}
         style={[styles.item, style]}
       >
-        <Text style={styles.title}>{item.title}</Text>
+        {!check && <Text style={styles.title}>{item.title}</Text>}
 
-        {icon}
+        {!check && icon}
 
         {spinner && (
           <Image
@@ -135,7 +141,7 @@ function Item({ item, onPress, style, handleOpen }) {
           />
         )}
 
-        <Layout style={styles.goals}>
+        {!check && <Layout style={styles.goals}>
           {item.goals.map((goal, i) => {
             let color = '';
             let type = '';
@@ -150,7 +156,7 @@ function Item({ item, onPress, style, handleOpen }) {
               <Icon key={i} style={styles.icon} fill={color} name={type} />
             );
           })}
-        </Layout>
+        </Layout>}
       </TouchableOpacity>
     </>
   );
@@ -211,12 +217,12 @@ const Home = (props) => {
             handleOpen={handleOpenHabit}
           />
         ) : (
-          <Item
-            item={item}
-            onPress={() => setSelectedId(item.id)}
-            style={{ backgroundColor }}
-          />
-        )}
+            <Item
+              item={item}
+              onPress={() => setSelectedId(item.id)}
+              style={{ backgroundColor }}
+            />
+          )}
       </View>
     );
   };
