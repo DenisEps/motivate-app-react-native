@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Input, Button, Layout, Text, ButtonGroup } from "@ui-kitten/components";
-import { Animated, View } from "react-native";
+import { Animated, View, ActivityIndicator } from "react-native";
 import AuthForm from '../AuthForm';
 import RegistrationForm from '../RegistrationForm';
 import CustomTheme from '../../../../custom-theme.json'
@@ -17,6 +17,8 @@ function StartForm() {
   const [signUp, setSignUp] = useState(false);
   const [btnSIColor, setbtnSIColor] = useState(CustomTheme["color-primary-300"]);
   const [btnSUColor, setbtnSUColor] = useState(CustomTheme["color-primary-300"]);
+
+  const [loader, setLoader] = useState(false);
 
   function buttonsUp(form) {
     Animated.timing(fadeAnim, {
