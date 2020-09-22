@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
   Avatar,
@@ -10,6 +10,7 @@ import {
   TopNavigationAction,
   Layout,
 } from '@ui-kitten/components';
+import { firebase } from '../../../firebase';
 
 const MenuIcon = (props) => <Icon {...props} name="more-vertical" />;
 const InfoIcon = (props) => <Icon {...props} name="info" />;
@@ -17,6 +18,16 @@ const LogoutIcon = (props) => <Icon {...props} name="log-out" />;
 
 export const TopNavMain = () => {
   const [menuVisible, setMenuVisible] = React.useState(false);
+
+  const [displayName, setDisplayName] = useState('anonymous');
+
+  useEffect(() => {
+    (async function () {
+     const user =  await firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).get().then(info => info.data())
+     console.log('>>>>>>>', user);
+     setDisplayName(user.displayName)
+    })();
+  }, []);
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -47,7 +58,7 @@ export const TopNavMain = () => {
             'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=100&q=100',
         }}
       />
-      <Text {...props}>Hi Denis</Text>
+      <Text {...props}>Hi {displayName}</Text>
     </View>
   );
   return (

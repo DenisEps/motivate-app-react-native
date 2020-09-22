@@ -46,7 +46,7 @@ useEffect(() => {
     }
   }
   // return <AuthForm />
-  return auth ? <Profile /> : <StartForm />;
+  return auth ? <TabNavigator /> : <StartForm />;
 };
 
 export default RootNavigator;

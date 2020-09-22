@@ -13,7 +13,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { setHabits } from '../../redux/actions';
 import { ROUTES } from '../../navigation/routes';
-import { TopNavMain } from '../../components/Header'
+import { TopNavMain } from '../../components/Header';
 import { vectorIcons, vectorIconsUtility } from '../../assets/icons';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -74,8 +74,8 @@ const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
 
 function Item({ item, onPress, style, handleOpen }) {
   const iconName = item.icon.name;
-  const [spinner, setSpinner] = useState(false)
-  const [check, setCheck] = useState(false)
+  const [spinner, setSpinner] = useState(false);
+  const [check, setCheck] = useState(false);
   if (!vectorIcons[iconName]) return null;
   const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
 
@@ -84,19 +84,51 @@ function Item({ item, onPress, style, handleOpen }) {
       <TouchableOpacity
         onPress={onPress}
         onPressIn={() => {
-          setTimeout(() => { setSpinner(true) }, 200);
-          setTimeout(() => { setSpinner(false); setCheck(true) }, 1000);
-          setTimeout(() => { setCheck(false) }, 2200);
+          setTimeout(() => {
+            setSpinner(true);
+          }, 200);
+          setTimeout(() => {
+            setSpinner(false);
+            setCheck(true);
+          }, 1000);
+          setTimeout(() => {
+            setCheck(false);
+          }, 2200);
         }}
         onPressOut={() => setSpinner(false)}
-        style={[styles.item, style]}>
-        <Text style={styles.title}>{item.title}</Text>
+        style={[styles.item, style]}
+      >
+        <Text category="s1" style={styles.title}>
+          {item.title}
+        </Text>
 
         {icon}
 
-        {spinner && (<Image style={{ width: ITEM_SIZE, height: ITEM_SIZE, left: 0, bottom: 105, zIndex: 1 }} source={require('../../img/spinner4.gif')} />)}
+        {spinner && (
+          <Image
+            style={{
+              width: ITEM_SIZE,
+              height: ITEM_SIZE,
+              left: 0,
+              bottom: 105,
+              zIndex: 1,
+            }}
+            source={require('../../img/spinner4.gif')}
+          />
+        )}
 
-        {check && (<Image style={{ width: ITEM_SIZE - 50, height: ITEM_SIZE - 50, left: 0, bottom: 80, zIndex: 1 }} source={require('../../img/check.png')} />)}
+        {check && (
+          <Image
+            style={{
+              width: ITEM_SIZE - 50,
+              height: ITEM_SIZE - 50,
+              left: 0,
+              bottom: 80,
+              zIndex: 1,
+            }}
+            source={require('../../img/check.png')}
+          />
+        )}
 
         <Layout style={styles.goals}>
           {item.goals.map((goal, i) => {
@@ -109,7 +141,9 @@ function Item({ item, onPress, style, handleOpen }) {
               color = '#8BEE88';
               type = 'close';
             }
-            return <Icon key={i} style={styles.icon} fill={color} name={type} />;
+            return (
+              <Icon key={i} style={styles.icon} fill={color} name={type} />
+            );
           })}
         </Layout>
       </TouchableOpacity>
@@ -123,7 +157,7 @@ function ItemBack({ item, onPress, style, navigation, handleOpen }) {
   };
   const renderZoomIcon = () => {
     return vectorIconsUtility.menuHorizontal({ size: 50, color: '#090D20' });
-  }
+  };
   return (
     <TouchableOpacity
       onPress={() => {
@@ -172,12 +206,12 @@ const Home = (props) => {
             handleOpen={handleOpenHabit}
           />
         ) : (
-            <Item
-              item={item}
-              onPress={() => setSelectedId(item.id)}
-              style={{ backgroundColor }}
-            />
-          )}
+          <Item
+            item={item}
+            onPress={() => setSelectedId(item.id)}
+            style={{ backgroundColor }}
+          />
+        )}
       </View>
     );
   };
@@ -196,7 +230,6 @@ const Home = (props) => {
   return (
     <Layout style={[styles.container, { paddingTop }]}>
       <View>
-
         <TopNavMain />
 
         <Layout
@@ -259,8 +292,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 10,
-    color: '#fff',
+    color: '#E6ECFD',
   },
 });
 
