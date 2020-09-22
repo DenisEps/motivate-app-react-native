@@ -19,14 +19,14 @@ const AuthForm = () => {
   const [test, setTest] = useState(false);
   const [userStore, setUserStore] = useState(null);
   const dispatch = useDispatch();
-  // const loader = useSelector(state => state.loader)
-  // console.log('LOADER >>>>>>>>>>>>>>>>>>>>>', loader);
+  const loader = useSelector(state => state.loader)
+  console.log('LOADER', loader);
 
   const save = async (user) => {
     try {
       const objectValue = JSON.stringify(user);
       await AsyncStorage.setItem("user", objectValue);
-      // dispatch(setLoader(true))
+      dispatch(setLoader(true))
     } catch (e) {
       const error = new Error(e);
       setError(error.message);
@@ -48,22 +48,8 @@ const AuthForm = () => {
     try {
       const user = await firebase
         .auth()
-        .signInWithEmailAndPassword(email, pass)
-        // .then((info) => {
-        //  const user =  await firebase.firestore().collection('users').doc(info.user.uid).update({
-        //     email: info.user.email == null ? '' : info.user.email,
-        //     displayName: info.user.displayName == null ? '' : info.user.displayName,
-        //     photoURL: info.user.photoURL == null ? '' : info.user.photoURL,
-        //     phoneNumber: info.user.phoneNumber == null ? '' : info.user.phoneNumber,
-        //     emailVerified: info.user.emailVerified == null ? '' : info.user.emailVerified,
-        //   })
-        //   console.log('UPDATED USER ?????????',user);
-        //   save(user)
-        // })
-        // console.log("!!39*389842839353573258!!!!!>>>>>>",user);
+        .signInWithEmailAndPassword(email, pass);
       const uid = await firebase.auth().currentUser.uid;
-      const us = await firebase.auth().currentUser
-      // console.log("USSSSS>>>>> ??????>>>>>> TYTA", us);
       await firebase
         .firestore()
         .collection("users")
@@ -191,7 +177,7 @@ const AuthForm = () => {
       for (let i = 0; i < providerData.length; i++) {
         if (
           providerData[i].providerId ===
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
           providerData[i].uid === googleUser.getBasicProfile().getId()
         ) {
           return true;
@@ -229,7 +215,7 @@ const AuthForm = () => {
 
   return (
     <Layout
-      style={{ alignItems: "center", top: 250 }}
+      style={{ backgroundColor: "white", alignItems: "center", top: 250 }}
       level="1"
     >
       <Input
@@ -259,7 +245,6 @@ const AuthForm = () => {
       </Button>
       {test ? <TestDb /> : null}
       {err ? <Text>{err}</Text> : null}
-      {/* <ActivityIndicator animating={loader} /> */}
     </Layout>
   );
 };

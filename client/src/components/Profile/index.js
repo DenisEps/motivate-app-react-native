@@ -74,12 +74,12 @@ function Profile() {
   async function saveChanges() {
     try {
       let galPhoto = '';
-      galPhoto = await FileSystem.readAsStringAsync(photo.uri, { encoding: FileSystem.EncodingType.Base64 });
+      // galPhoto = await FileSystem.readAsStringAsync(photo.uri, { encoding: FileSystem.EncodingType.Base64 });
       const currentUser = await firebase.auth().currentUser;
       const check = await firebase.firestore().collection('users').doc(currentUser.uid).update({
         displayName: displayName,
         phoneNumber: phone,
-        photoURL: galPhoto,
+        // photoURL: galPhoto,
       });
       // if (currentUser.email !== email) {
       //   await firebase.firestore().collection('users').doc(currentUser.uid).update({
@@ -116,6 +116,10 @@ function Profile() {
     return user ? console.log('somthing went wrong') : console.log('logout is successfullllllll');
   }
 
+  const passwordChange = async () => {
+
+  }
+
   return (
     <View>
       <Layout style={styles.container}>
@@ -130,8 +134,9 @@ function Profile() {
           <Input style={{ marginBottom: 10 }} value={phone} onChangeText={nextValue => setPhone(nextValue)}></Input>
           <Text style={{ marginBottom: 5 }}>Email</Text>
           <Input style={{ marginBottom: 10 }} value={email} onChangeText={nextValue => setEmail(nextValue)} ></Input>
-          <Text style={{ marginBottom: 5 }}>Password</Text>
-          <Input style={{ marginBottom: 10 }} value={password} onChangeText={nextValue => setPassword(nextValue)} ></Input>
+          {/* <Text style={{ marginBottom: 5 }}>Password</Text>
+          <Input style={{ marginBottom: 10 }} value={password} onChangeText={nextValue => setPassword(nextValue)} ></Input> */}
+          <Button style={{ marginBottom: 10 }}>Change password</Button>
           <Button style={{ marginBottom: 10 }} onPress={saveChanges}>Save Changes</Button>
           <Button onPress={logout} >Logout</Button>
         </Layout>
