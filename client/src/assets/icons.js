@@ -5,7 +5,7 @@ import {
   FontAwesome5,
   MaterialIcons,
   FontAwesome,
-  Entypo
+  Entypo,
 } from '@expo/vector-icons';
 import { Icon } from '@ui-kitten/components';
 
@@ -25,9 +25,7 @@ export const vectorIcons = {
   dog: (props) => <FontAwesome5 name="dog" {...props} />,
   medicine: (props) => <MaterialCommunityIcons name="pill" {...props} />,
   menuHorizontal: (props) => (
-    <MaterialCommunityIcons {...props}
-      name="dots-horizontal-circle-outline"
-    />
+    <MaterialCommunityIcons {...props} name="dots-horizontal-circle-outline" />
   ),
 };
 
@@ -42,4 +40,7 @@ export const kittenIcons = {
 "
     />
   ),
+  HomeOutline: (props) => <Icon {...props} name="home-outline" />,
+  SettingsIcon: (props) => <Icon {...props} name="settings-outline" />,
+  PieChart: (props) => <Icon {...props} name="pie-chart-outline" />,
 };

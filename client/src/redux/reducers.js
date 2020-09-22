@@ -1,16 +1,4 @@
-
 import { SET_HABITS, DEL_HABIT, EDIT_HABIT, SET_IMG, SET_USER, DELETE_USER, USER_AUTH } from './action-types';
-
-// import {
-//   SET_HABITS,
-//   DEL_HABIT,
-//   EDIT_HABIT,
-//   SET_IMG,
-//   SET_USER,
-//   DELETE_USER,
-//   USER_AUTH,
-// } from './action-types';
-
 
 export function habitReducer(state = [], action) {
   switch (action.type) {
@@ -33,7 +21,6 @@ export function habitReducer(state = [], action) {
 }
 
 export function userReducer(state = null, action) {
-  console.log('user reducer >>>>>>>>>>>>>>>', action);
   switch (action.type) {
     case SET_USER:
       return action.payload;

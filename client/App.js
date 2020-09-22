@@ -1,25 +1,39 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { SafeAreaView, StatusBar, View } from 'react-native';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
-import * as eva from '@eva-design/eva';
+import { StatusBar, View } from 'react-native';
+import { AppearanceProvider } from 'react-native-appearance';
+import {
+  ApplicationProvider,
+  IconRegistry,
+  Layout,
+} from '@ui-kitten/components';
+import { dark, light, mapping } from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { NavigationContainer } from '@react-navigation/native';
 import { default as theme } from './custom-theme.json';
 import RootNavigator from './src/navigation/RootNavigator';
 import store from './src/redux/store';
 import { Provider } from 'react-redux';
 
+const themes = { light: { ...light, ...theme }, dark: { ...dark, ...theme } };
+
 const App = () => {
   return (
-    <Provider store={store}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <StatusBar barStyle="dark-content" />
-        <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
-          <RootNavigator />
-        </ApplicationProvider>
-      </SafeAreaView>
-    </Provider>
+    <AppearanceProvider>
+      <NavigationContainer>
+        <Provider store={store}>
+          <View style={{ flex: 1 }}>
+            <StatusBar barStyle="light-content" />
+            <IconRegistry icons={EvaIconsPack} />
+            <ApplicationProvider mapping={mapping} theme={themes.dark}>
+              <Layout style={{ flex: 1 }}>
+                <RootNavigator />
+              </Layout>
+            </ApplicationProvider>
+          </View>
+        </Provider>
+      </NavigationContainer>
+    </AppearanceProvider>
   );
 };
 

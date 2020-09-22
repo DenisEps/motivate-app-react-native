@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { StyleSheet } from "react-native";
 import { Layout, Button, Input, Submit, Text } from "@ui-kitten/components";
 import { firebase } from "../../../../firebase";
@@ -37,12 +37,13 @@ const RegistrationForm = () => {
             .collection("users")
             .doc(info.user.uid)
             .set({
-              email: info.user.email,
-              displayName: info.user.displayName,
-              photoURL: info.user.photoURL,
-              phoneNumber: info.user.phoneNumber,
-              emailVerified: info.user.emailVerified,
+              email: info.user.email == null ? '' : info.user.email,
+              displayName: info.user.displayName == null ? '' : info.user.displayName,
+              photoURL: info.user.photoURL == null ? '' : info.user.photoURL,
+              phoneNumber: info.user.phoneNumber == null ? '' : info.user.phoneNumber,
+              emailVerified: info.user.emailVerified == null ? '' : info.user.emailVerified,
               habits: [],
+              level: 1,
             });
         });
       const currentUser = firebase.auth().currentUser;
@@ -72,7 +73,6 @@ const RegistrationForm = () => {
       setEmailMessage("");
     } catch (err) {
       const error = new Error(err);
-      
       setError(error.message);
       console.log(error);
 

@@ -20,37 +20,21 @@ const RootNavigator = () => {
   const auth = useSelector(state => state.user);
   console.log('>>>>AUTH', auth);
 
-  async function getDataFromFirebase() {
-    const currentUser = (await firebase.auth()).currentUser;
-    const userFromDataBase = (await firebase.firestore().collection('users').doc(currentUser.uid).get()).data();
-    try {
-      console.log("USRFROMFIREBASE>>>>>>", userFromDataBase);
-      const object = JSON.stringify(userFromDataBase)
-      await AsyncStorage.setItem('user', object);
-      console.log('!!!!!!!!!!!!!!!', currentUser);
-    } catch (e) {
-      const err = new Error(e);
-      setError(err.message);
-    }
-  }
-
-
-
   useEffect(() => {
     load();
-  }, []);
-  
+  }, [])
+
   const load = async () => {
     try {
-      const user = await AsyncStorage.getItem('user');
-      console.log('>>>>>>>>>>>>>>>>>ASYNCSTORAGE', JSON.parse(user));
+      const user = JSON.parse(await AsyncStorage.getItem('user'));
+
+      console.log('>>>>>>>>>>>>>>>>>ASYNCSTORAGE', user);
       if (user !== null) {
-        dispatch(userAuth(true)); // ПРОВЕРКА НА ЮХЕРА ЗАТРА ДОДЕЛАТЬ ВВЕРХУ 
+        dispatch(userAuth(true));
       }
-      getDataFromFirebase();
-    } catch (e) {
-      const err = new Error(e)
-      setError(err.message)
+    } catch (error) {
+      const err = new Error(error)
+      setError(err.message);
     }
   }
   // return <AuthForm />
