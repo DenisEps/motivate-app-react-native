@@ -43,6 +43,7 @@ const RegistrationForm = () => {
               phoneNumber: info.user.phoneNumber,
               emailVerified: info.user.emailVerified,
               habits: [],
+              level: 1,
             });
         });
       const currentUser = firebase.auth().currentUser;
@@ -72,7 +73,6 @@ const RegistrationForm = () => {
       setEmailMessage("");
     } catch (err) {
       const error = new Error(err);
-      
       setError(error.message);
       console.log(error);
 

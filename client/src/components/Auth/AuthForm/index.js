@@ -24,7 +24,6 @@ const AuthForm = () => {
     try {
       const objectValue = JSON.stringify(user)
      await AsyncStorage.setItem('user', objectValue)
-     console.log('user in the store', objectValue);
     } catch(e) {
       const error = new Error(e)
       setError(error.message);
@@ -34,10 +33,8 @@ const AuthForm = () => {
   const remove = async () => {
     try {
       await AsyncStorage.removeItem('user')
-      console.log('remove is okey');
     } catch(e) {
       const error = new Error(e)
-      console.log('error>>>>>>>>',error);
       setError(error.message);
     } finally {
       setUserStore('');
@@ -49,7 +46,6 @@ const AuthForm = () => {
       const user = await firebase
         .auth()
         .signInWithEmailAndPassword(email, pass);
-      console.log("user", user.user);
       const uid = await firebase.auth().currentUser.uid
        await firebase.firestore().collection('users').doc(uid).get().then(info => save(info.data()))
       setEmail("");
@@ -98,6 +94,7 @@ const AuthForm = () => {
                   photoURL: userAuth.photoURL,
                   emailVerified: userAuth.emailVerified,
                   habits: [],
+                  level: 1,
                 });
             })
             .catch(function (error) {
@@ -120,7 +117,7 @@ const AuthForm = () => {
         }
       });
   };
-
+                 //  DONT DELETE //
   // console firebase id client old 331031432009-jd9240r775sse5hcm436i3l47r8pkeq7.apps.googleusercontent.com
 
   const isUserEqual = (googleUser, firebaseUser) => {
@@ -181,7 +178,7 @@ const AuthForm = () => {
         value={pass}
         onChangeText={(nextValue) => setPass(nextValue)}
       />
-      <Button style={{ width: "75%", marginBottom: 5 }} onPress={Login}>Sugn Up</Button>
+      <Button style={{ width: "75%", marginBottom: 5 }} onPress={Login}>Sugn In</Button>
       <Button style={{ width: "75%", marginBottom: 5 }} onPress={() => signInWithGoogleAsync()}>
         Sign In With Google
       </Button>

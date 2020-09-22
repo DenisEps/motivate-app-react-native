@@ -22,9 +22,6 @@ export function deleteUser() {
   }
 }
 
-// import { SET_HABITS, DEL_HABIT, EDIT_HIBIT, SET_SETTINGSSCREEN } from './action-types';
-
-
 export function setHabits(habits) {
   return {
     type: SET_HABITS,
