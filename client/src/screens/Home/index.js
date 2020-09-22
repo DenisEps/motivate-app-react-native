@@ -13,6 +13,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { setHabits } from '../../redux/actions';
 import { ROUTES } from '../../navigation/routes';
+import {TopNavMain} from '../../components/Header'
 import { vectorIcons, vectorIconsUtility } from '../../assets/icons';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -180,9 +181,8 @@ const Home = (props) => {
   return (
     <Layout style={[styles.container, { paddingTop }]}>
       <View>
-        <Layout style={{ alignItems: 'center' }}>
-          <Text category="h4">HEADER HERE</Text>
-        </Layout>
+    
+        <TopNavMain />
 
         <Layout
           style={{
