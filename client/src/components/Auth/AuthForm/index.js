@@ -54,7 +54,9 @@ const AuthForm = () => {
         .collection("users")
         .doc(uid)
         .get()
-        .then((info) => save(info.data()));
+        .then((info) => {
+          console.log(info.data);
+          save(info.data())});
       setEmail("");
       setPass("");
       setTest(true);
@@ -125,7 +127,7 @@ const AuthForm = () => {
                   .update({
                     email: userAuth.email == null ? "" : userAuth.email,
                     displayName:
-                      userAuth.displayName == null ? "" : userAuth.displayName,
+                      userAuth.displayName == null ? "Anonymous" : userAuth.displayName,
                     phoneNumber:
                       userAuth.phoneNumber == null ? "" : userAuth.phoneNumber,
                     photoURL:
