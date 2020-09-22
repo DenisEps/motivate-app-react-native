@@ -87,15 +87,16 @@ const AuthForm = () => {
                 .firestore()
                 .collection("users")
                 .doc(user.user.uid)
-                .set({
+                .update({
                   email: userAuth.email,
                   displayName: userAuth.displayName,
                   phoneNumber: userAuth.phoneNumber,
                   photoURL: userAuth.photoURL,
                   emailVerified: userAuth.emailVerified,
-                  habits: [],
-                  level: 1,
+                  // habits: [],
+                  // level: 1,
                 });
+                await firebase.firestore().collection('users').doc(user.user.uid).get().then(info => save(info.data()))
             })
             .catch(function (error) {
               const errorCode = error.code;
@@ -151,7 +152,7 @@ const AuthForm = () => {
         onSignIn(result);
         setUserStore(result.user)
         dispatch(userAuth(true));
-        save(result.user)
+        // save(result.user)
         return result.accessToken;
       } else {
         return setError("Something went wrong");

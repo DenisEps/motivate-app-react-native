@@ -26,7 +26,8 @@ useEffect(() => {
 
 const load = async () => {
   try {
-    const user = await AsyncStorage.getItem('user');
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+
     console.log('>>>>>>>>>>>>>>>>>ASYNCSTORAGE',user);
     if (user !== null) {
       dispatch(userAuth(true));
