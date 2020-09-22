@@ -25,7 +25,7 @@ export const vectorIcons = {
   bottle: (props) => <FontAwesome5 name="wine-bottle" {...props} />,
   dog: (props) => <FontAwesome5 name="dog" {...props} />,
   medicine: (props) => <MaterialCommunityIcons name="pill" {...props} />,
-  
+  meditation: (props) => <Ionicons name="ios-sunny" />,
 };
 
 export const vectorIconsUtility = {
