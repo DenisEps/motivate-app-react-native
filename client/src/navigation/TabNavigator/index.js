@@ -34,6 +34,7 @@ const BottomTabBar = ({ navigation, state }) => {
 };
 
 const TabNavigator = () => {
+  // const habits = useSelector((state) => state.habits);
   return (
     <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
       <Screen name={ROUTES.homeTab} component={HomeStackScreen} />

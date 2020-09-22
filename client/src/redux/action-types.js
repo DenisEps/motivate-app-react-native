@@ -9,4 +9,7 @@ export const SET_USER = 'SET_USER';
 export const DELETE_USER = 'DELETE_USER';
 export const USER_AUTH = "USER_AUTH"
 
+// for loaders
+export const SET_LOADER = 'SET_LOADER'
+
 export const SET_SETTINGSSCREEN = 'SET_SETTINGSSCREEN';

@@ -1,12 +1,4 @@
-import {
-  SET_HABITS,
-  DEL_HABIT,
-  EDIT_HABIT,
-  SET_IMG,
-  SET_USER,
-  DELETE_USER,
-  USER_AUTH,
-} from './action-types';
+import { SET_HABITS, DEL_HABIT, EDIT_HABIT, SET_IMG, SET_USER, DELETE_USER, USER_AUTH, SET_LOADER } from './action-types';
 
 export function habitReducer(state = [], action) {
   switch (action.type) {
@@ -34,7 +26,7 @@ export function userReducer(state = null, action) {
       return action.payload;
 
     case DELETE_USER:
-      return state;
+      return action.payload;
 
     case USER_AUTH:
       return action.payload;
@@ -43,6 +35,17 @@ export function userReducer(state = null, action) {
       return state;
   }
 }
-export default {
-  habitReducer,
-};
+
+export function loaderReducer(state = null, action) {
+  switch(action.type) {
+    case SET_LOADER:
+      return action.payload
+    
+    default: 
+    return state
+  }
+}
+
+// export default {
+//   habitReducer,
+// }

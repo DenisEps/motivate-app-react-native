@@ -13,7 +13,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { setHabits } from '../../redux/actions';
 import { ROUTES } from '../../navigation/routes';
-import { TopNavMain } from '../../components/Header'
+import { TopNavMain } from '../../components/Header';
 import { vectorIcons, vectorIconsUtility } from '../../assets/icons';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -73,11 +73,9 @@ const PADDING = width / 24;
 const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
 
 function Item({ item, onPress, style, handleOpen }) {
-
-  console.log(width);
   const iconName = item.icon.name;
-  const [spinner, setSpinner] = useState(false)
-  const [check, setCheck] = useState(false)
+  const [spinner, setSpinner] = useState(false);
+  const [check, setCheck] = useState(false);
   if (!vectorIcons[iconName]) return null;
   const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
   const downsize = 20;
@@ -86,24 +84,56 @@ function Item({ item, onPress, style, handleOpen }) {
       <TouchableOpacity
         onPress={onPress}
         onPressIn={() => {
-          setTimeout(() => { setSpinner(true) }, 200);
-          setTimeout(() => { setSpinner(false); setCheck(true) }, 700);
+          setTimeout(() => {
+            setSpinner(true);
+          }, 200);
+          setTimeout(() => {
+            setSpinner(false);
+            setCheck(true);
+          }, 700);
         }}
         onLongPress={() => {
           item.goals[4] = 1;
         }}
         onPressOut={() => {
           setSpinner(false);
-          setTimeout(() => { setCheck(false) }, 1000);
+          setTimeout(() => {
+            setCheck(false);
+          }, 1000);
         }}
-        style={[styles.item, style]}>
+        style={[styles.item, style]}
+      >
         <Text style={styles.title}>{item.title}</Text>
 
         {icon}
 
-        {spinner && (<Image style={{ width: ITEM_SIZE, height: ITEM_SIZE, left: 0, bottom: 0, zIndex: 1, position: 'absolute' }} source={require('../../img/spinner4.gif')} />)}
+        {spinner && (
+          <Image
+            style={{
+              width: ITEM_SIZE,
+              height: ITEM_SIZE,
+              left: 0,
+              bottom: 0,
+              zIndex: 1,
+              position: 'absolute',
+            }}
+            source={require('../../img/spinner4.gif')}
+          />
+        )}
 
-        {check && (<Image style={{ width: ITEM_SIZE - downsize, height: ITEM_SIZE - downsize, left: downsize / 2, bottom: downsize / 2, zIndex: 1, position: 'absolute' }} source={require('../../img/check1.png')} />)}
+        {check && (
+          <Image
+            style={{
+              width: ITEM_SIZE - downsize,
+              height: ITEM_SIZE - downsize,
+              left: downsize / 2,
+              bottom: downsize / 2,
+              zIndex: 1,
+              position: 'absolute',
+            }}
+            source={require('../../img/check1.png')}
+          />
+        )}
 
         <Layout style={styles.goals}>
           {item.goals.map((goal, i) => {
@@ -116,7 +146,9 @@ function Item({ item, onPress, style, handleOpen }) {
               color = '#DE4E57';
               type = 'close';
             }
-            return <Icon key={i} style={styles.icon} fill={color} name={type} />;
+            return (
+              <Icon key={i} style={styles.icon} fill={color} name={type} />
+            );
           })}
         </Layout>
       </TouchableOpacity>
@@ -130,7 +162,7 @@ function ItemBack({ item, onPress, style, navigation, handleOpen }) {
   };
   const renderZoomIcon = () => {
     return vectorIconsUtility.menuHorizontal({ size: 50, color: '#090D20' });
-  }
+  };
   return (
     <TouchableOpacity
       onPress={() => {
@@ -179,12 +211,12 @@ const Home = (props) => {
             handleOpen={handleOpenHabit}
           />
         ) : (
-            <Item
-              item={item}
-              onPress={() => setSelectedId(item.id)}
-              style={{ backgroundColor }}
-            />
-          )}
+          <Item
+            item={item}
+            onPress={() => setSelectedId(item.id)}
+            style={{ backgroundColor }}
+          />
+        )}
       </View>
     );
   };
@@ -203,7 +235,6 @@ const Home = (props) => {
   return (
     <Layout style={[styles.container, { paddingTop }]}>
       <View>
-
         <TopNavMain />
 
         <Layout
@@ -244,7 +275,7 @@ const styles = StyleSheet.create({
   icon: { width: 20, height: 20 },
   container: {
     flex: 1,
-    position: 'relative'
+    position: 'relative',
   },
   item: {
     padding: PADDING,
@@ -267,8 +298,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 10,
-    color: '#fff',
+    color: '#E6ECFD',
   },
 });
 
