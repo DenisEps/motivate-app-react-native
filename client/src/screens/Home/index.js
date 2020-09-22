@@ -1,6 +1,6 @@
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { firebase } from '../../../firebase';
 import {
@@ -73,31 +73,46 @@ const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
 
 function Item({ item, onPress, style, handleOpen }) {
   const iconName = item.icon.name;
-
+  const [spinner, setSpinner] = useState(false)
+  const [check, setCheck] = useState(false)
   if (!vectorIcons[iconName]) return null;
   const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
 
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-      <Text style={styles.title}>{item.title}</Text>
+    <>
+      <TouchableOpacity
+        onPress={onPress}
+        onPressIn={() => {
+          setTimeout(() => { setSpinner(true) }, 100);
+          setTimeout(() => { setSpinner(false); setCheck(true) }, 1000);
+          setTimeout(() => { setCheck(false) }, 2200);
+        }}
+        onPressOut={() => setSpinner(false)}
+        style={[styles.item, style]}>
+        <Text style={styles.title}>{item.title}</Text>
 
-      {icon}
+        {icon}
 
-      <Layout style={styles.goals}>
-        {item.goals.map((goal, i) => {
-          let color = '';
-          let type = '';
-          if (goal === 'lose') {
-            color = '#DE4E57';
-            type = 'checkmark';
-          } else {
-            color = '#8BEE88';
-            type = 'close';
-          }
-          return <Icon key={i} style={styles.icon} fill={color} name={type} />;
-        })}
-      </Layout>
-    </TouchableOpacity>
+        {spinner && (<Image style={{ width: ITEM_SIZE, height: ITEM_SIZE, left: 0, bottom: 105, zIndex: 3 }} source={require('../../img/spinner4.gif')} />)}
+
+        {check && (<Image style={{ width: ITEM_SIZE - 50, height: ITEM_SIZE - 50, left: 0, bottom: 80, zIndex: 3 }} source={require('../../img/check.png')} />)}
+
+        <Layout style={styles.goals}>
+          {item.goals.map((goal, i) => {
+            let color = '';
+            let type = '';
+            if (goal === 'lose') {
+              color = '#DE4E57';
+              type = 'checkmark';
+            } else {
+              color = '#8BEE88';
+              type = 'close';
+            }
+            return <Icon key={i} style={styles.icon} fill={color} name={type} />;
+          })}
+        </Layout>
+      </TouchableOpacity>
+    </>
   );
 }
 
@@ -156,12 +171,12 @@ const Home = (props) => {
             handleOpen={handleOpenHabit}
           />
         ) : (
-          <Item
-            item={item}
-            onPress={() => setSelectedId(item.id)}
-            style={{ backgroundColor }}
-          />
-        )}
+            <Item
+              item={item}
+              onPress={() => setSelectedId(item.id)}
+              style={{ backgroundColor }}
+            />
+          )}
       </View>
     );
   };
