@@ -43,7 +43,7 @@ const RootNavigator = () => {
     }
   }
   // return <AuthForm />
-  return true ? <TabNavigator /> : <StartForm />;
+  return auth ? <TabNavigator /> : <StartForm />;
 };
 
 export default RootNavigator;
