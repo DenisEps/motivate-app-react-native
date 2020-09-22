@@ -54,7 +54,6 @@ const RegistrationForm = () => {
         .doc(uid)
         .get()
         .then((info) => save(info.data()));
-      console.log(uid);
       dispatch(userAuth(true));
       currentUser
         .sendEmailVerification()
@@ -65,7 +64,6 @@ const RegistrationForm = () => {
           const error = new Error(err);
           setError(error.message);
         });
-      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> test');
       setAuthUser(user);
       setError(null);
       setEmail("");

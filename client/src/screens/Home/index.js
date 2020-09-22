@@ -73,7 +73,6 @@ const PADDING = width / 24;
 const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
 
 function Item({ item, onPress, style, handleOpen }) {
-  console.log(width);
   const iconName = item.icon.name;
   const [spinner, setSpinner] = useState(false);
   const [check, setCheck] = useState(false);

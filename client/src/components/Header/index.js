@@ -24,7 +24,6 @@ export const TopNavMain = () => {
   useEffect(() => {
     (async function () {
      const user =  await firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).get().then(info => info.data())
-     console.log('>>>>>>>', user);
      setDisplayName(user.displayName)
     })();
   }, []);

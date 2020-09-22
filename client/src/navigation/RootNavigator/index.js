@@ -18,8 +18,6 @@ const RootNavigator = () => {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const auth = useSelector(state => state.user);
-  console.log('>>>>AUTH', auth);
-
 
 useEffect(() => {
   load();
@@ -36,7 +34,6 @@ useEffect(() => {
     try {
       const user = JSON.parse(await AsyncStorage.getItem('user'));
 
-      console.log('>>>>>>>>>>>>>>>>>ASYNCSTORAGE', user);
       if (user !== null) {
         dispatch(userAuth(true));
       }
