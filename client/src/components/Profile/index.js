@@ -34,7 +34,6 @@ function Profile() {
         console.error(err);
       }
     })();
-
   }, []);
 
   async function photoPreparation(galPhotoUri) {
@@ -71,9 +70,9 @@ function Profile() {
 
   async function launchCamera() {
     try {
-      ImagePicker.requestCameraRollPermissionsAsync();
+      ImagePicker.getCameraRollPermissionsAsync()
+      // ImagePicker.requestCameraPermissionsAsync();
       const newPhoto = await ImagePicker.launchCameraAsync();
-      console.log(newPhoto);
     } catch (err) {
       console.error(err);
     }
@@ -87,22 +86,11 @@ function Profile() {
       await firebase.firestore().collection('users').doc(currentUser.uid).update({
         displayName: displayName,
         phoneNumber: phone,
-        // photoURL: galPhoto,
+        photoURL: galPhoto,
       });
-      // if (currentUser.email !== email) {
-      //   await firebase.firestore().collection('users').doc(currentUser.uid).update({
-
-      //   });
-      // }
-      // if (password) {
-      // await firebase.firestore().collection('users').doc(currentUser.uid).update({
-
-      //   });
-      // }
     } catch (e) {
       const error = new Error(e);
       setError(error.message);
-      console.log('PROBLEM THIS');
       console.log(err);
     }
   }

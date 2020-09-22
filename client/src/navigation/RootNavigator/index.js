@@ -10,13 +10,8 @@ import PushNotifications from '../../components/TestDb/TestPushNotifications'
 import Profile from '../../components/Profile/index'
 import StartForm from '../../components/Auth/StartForm'
 import AsyncStorage from '@react-native-community/async-storage';
-<<<<<<< HEAD
 import { userAuth, deleteUser, setLoader } from "../../redux/actions";
 import {firebase} from '../../../firebase'
-=======
-import { userAuth, deleteUser } from "../../redux/actions";
-import { firebase } from '../../../firebase';
->>>>>>> 0d77ec8ce2141630f6a4e276c8c2ee283b2b3d87
 
 
 const RootNavigator = () => {
@@ -25,7 +20,6 @@ const RootNavigator = () => {
   const auth = useSelector(state => state.user);
   console.log('>>>>AUTH', auth);
 
-<<<<<<< HEAD
 
 useEffect(() => {
   load();
@@ -37,11 +31,6 @@ useEffect(() => {
   //   dispatch(setLoader(false))
   // }
 }, [])
-=======
-  useEffect(() => {
-    load();
-  }, [])
->>>>>>> 0d77ec8ce2141630f6a4e276c8c2ee283b2b3d87
 
   const load = async () => {
     try {

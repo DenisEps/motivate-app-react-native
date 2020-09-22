@@ -55,7 +55,9 @@ const AuthForm = () => {
         .collection("users")
         .doc(uid)
         .get()
-        .then((info) => save(info.data()));
+        .then((info) => {
+          console.log(info.data);
+          save(info.data())});
       setEmail("");
       setPass("");
       setTest(true);
