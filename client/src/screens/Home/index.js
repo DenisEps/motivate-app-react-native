@@ -1,6 +1,6 @@
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { firebase } from '../../../firebase';
 import {
@@ -13,46 +13,53 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { setHabits } from '../../redux/actions';
 import { ROUTES } from '../../navigation/routes';
-import { vectorIcons } from '../../assets/icons';
+import { TopNavMain } from '../../components/Header';
+import { vectorIcons, vectorIconsUtility } from '../../assets/icons';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const habits = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
     title: 'Smoking',
-    goals: ['lose', 'win', 'win', 'win', 'lose', 'lose', 'win'],
+    goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'smoke' },
+    status: true
   },
   {
     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
     title: 'Fastfood',
-    goals: ['lose', 'win', 'win', 'win', 'lose', 'lose', 'win'],
+    goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'fastfood' },
+    status: false
   },
   {
     id: '58694a0f-3da1-471f-bd96-145571e29d72',
     title: 'Learning',
-    goals: ['lose', 'win', 'win', 'win', 'lose', 'lose', 'win'],
+    goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'learn' },
+    status: false
   },
   {
     id: '586d94a0f-3da1-471f-bd96-145571e29d72',
     title: 'Bad Words',
-    goals: ['lose', 'win', 'win', 'win', 'lose', 'lose', 'win'],
+    goals: [0, 1, 1, 1, 0, 0, 1],
     icon: { name: 'badwords' },
+    status: true
   },
-  {
-    id: '58694ad0f-3da1-471f-bd96-145571e29d72',
-    title: 'Water',
-    goals: ['lose', 'win', 'win', 'win', 'lose', 'lose', 'win'],
-    icon: { name: 'water' },
-  },
-  {
-    id: '58694a0ff-3da1-471f-bd96-145571e29d72',
-    title: 'Code',
-    goals: ['lose', 'win', 'win', 'win', 'lose', 'lose', 'win'],
-    icon: { name: 'code' },
-  },
+  // {
+  //   id: '58694ad0f-3da1-471f-bd96-145571e29d72',
+  //   title: 'Water',
+  //   goals: [0, 1, 1, 1, 0, 0, 1],
+  //   icon: { name: 'water' },
+  // status: true
+  // },
+  // {
+  //   id: '58694a0ff-3da1-471f-bd96-145571e29d72',
+  //   title: 'Code',
+  //   goals: [0, 1, 1, 1, 0, 0, 1],
+  //   icon: { name: 'code' },
+  // status: true
+  // },
 ];
 // const uid = firebase.auth().currentUser.uid
 // const user = firebase.firestore().collection('users').doc(uid).get().then(info => console.log(info.data()))
@@ -67,47 +74,100 @@ const habits = [
 // }
 // load()
 
-const { width } = Dimensions.get('window');
-const PADDING = 15;
+const { width, height } = Dimensions.get('window');
+const PADDING = width / 24;
 const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
 
 function Item({ item, onPress, style, handleOpen }) {
   const iconName = item.icon.name;
-
+  const [spinner, setSpinner] = useState(false);
+  const [check, setCheck] = useState(false);
   if (!vectorIcons[iconName]) return null;
   const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
-
+  const downsize = 20;
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-      <Text style={styles.title}>{item.title}</Text>
+    <>
+      <TouchableOpacity
+        onPress={onPress}
+        onPressIn={() => {
+          setTimeout(() => {
+            setSpinner(true);
+          }, 200);
+          setTimeout(() => {
+            setSpinner(false);
+            setCheck(true);
+          }, 700);
+        }}
+        onLongPress={() => {
+          item.goals[4] = 1;
+        }}
+        onPressOut={() => {
+          setSpinner(false);
+          setTimeout(() => {
+            setCheck(false);
+          }, 1000);
+        }}
+        style={[styles.item, style]}
+      >
+        {!check && <Text style={styles.title}>{item.title}</Text>}
 
-      {icon}
+        {!check && icon}
 
-      <Layout style={styles.goals}>
-        {item.goals.map((goal, i) => {
-          let color = '';
-          let type = '';
-          if (goal === 'lose') {
-            color = '#DE4E57';
-            type = 'checkmark';
-          } else {
-            color = '#8BEE88';
-            type = 'close';
-          }
-          return <Icon key={i} style={styles.icon} fill={color} name={type} />;
-        })}
-      </Layout>
-    </TouchableOpacity>
+        {spinner && (
+          <Image
+            style={{
+              width: ITEM_SIZE,
+              height: ITEM_SIZE,
+              left: 0,
+              bottom: 0,
+              zIndex: 1,
+              position: 'absolute',
+            }}
+            source={require('../../img/spinner4.gif')}
+          />
+        )}
+
+        {check && (
+          <Image
+            style={{
+              width: ITEM_SIZE - downsize,
+              height: ITEM_SIZE - downsize,
+              left: downsize / 2,
+              bottom: downsize / 2,
+              zIndex: 1,
+              position: 'absolute',
+            }}
+            source={require('../../img/check1.png')}
+          />
+        )}
+
+        {!check && <Layout style={styles.goals}>
+          {item.goals.map((goal, i) => {
+            let color = '';
+            let type = '';
+            if (goal === 1) {
+              color = '#8BEE88';
+              type = 'checkmark';
+            } else {
+              color = '#DE4E57';
+              type = 'close';
+            }
+            return (
+              <Icon key={i} style={styles.icon} fill={color} name={type} />
+            );
+          })}
+        </Layout>}
+      </TouchableOpacity>
+    </>
   );
 }
-
-const SettingsIcon = (props) => (
-  <Icon fill="black" {...props} name="maximize-outline" />
-);
 
 function ItemBack({ item, onPress, style, navigation, handleOpen }) {
   const handlePress = () => {
     handleOpen(item.id);
+  };
+  const renderZoomIcon = () => {
+    return vectorIconsUtility.menuHorizontal({ size: 50, color: '#090D20' });
   };
   return (
     <TouchableOpacity
@@ -117,12 +177,13 @@ function ItemBack({ item, onPress, style, navigation, handleOpen }) {
       style={[styles.itemBack, style]}
     >
       <Button
-        style={{ width: 20, height: 20 }}
         appearance="ghost"
-        accessoryLeft={SettingsIcon}
+        accessoryLeft={renderZoomIcon}
         onPress={handlePress}
       />
-      <Text>DETAILS</Text>
+      <Text category="s1" style={{ color: '#090D20' }}>
+        DETAILS
+      </Text>
     </TouchableOpacity>
   );
 }
@@ -156,12 +217,12 @@ const Home = (props) => {
             handleOpen={handleOpenHabit}
           />
         ) : (
-          <Item
-            item={item}
-            onPress={() => setSelectedId(item.id)}
-            style={{ backgroundColor }}
-          />
-        )}
+            <Item
+              item={item}
+              onPress={() => setSelectedId(item.id)}
+              style={{ backgroundColor }}
+            />
+          )}
       </View>
     );
   };
@@ -180,10 +241,7 @@ const Home = (props) => {
   return (
     <Layout style={[styles.container, { paddingTop }]}>
       <View>
-        <Layout style={{ alignItems: 'center' }}>
-          <Text category="h4">HEADER HERE</Text>
-        </Layout>
-
+        <TopNavMain navigation={navigation} />
         <Layout
           style={{
             flexDirection: 'row',
@@ -218,10 +276,11 @@ const Home = (props) => {
 };
 
 const styles = StyleSheet.create({
-  goals: { flexDirection: 'row' },
+  goals: { flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0)' },
   icon: { width: 20, height: 20 },
   container: {
     flex: 1,
+    position: 'relative',
   },
   item: {
     padding: PADDING,
@@ -241,11 +300,10 @@ const styles = StyleSheet.create({
     width: ITEM_SIZE,
     borderRadius: 20,
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   title: {
-    fontSize: 10,
-    color: '#FFFFFF',
+    color: '#E6ECFD',
   },
 });
 

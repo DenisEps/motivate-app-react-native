@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  FlatList,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import { vectorIcons, kittenIcons } from '../../assets/icons';
 import {
   Layout,
@@ -8,24 +15,30 @@ import {
   Input,
   Button,
 } from '@ui-kitten/components';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Item = ({ item, onPress, style }) => {
-
   if (!vectorIcons[item]) return null;
   const icon = vectorIcons[item]({ size: 35, color: '#FFFFFF' });
 
   return (
-    <TouchableOpacity onPress={() => {
-      onPress();
-    }} style={[styles.item, style]}>
+    <TouchableOpacity
+      onPress={() => {
+        onPress();
+      }}
+      style={[styles.item, style]}
+    >
       {icon}
     </TouchableOpacity>
-  )
+  );
 };
 
 const IconSelect = ({ route, navigation }) => {
   const [selectedId, setSelectedId] = useState(null);
   const { setIcon } = route.params;
+
+  const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
+
   const renderBackAction = () => (
     <TopNavigationAction onPress={back} icon={kittenIcons.BackIcon} />
   );
@@ -35,14 +48,14 @@ const IconSelect = ({ route, navigation }) => {
   };
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item === selectedId ? "#7E0087" : "#5B58AF";
+    const backgroundColor = item === selectedId ? '#7E0087' : '#5B58AF';
 
     return (
       <Item
         item={item}
         onPress={() => {
           setSelectedId(item);
-          setIcon(item)
+          setIcon(item);
         }}
         style={{ backgroundColor }}
       />
@@ -50,13 +63,8 @@ const IconSelect = ({ route, navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Layout style={styles.backButton} level="1">
-        <TopNavigation
-          alignment="center"
-          accessoryLeft={renderBackAction}
-        />
-      </Layout>
+    <Layout style={[styles.container, { paddingTop }]}>
+      <TopNavigation accessoryLeft={renderBackAction} />
       <FlatList
         data={Object.keys(vectorIcons)}
         renderItem={renderItem}
@@ -64,14 +72,11 @@ const IconSelect = ({ route, navigation }) => {
         extraData={selectedId}
         numColumns={3}
       />
-    </SafeAreaView >
+    </Layout>
   );
 };
 
 const styles = StyleSheet.create({
-  backButton: {
-    justifyContent: 'flex-start'
-  },
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
@@ -83,7 +88,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
     borderRadius: 15,
-    shadowColor: "#000",
+    shadowColor: '#fff',
     shadowOffset: {
       width: 0,
       height: 2,

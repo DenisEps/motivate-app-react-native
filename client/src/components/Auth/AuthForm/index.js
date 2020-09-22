@@ -20,7 +20,6 @@ const AuthForm = () => {
   const [userStore, setUserStore] = useState(null);
   const dispatch = useDispatch();
   const loader = useSelector(state => state.loader)
-  console.log('LOADER', loader);
 
   const save = async (user) => {
     try {
@@ -93,7 +92,6 @@ const AuthForm = () => {
             .signInWithCredential(credential)
             .then(async function (user) {
               if (user.additionalUserInfo.isNewUser) {
-                console.log("USER>>>>>>>> true", user.additionalUserInfo.isNewUser);
                 const userAuth = user.user;
                 await firebase
                   .firestore()
@@ -121,7 +119,6 @@ const AuthForm = () => {
                   .get()
                   .then((info) => save(info.data()));
               } else {
-                console.log("USER>>>>>>>> false", user.additionalUserInfo.isNewUser);
                 const userAuth = user.user;
                 await firebase
                   .firestore()

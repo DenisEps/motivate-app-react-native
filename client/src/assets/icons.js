@@ -6,6 +6,7 @@ import {
   MaterialIcons,
   FontAwesome,
   Entypo,
+  Feather,
 } from '@expo/vector-icons';
 import { Icon } from '@ui-kitten/components';
 
@@ -24,9 +25,15 @@ export const vectorIcons = {
   bottle: (props) => <FontAwesome5 name="wine-bottle" {...props} />,
   dog: (props) => <FontAwesome5 name="dog" {...props} />,
   medicine: (props) => <MaterialCommunityIcons name="pill" {...props} />,
+  meditation: (props) => <Ionicons name="ios-sunny" />,
+};
+
+export const vectorIconsUtility = {
   menuHorizontal: (props) => (
     <MaterialCommunityIcons {...props} name="dots-horizontal-circle-outline" />
   ),
+  zoomOut: (props) => <MaterialIcons name="zoom-out-map" {...props} />,
+  edit: (props) => <Feather name="edit" {...props} />,
 };
 
 export const kittenIcons = {
@@ -43,4 +50,5 @@ export const kittenIcons = {
   HomeOutline: (props) => <Icon {...props} name="home-outline" />,
   SettingsIcon: (props) => <Icon {...props} name="settings-outline" />,
   PieChart: (props) => <Icon {...props} name="pie-chart-outline" />,
+  profile: (props) => <Icon {...props} name="person-outline" />,
 };
