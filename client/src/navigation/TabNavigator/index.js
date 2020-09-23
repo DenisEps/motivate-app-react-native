@@ -14,7 +14,6 @@ import Profile from '../../components/Profile';
 import { vectorIcons, kittenIcons } from '../../assets/icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
-const Tab = createMaterialBottomTabNavigator();
 const { Navigator, Screen } = createBottomTabNavigator();
 
 const BottomTabBar = ({ navigation, state }) => {
@@ -35,20 +34,6 @@ const BottomTabBar = ({ navigation, state }) => {
     </BottomNavigation>
   );
 };
-
-// function TabNavigator() {
-//   return (
-//     <Tab.Navigator tabBar={(props) => <BottomTabBar {...props} />}
-//       initialRouteName="Home"
-//       activeColor="#f0edf6"
-//       inactiveColor="#3e2465"
-//       barStyle={{ backgroundColor: '#694fad' }} >
-//       <Tab.Screen name={ROUTES.homeTab} component={HomeStackScreen} />
-//       <Tab.Screen name={ROUTES.stats} component={StatsStackScreen} />
-//       <Tab.Screen name={ROUTES.profile} component={Profile} />
-//     </Tab.Navigator>
-//   );
-// }
 
 const TabNavigator = () => {
   return (
