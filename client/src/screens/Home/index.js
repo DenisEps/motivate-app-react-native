@@ -387,9 +387,9 @@ const Home = (props) => {
             onLongPress={handleCreateNew}
             style={[styles.item, { backgroundColor: '#7B8CDE', justifyContent: 'space-around' }]}
           >
-            <Text category="h7" style={{ color: '#E6ECFD' }}>ADD</Text>
+            <Text category="h6" style={{ color: '#E6ECFD' }}>ADD</Text>
             {iconAdd}
-            <Text category="h7" style={{ color: '#E6ECFD' }}>NEW HABIT</Text>
+            <Text category="h6" style={{ color: '#E6ECFD' }}>NEW HABIT</Text>
           </TouchableOpacity>}
 
 
