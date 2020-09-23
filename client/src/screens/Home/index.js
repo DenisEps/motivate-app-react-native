@@ -293,19 +293,41 @@ const Home = (props) => {
         setHabits(firestoreHabits);
       });
 
-    // const seeder = async () => {
-    //   const uid = firebase.auth().currentUser.uid;
-    //   const habit1 = await firebase
-    //     .firestore()
-    //     .collection('users')
-    //     .doc(uid)
-    //     .collection('habits')
-    //     .add({
-    //       icon: 'smoke',
-    //       title: 'do not smoke',
-    //       type: 'negative',
-    //       dates: {
-    //         '09.1': 1,
+    const seeder = async () => {
+      const uid = firebase.auth().currentUser.uid;
+      const habit1 = await firebase
+        .firestore()
+        .collection('users')
+        .doc(uid)
+        .collection('habits')
+        .add({
+          icon: 'smoke',
+          title: 'do not smoke',
+          type: 'negative',
+          dates: [
+            {day: 1, month: 9, value: 1},
+            {day: 2, month: 9, value: 0},
+            {day: 3, month: 9, value: 0},
+            {day: 4, month: 9, value: 1},
+            {day: 5, month: 9, value: 1},
+            {day: 6, month: 9, value: 0},
+            {day: 7, month: 9, value: 1},
+            {day: 8, month: 9, value: 0},
+            {day: 9, month: 9, value: 1},
+            {day: 10, month: 9, value: 1},
+            {day: 11, month: 9, value: 0},
+            {day: 12, month: 9, value: 0},
+            {day: 13, month: 9, value: 0},
+            {day: 14, month: 9, value: 1},
+            {day: 15, month: 9, value: 1},
+            {day: 16, month: 9, value: 0},
+            {day: 17, month: 9, value: 1},
+            {day: 18, month: 9, value: 0},
+            {day: 19, month: 9, value: 1},
+            {day: 20, month: 9, value: 1},
+            {day: 21, month: 9, value: 0},
+            {day: 22, month: 9, value: 1},
+            {day: 23, month: 9, value: 1},
     //         '09.2': 0,
     //         '09.3': 1,
     //         '09.4': 1,
@@ -335,9 +357,9 @@ const Home = (props) => {
     //         '09.28': 0,
     //         '09.29': 1,
     //         '09.30': 1,
-    //       },
-    //     });
-    // };
+          ],
+        });
+    };
 
     // seeder();
     return () => {
