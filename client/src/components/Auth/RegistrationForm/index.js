@@ -44,8 +44,8 @@ const RegistrationForm = () => {
               emailVerified: info.user.emailVerified == null ? '' : info.user.emailVerified,
               habits: [],
               level: 1,
-            });
-        });
+            })
+        })
       const currentUser = firebase.auth().currentUser;
       const uid = firebase.auth().currentUser.uid;
       await firebase
