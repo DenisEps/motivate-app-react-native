@@ -19,13 +19,14 @@ const AuthForm = () => {
   const [test, setTest] = useState(false);
   const [userStore, setUserStore] = useState(null);
   const dispatch = useDispatch();
-  const loader = useSelector(state => state.loader)
+  const loader = useSelector((state) => state.loader);
 
   const save = async (user) => {
     try {
       const objectValue = JSON.stringify(user);
+      console.log("USER IN SAVE FUNCTION", user);
       await AsyncStorage.setItem("user", objectValue);
-      dispatch(setLoader(true))
+      dispatch(setLoader(true));
     } catch (e) {
       const error = new Error(e);
       setError(error.message);
@@ -48,24 +49,20 @@ const AuthForm = () => {
       await firebase
         .auth()
         .signInWithEmailAndPassword(email, pass);
-      // const uid = await firebase.auth().currentUser.uid;
-      // await firebase
-      //   .firestore()
-      //   .collection("users")
-      //   .doc(uid)
-      //   .get()
-      //   .then((info) => {
-      //     console.log(info.data);
-      //     save(info.data())});
-      
-      // console.log('here')
-      
-      // setEmail("");
-      // setPass("");
-      // setTest(true);
-      // // setUserStore(currentUser)
-      // dispatch(userAuth(true));
-      // save(currentUser); // asyncStorage
+      const uid = await firebase.auth().currentUser.uid;
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(uid)
+        .get()
+        .then((info) => {
+          console.log("LOGIN USER DATA", info.data());
+          save(info.data());
+        });
+      setEmail("");
+      setPass("");
+      setTest(true);
+      dispatch(userAuth(true));
     } catch (err) {
       const error = new Error(err);
       setError(error.message);
@@ -105,7 +102,9 @@ const AuthForm = () => {
                   .set({
                     email: userAuth.email == null ? "" : userAuth.email,
                     displayName:
-                      userAuth.displayName == null ? "" : userAuth.displayName,
+                      userAuth.displayName == null
+                        ? "Anonymous"
+                        : userAuth.displayName,
                     phoneNumber:
                       userAuth.phoneNumber == null ? "" : userAuth.phoneNumber,
                     photoURL:
@@ -114,16 +113,16 @@ const AuthForm = () => {
                       userAuth.emailVerified == null
                         ? ""
                         : userAuth.emailVerified,
-                    // habits: [],
-                    // level: 1,
                   });
-              // finish here ⚠️
                 await firebase
                   .firestore()
                   .collection("users")
                   .doc(user.user.uid)
                   .get()
-                  .then((info) => save(info.data()));
+                  .then(info => {
+                    console.log("google auth new user!!!!!!!!!", info.data());
+                    save(info.data());
+                  });
               } else {
                 const userAuth = user.user;
                 await firebase
@@ -133,7 +132,9 @@ const AuthForm = () => {
                   .update({
                     email: userAuth.email == null ? "" : userAuth.email,
                     displayName:
-                      userAuth.displayName == null ? "Anonymous" : userAuth.displayName,
+                      userAuth.displayName == null
+                        ? "Anonymous"
+                        : userAuth.displayName,
                     phoneNumber:
                       userAuth.phoneNumber == null ? "" : userAuth.phoneNumber,
                     photoURL:
@@ -150,7 +151,10 @@ const AuthForm = () => {
                   .collection("users")
                   .doc(user.user.uid)
                   .get()
-                  .then((info) => save(info.data()));
+                  .then((info) => {
+                    console.log('>>>> USER ALREADY HERE', info.data());
+                    save(info.data())
+                  });
               }
             })
             .catch(function (error) {

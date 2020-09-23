@@ -13,11 +13,16 @@ import { userAuth } from '../../redux/actions';
 import { firebase } from '../../../firebase';
 
 const RootNavigator = () => {
-  const dispatch = useDispatch()
-  
+  const dispatch = useDispatch();
+
   const auth = useSelector((state) => {
     return state.user;
   });
+
+  //   const [error, setError] = useState(null);
+  //   const dispatch = useDispatch();
+  //   const auth = useSelector(state => state.user);
+  // console.log('>>>>>>>AUTHDASLKDKDDKASDKASD))))!!!!!!',auth);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((firebaseUser) => {
@@ -26,12 +31,15 @@ const RootNavigator = () => {
       } else {
         dispatch(userAuth(false));
       }
-    })
-  }, [dispatch])
+    });
+  }, [dispatch]);
 
-
-  if(auth === null) {
-    return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View>
+  if (auth === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator />
+      </View>
+    );
   }
 
   // useEffect(() => {
