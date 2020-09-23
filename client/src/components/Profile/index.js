@@ -13,7 +13,6 @@ import {
   Modal,
   Card,
 } from "@ui-kitten/components";
-import TabNavigator from "../../navigation/TabNavigator";
 import { View } from "react-native-animatable";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -25,9 +24,7 @@ import { Asset } from "expo-asset";
 function Profile() {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
-  const [photo, setPhoto] = useState(
-    FileSystem.documentDirectory + "avatar.jpeg"
-  );
+  const [photo, setPhoto] = useState(require('../../photo/startavatar.jpeg'));
   const [err, setError] = useState(null);
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
@@ -38,12 +35,17 @@ function Profile() {
       try {
         const dataFromStorage = JSON.parse(await AsyncStorage.getItem("user"))
           ? JSON.parse(await AsyncStorage.getItem("user"))
-          : { data: "hello" };
+          : { photoURL: "" };
         setDisplayName(dataFromStorage.displayName);
         setEmail(dataFromStorage.email);
         setPhone(dataFromStorage.phoneNumber);
-        console.log(dataFromStorage.photoURL.slice(0, 4));
-        if (dataFromStorage.photoURL.slice(0, 4) !== "http") {
+     
+        if (
+          dataFromStorage.photoURL === "" ||
+          photo === require("../../photo/startavatar.jpeg").uri
+        ) {
+          // setPhoto(require("../../photo/startavatar.jpeg").uri);
+        } else if (dataFromStorage.photoURL.slice(0, 4) !== "http") {
           await FileSystem.writeAsStringAsync(
             FileSystem.documentDirectory + "avatar.jpeg",
             dataFromStorage.photoURL,
@@ -128,7 +130,7 @@ function Profile() {
 
   const remove = async () => {
     try {
-      await AsyncStorage.removeItem('user');
+      await AsyncStorage.removeItem("user");
     } catch (e) {
       const err = new Error(e);
       setError(err.message);
@@ -136,7 +138,7 @@ function Profile() {
   };
 
   const logout = async () => {
-    dispatch(deleteUser());
+    dispatch(deleteUser(false));
     remove();
     await firebase.auth().signOut();
     const user = firebase.auth().currentUser;
@@ -270,7 +272,6 @@ export default Profile;
 //   Avatar,
 //   Icon,
 // } from "@ui-kitten/components";
-// import TabNavigator from "../../navigation/TabNavigator";
 // import { firebase } from "../../../firebase";
 
 // function Profile() {
@@ -471,7 +472,6 @@ export default Profile;
 //       </Text>
 //       <Input style={{ width: "75%", marginBottom: 10 }}></Input>
 //       <Button style={{ width: "75%" }}>Save Changes</Button>
-//       <TabNavigator />
 //     </Layout>
 //   );
 // }

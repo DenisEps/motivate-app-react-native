@@ -1,6 +1,12 @@
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { firebase } from '../../../firebase';
 import {
@@ -11,21 +17,20 @@ import {
   Layout as View,
 } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
-import { setHabits } from '../../redux/actions';
 import { ROUTES } from '../../navigation/routes';
 import { TopNavMain } from '../../components/Header';
 import { vectorIcons, vectorIconsUtility } from '../../assets/icons';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const habitsFB = [
-  // {
-  //   id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-  //   title: 'Smoking',
-  //   goals: [0, 1, 1, 1, 0, 0, 1],
-  //   icon: { name: 'smoke' },
-  //   status: false,
-  //   type: 'negative',
-  // },
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    title: 'Smoking',
+    goals: [0, 1, 1, 1, 0, 0, 1],
+    icon: { name: 'smoke' },
+    status: false,
+    type: 'negative',
+  },
   {
     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
     title: 'Fastfood',
@@ -68,24 +73,13 @@ const habitsFB = [
   // },
 ];
 // const uid = firebase.auth().currentUser.uid
-// const user = firebase.firestore().collection('users').doc(uid).get().then(info => console.log(info.data()))
-
-// const load = async () => {
-//   try {
-//     const user = await AsyncStorage.getItem('user');
-//     console.log(user);
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
-// load()
 
 const { width, height } = Dimensions.get('window');
 const PADDING = width / 24;
 const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
 
 function Item({ item, onPress, style, handleOpen }) {
-  const iconName = item.icon.name;
+  const iconName = item.icon;
   const [spinner, setSpinner] = useState(false);
   const [check, setCheck] = useState(false);
   const [undoButton, setUndoButton] = useState(false);
@@ -97,8 +91,8 @@ function Item({ item, onPress, style, handleOpen }) {
   const downsize = 20;
   return (
     <>
-      {!item.status ?
-        (<TouchableOpacity
+      {!item.status ? (
+        <TouchableOpacity
           onPress={onPress}
           onPressIn={() => {
             setTimeout(() => {
@@ -113,7 +107,7 @@ function Item({ item, onPress, style, handleOpen }) {
             item.goals[4] = 1;
             setTimeout(() => {
               item.status = true;
-            }, 1000)
+            }, 1000);
           }}
           onPressOut={() => {
             setSpinner(false);
@@ -248,9 +242,87 @@ const Home = (props) => {
   const { navigation } = props;
   const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
   const [selectedId, setSelectedId] = useState(null);
-  const dispatch = useDispatch();
-  const [habits, setHabits] = useState(habitsFB)
-  const [addButton, setAddButton] = useState(false)
+  const [habits, setHabits] = useState(null);
+
+  const uid = firebase.auth().currentUser.uid;
+
+  useEffect(() => {
+    let firestoreHabits = [];
+    const unsubscribe = firebase
+      .firestore()
+      .collection('users')
+      .doc(uid)
+      .collection('habits')
+      .onSnapshot((snap) => {
+        snap.docs.forEach((d) => {
+          const newData = { ...d.data(), id: d.id };
+          firestoreHabits.push(newData);
+        });
+        setHabits(firestoreHabits);
+      });
+
+    // const seeder = async () => {
+    //   const uid = firebase.auth().currentUser.uid;
+    //   const habit1 = await firebase
+    //     .firestore()
+    //     .collection('users')
+    //     .doc(uid)
+    //     .collection('habits')
+    //     .add({
+    //       icon: 'smoke',
+    //       title: 'do not smoke',
+    //       type: 'negative',
+    //       dates: {
+    //         '09.1': 1,
+    //         '09.2': 0,
+    //         '09.3': 1,
+    //         '09.4': 1,
+    //         '09.5': 0,
+    //         '09.6': 1,
+    //         '09.7': 1,
+    //         '09.8': 0,
+    //         '09.9': 1,
+    //         '09.10': 1,
+    //         '09.11': 0,
+    //         '09.12': 1,
+    //         '09.13': 1,
+    //         '09.14': 1,
+    //         '09.15': 0,
+    //         '09.16': 1,
+    //         '09.17': 1,
+    //         '09.18': 0,
+    //         '09.19': 0,
+    //         '09.20': 0,
+    //         '09.21': 1,
+    //         '09.22': 1,
+    //         '09.23': 1,
+    //         '09.24': 1,
+    //         '09.25': 0,
+    //         '09.26': 1,
+    //         '09.27': 1,
+    //         '09.28': 0,
+    //         '09.29': 1,
+    //         '09.30': 1,
+    //       },
+    //     });
+    // };
+
+    // seeder();
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const habit1 = async () => {};
+
+  if (habits === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   const handleOpenHabit = (id) => {
     navigation.navigate(ROUTES.habitDetails, {
       id,
@@ -273,12 +345,12 @@ const Home = (props) => {
             handleOpen={handleOpenHabit}
           />
         ) : (
-            <Item
-              item={item}
-              onPress={() => setSelectedId(item.id)}
-              style={{ backgroundColor }}
-            />
-          )}
+          <Item
+            item={item}
+            onPress={() => setSelectedId(item.id)}
+            style={{ backgroundColor }}
+          />
+        )}
       </View>
     );
   };
@@ -315,9 +387,9 @@ const Home = (props) => {
             onLongPress={handleCreateNew}
             style={[styles.item, { backgroundColor: '#7B8CDE', justifyContent: 'space-around' }]}
           >
-            <Text category="h7" style={{ color: '#E6ECFD' }}>ADD</Text>
+            <Text category="h6" style={{ color: '#E6ECFD' }}>ADD</Text>
             {iconAdd}
-            <Text category="h7" style={{ color: '#E6ECFD' }}>NEW HABIT</Text>
+            <Text category="h6" style={{ color: '#E6ECFD' }}>NEW HABIT</Text>
           </TouchableOpacity>}
 
 

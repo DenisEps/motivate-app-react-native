@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import React, { useState, useLayoutEffect, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   Avatar,
   Icon,
@@ -36,7 +36,7 @@ export const TopNavMain = ({ navigation }) => {
   };
 
   const logout = async () => {
-    dispatch(deleteUser());
+    dispatch(deleteUser(false));
     remove();
     await firebase.auth().signOut();
     const user = firebase.auth().currentUser;
@@ -45,29 +45,28 @@ export const TopNavMain = ({ navigation }) => {
       : console.log("logout is successfullllllll");
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      console.log('focused ✅');
-      return () => {
-        console.log('unfocused ❌');
-      };
-    }, [])
-  );
-
   useEffect(() => {
-    const unsubscribe = firebase
+   const unsubscribe = firebase
       .firestore()
-      .collection('users')
+      .collection("users")
       .doc(firebase.auth().currentUser.uid)
       .onSnapshot((snap) => {
         const user = snap.data();
         setDisplayName(user.displayName);
       });
-
     return () => {
       unsubscribe();
     };
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log("focused ✅");
+      return () => {
+        console.log("unfocused ❌");
+      };
+    }, [])
+  );
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
