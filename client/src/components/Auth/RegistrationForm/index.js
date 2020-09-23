@@ -91,27 +91,23 @@ const RegistrationForm = () => {
 
   return (
     <Layout
-      style={{
-        alignItems: "center",
-        top: 250,
-        minWidth: 200,
-      }}
+      style={styles.container}
       level="1"
     >
       <Input
-        style={{ width: "75%" }}
+        style={styles.inputs}
         placeholder="Email"
         value={email}
         onChangeText={(nextValue) => setEmail(nextValue)}
       />
       <Input
-        style={{ width: "75%" }}
+        style={styles.inputs}
         secureTextEntry={true}
         placeholder="Password"
         value={pass}
         onChangeText={(nextValue) => setPass(nextValue)}
       />
-      <Button style={{ width: "75%" }} onPress={() => CreateUser(email, pass)}>
+      <Button style={styles.inputs} onPress={() => CreateUser(email, pass)}>
         Register
       </Button>
       {/* {error && <Text style={styles.error}>{error}</Text>}
@@ -121,6 +117,14 @@ const RegistrationForm = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    top: 250,
+    minWidth: 200,
+  },
+  inputs: {
+    width: "75%",
+  },
   error: {
     marginTop: 16,
     paddingVertical: 8,
@@ -142,9 +146,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 25,
     fontWeight: "bold",
-  },
-  container: {
-    flex: 1,
   },
 });
 

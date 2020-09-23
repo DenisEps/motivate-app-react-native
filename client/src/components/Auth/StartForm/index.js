@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Input, Button, Layout, Text, ButtonGroup } from "@ui-kitten/components";
-import { Animated, View, ActivityIndicator } from "react-native";
+import { Animated, View, ActivityIndicator, StyleSheet } from "react-native";
 import AuthForm from '../AuthForm';
 import RegistrationForm from '../RegistrationForm';
 import CustomTheme from '../../../../custom-theme.json'
@@ -17,7 +17,6 @@ function StartForm() {
   const [signUp, setSignUp] = useState(false);
   const [btnSIColor, setbtnSIColor] = useState(CustomTheme["color-primary-300"]);
   const [btnSUColor, setbtnSUColor] = useState(CustomTheme["color-primary-300"]);
-
   const [loader, setLoader] = useState(false);
 
   function buttonsUp(form) {
@@ -60,21 +59,27 @@ function StartForm() {
     }
   }
   return (
-    <Layout style={{ width: "100%" }}>
+    <Layout >
       <Animated.View style={{ top: fadeAnim }}>
-        <ButtonGroup style={{ justifyContent: "center" }}>
+        <ButtonGroup style={styles.buttonGroup}>
           <Button style={{ backgroundColor: btnSIColor }} onPress={() => buttonsUp('signIn')}>Sign in</Button>
           <Button style={{ backgroundColor: btnSUColor }} onPress={() => buttonsUp('signUp')}>Sign up</Button>
         </ButtonGroup>
       </Animated.View>
-      <Animated.View style={{ top: fadeAnim, opacity: opacitySIAnim }}>
+      <Animated.View style={{opacity: opacitySIAnim, top: fadeAnim, }}>
         {signIn && <AuthForm />}
       </Animated.View>
-      <Animated.View style={{ top: fadeAnim, opacity: opacitySUAnim }}>
+      <Animated.View style={{opacity: opacitySUAnim, top: fadeAnim, }}>
         {signUp && <RegistrationForm />}
       </Animated.View>
     </Layout >
   )
 }
+
+const styles = StyleSheet.create({
+  buttonGroup: {
+    justifyContent: "center"
+  },
+});
 
 export default StartForm;

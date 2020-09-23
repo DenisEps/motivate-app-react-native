@@ -210,7 +210,7 @@ const AuthForm = () => {
       for (let i = 0; i < providerData.length; i++) {
         if (
           providerData[i].providerId ===
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
           providerData[i].uid === googleUser.getBasicProfile().getId()
         ) {
           return true;
@@ -248,11 +248,11 @@ const AuthForm = () => {
 
   return (
     <Layout
-      style={{ backgroundColor: "white", alignItems: "center", top: 250 }}
+      style={styles.container}
       level="1"
     >
       <Input
-        style={{ width: "75%" }}
+        style={styles.inputs}
         placeholder="Email"
         autoCapitalize="none"
         autoCorrect={false}
@@ -260,24 +260,24 @@ const AuthForm = () => {
         onChangeText={(nextValue) => setEmail(nextValue)}
       />
       <Input
-        style={{ width: "75%" }}
+        style={styles.inputs}
         secureTextEntry={true}
         placeholder="Password"
         value={pass}
         onChangeText={(nextValue) => setPass(nextValue)}
       />
-      <Button style={{ width: "75%", marginBottom: 5 }} onPress={Login}>
+      <Button style={styles.inputs} onPress={Login}>
         Sign In
       </Button>
       <Button
-        style={{ width: "75%", marginBottom: 5 }}
+        style={styles.inputs}
         onPress={() => signInWithGoogleAsync()}
       >
         Sign In With Google
       </Button>
-      <Button style={{ width: "75%", marginBottom: 5 }} onPress={logout}>
+      {/* <Button style={styles.inputs} onPress={logout}>
         Logout
-      </Button>
+      </Button> */}
       {err ? <Text>{err}</Text> : null}
     </Layout>
   );
@@ -285,7 +285,12 @@ const AuthForm = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    alignItems: "center",
+    top: 250,
+  },
+  inputs: {
+    width: "75%",
+    marginBottom: 5,
   },
 });
 
