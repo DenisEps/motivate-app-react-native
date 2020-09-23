@@ -196,8 +196,8 @@ function Item({ item, onPress, style }) {
               <Button
                 style={{
                   backgroundColor: '#2B344F',
-                  width: 120,
-                  height: 120,
+                  width: ITEM_SIZE / 1.2,
+                  height: ITEM_SIZE / 1.2,
                   borderRadius: 10,
                 }}
                 onLongPress={() => {
@@ -209,9 +209,9 @@ function Item({ item, onPress, style }) {
                 HOLD TO UNDO
               </Button>
             </Layout>
-          ) : item.type === 'positive' ? (
+          ) : item.type === 1 ? (
             iconPositive
-          ) : item.type === 'negative' ? (
+          ) : item.type === 0 ? (
             iconNegative
           ) : (
             iconAdd
@@ -241,7 +241,7 @@ function Item({ item, onPress, style }) {
 
 function ItemBack({ item, onPress, style, handleOpen }) {
   const handlePress = () => {
-    handleOpen(item.id, item.icon, item.title);
+    handleOpen(item.id, item.icon, item.title, item.type);
   };
   const renderZoomIcon = () => {
     return vectorIconsUtility.menuHorizontal({ size: 50, color: '#090D20' });
@@ -353,11 +353,12 @@ const Home = (props) => {
     );
   }
 
-  const handleOpenHabit = (id, icon, title) => {
+  const handleOpenHabit = (id, icon, title, type) => {
     navigation.navigate(ROUTES.habitDetails, {
       id,
       icon,
       title,
+      type
     });
   };
 

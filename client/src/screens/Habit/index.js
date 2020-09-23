@@ -15,9 +15,11 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { kittenIcons, vectorIcons } from '../../assets/icons';
 import { ROUTES } from '../../navigation/routes';
+import {firebase} from '../../../firebase'
 
 // CALENDAR
 const CellStatus = ({ date }, style) => {
+  
   return (
     <View style={[styles.dayContainer, style.container]}>
       <Text style={style.text}>{`${date.getDate()}`}</Text>
@@ -41,13 +43,6 @@ const CalendarComponent = () => {
   );
 };
 
-// ALERT
-const CreateHabitAlert = () => {
-  Alert.alert('Habit menu', 'What would you like to do?', [
-    { text: 'Delete', onPress: () => console.log('Delete'), style: 'cancel' },
-    { text: 'Cancel', onPress: () => console.log('Delete'), style: 'default' },
-  ]);
-};
 
 // TITLE CARD
 const Header = (props) => <View {...props}></View>;
@@ -63,9 +58,30 @@ const Habit = ({ navigation, route }) => {
   const { top } = useSafeAreaInsets();
 
   const {
-    params: { id, icon, title },
+    params: { id, icon, title, type },
   } = route;
-
+  
+  const deleteHabit = async (id) => {
+    const uid = await firebase.auth().currentUser.uid;
+    firebase
+    .firestore()
+    .collection('users')
+    .doc(uid)
+    .collection('habits')
+    .doc(id)
+    .delete()
+    .then(() => console.log('deleted hyinia'));
+    navigation.goBack()
+  }
+  
+  // ALERT
+  const CreateHabitAlert = (id) => {
+    Alert.alert('Habit menu', 'What would you like to do?', [
+      { text: 'Delete', onPress: () => deleteHabit(id), style: 'cancel' },
+      { text: 'Cancel', onPress: () => console.log('Delete'), style: 'default' },
+    ]);
+  };
+  
   // React.useEffect(() => {
 
   //   const fetchHabitById = async () => {
@@ -89,7 +105,7 @@ const Habit = ({ navigation, route }) => {
   };
 
   const handleEditButton = () => {
-    navigation.navigate(ROUTES.editHabit, { id, icon, title });
+    navigation.navigate(ROUTES.editHabit, { id, icon, title, type });
   };
 
   const renderRightActions = () => (
@@ -100,7 +116,7 @@ const Habit = ({ navigation, route }) => {
       />
       <TopNavigationAction
         icon={kittenIcons.MenuIcon}
-        onPress={CreateHabitAlert}
+        onPress={() => CreateHabitAlert(id)}
       />
     </React.Fragment>
   );
