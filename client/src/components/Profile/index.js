@@ -25,9 +25,7 @@ import { Asset } from "expo-asset";
 function Profile() {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
-  const [photo, setPhoto] = useState(
-    FileSystem.documentDirectory + "avatar.jpeg"
-  );
+  const [photo, setPhoto] = useState(require('../../photo/startavatar.jpeg'));
   const [err, setError] = useState(null);
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
@@ -38,12 +36,20 @@ function Profile() {
       try {
         const dataFromStorage = JSON.parse(await AsyncStorage.getItem("user"))
           ? JSON.parse(await AsyncStorage.getItem("user"))
-          : { data: "hello" };
+          : { photoURL: "" };
         setDisplayName(dataFromStorage.displayName);
         setEmail(dataFromStorage.email);
         setPhone(dataFromStorage.phoneNumber);
-        console.log(dataFromStorage.photoURL.slice(0, 4));
-        if (dataFromStorage.photoURL.slice(0, 4) !== "http") {
+        console.log(
+          "require?????",
+          photo
+        );
+        if (
+          dataFromStorage.photoURL === "" ||
+          photo === require("../../photo/startavatar.jpeg").uri
+        ) {
+          // setPhoto(require("../../photo/startavatar.jpeg").uri);
+        } else if (dataFromStorage.photoURL.slice(0, 4) !== "http") {
           await FileSystem.writeAsStringAsync(
             FileSystem.documentDirectory + "avatar.jpeg",
             dataFromStorage.photoURL,
@@ -136,7 +142,7 @@ function Profile() {
   };
 
   const logout = async () => {
-    dispatch(deleteUser());
+    dispatch(deleteUser(false));
     remove();
     await firebase.auth().signOut();
     const user = firebase.auth().currentUser;

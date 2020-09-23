@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   Avatar,
   Icon,
@@ -35,7 +36,7 @@ export const TopNavMain = ({ navigation }) => {
   };
 
   const logout = async () => {
-    dispatch(deleteUser());
+    dispatch(deleteUser(false));
     remove();
     await firebase.auth().signOut();
     const user = firebase.auth().currentUser;
@@ -45,48 +46,28 @@ export const TopNavMain = ({ navigation }) => {
   };
 
   useEffect(() => {
-    (function () {
-      setTimeout(async () => {
-        try {
-          // const user = JSON.parse(await AsyncStorage.getItem('user'))
-          // console.log('USER IN HABIT',user);
-          setDisplayName(
-            JSON.parse(await AsyncStorage.getItem("user")).displayName
-          );
-        } catch (e) {
-          const error = new Error(e);
-          console.error(error.message);
-        }
-      }, 2000);
-      // await firebase
-      //   .firestore()
-      //   .collection('users')
-      //   .doc(firebase.auth().currentUser.uid)
-      //   .get()
-      //   .then((info) => {
-      //     const user = info.data()
-      //     setDisplayName(user.displayName);
-      //     console.log(user);
-      //   });
-    })();
-  });
+   const unsubscribe = firebase
+      .firestore()
+      .collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .onSnapshot((snap) => {
+        const user = snap.data();
+        console.log("USERcIN HABIT>>>>>>>", user);
+        setDisplayName(user.displayName);
+      });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
-  // const uid = firebase.auth().currentUser.uid
-  // const name = firebase.auth().currentUser.displayName
-  // useEffect(() => {
-  //   (async () => {
-  //     firebase
-  //     .firestore()
-  //     .collection('users')
-  //     .doc(uid)
-  //     .get()
-  //     .then(info => {
-  //       const user = info.data()
-  //       setDisplayName(user.displayName)
-  //       console.log('>>>>USER>>>>>>>HOME PAGE',user);
-  //     })
-  //   })()
-  // }, [name])
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log("focused ✅");
+      return () => {
+        console.log("unfocused ❌");
+      };
+    }, [])
+  );
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);

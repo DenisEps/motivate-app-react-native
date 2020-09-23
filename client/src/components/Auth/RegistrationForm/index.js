@@ -32,7 +32,7 @@ const RegistrationForm = () => {
         .auth()
         .createUserWithEmailAndPassword(email, pass)
         .then((info) => {
-          return firebase
+           firebase
             .firestore()
             .collection("users")
             .doc(info.user.uid)
@@ -44,6 +44,18 @@ const RegistrationForm = () => {
               emailVerified: info.user.emailVerified == null ? '' : info.user.emailVerified,
               habits: [],
               level: 1,
+            })
+
+            firebase
+            .firestore()
+            .collection('users')
+            .doc(info.user.uid)
+            .collection('habits')
+            .add({
+              type: '',
+              icon: '',
+              title: '',
+              dates: {},
             })
         })
       const currentUser = firebase.auth().currentUser;

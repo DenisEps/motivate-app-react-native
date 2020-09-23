@@ -22,10 +22,10 @@ export function setUser(user) {
   }
 }
 
-export function deleteUser() {
+export function deleteUser(bool) {
   return {
     type: DELETE_USER,
-    payload: null,
+    payload: bool,
   }
 }
 
