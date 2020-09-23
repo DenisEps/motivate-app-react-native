@@ -46,17 +46,17 @@ const RegistrationForm = () => {
               level: 1,
             })
 
-            firebase
-            .firestore()
-            .collection('users')
-            .doc(info.user.uid)
-            .collection('habits')
-            .add({
-              type: '',
-              icon: '',
-              title: '',
-              dates: {},
-            })
+            // firebase
+            // .firestore()
+            // .collection('users')
+            // .doc(info.user.uid)
+            // .collection('habits')
+            // .add({
+            //   type: '',
+            //   icon: '',
+            //   title: '',
+            //   dates: {},
+            // })
         })
       const currentUser = firebase.auth().currentUser;
       const uid = firebase.auth().currentUser.uid;

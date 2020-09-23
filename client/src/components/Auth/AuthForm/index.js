@@ -16,7 +16,6 @@ const AuthForm = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [err, setError] = useState(null);
-  const [test, setTest] = useState(false);
   const [userStore, setUserStore] = useState(null);
   const dispatch = useDispatch();
   const loader = useSelector((state) => state.loader);
@@ -116,17 +115,17 @@ const AuthForm = () => {
                           : userAuth.emailVerified,
                     });
 
-                  await firebase
-                    .firestore()
-                    .collection("users")
-                    .doc(user.user.uid)
-                    .collection("habits")
-                    .add({
-                      type: "",
-                      icon: "",
-                      title: "",
-                      dates: {},
-                    });
+                  // await firebase
+                  //   .firestore()
+                  //   .collection("users")
+                  //   .doc(user.user.uid)
+                  //   .collection("habits")
+                  //   .add({
+                  //     type: "",
+                  //     icon: "",
+                  //     title: "",
+                  //     dates: {},
+                  //   });
 
                   await firebase
                     .firestore()
@@ -134,7 +133,6 @@ const AuthForm = () => {
                     .doc(user.user.uid)
                     .get()
                     .then((info) => {
-                      // console.log("google auth new user!!!!!!!!!", info.data());
                       resolve(save(info.data()));
                     });
                 } else {
@@ -159,8 +157,6 @@ const AuthForm = () => {
                         userAuth.emailVerified == null
                           ? ""
                           : userAuth.emailVerified,
-                      // habits: [],
-                      // level: 1,
                     });
 
                   // await firebase
@@ -282,7 +278,6 @@ const AuthForm = () => {
       <Button style={{ width: "75%", marginBottom: 5 }} onPress={logout}>
         Logout
       </Button>
-      {test ? <TestDb /> : null}
       {err ? <Text>{err}</Text> : null}
     </Layout>
   );

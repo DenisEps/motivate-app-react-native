@@ -23,6 +23,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { Asset } from "expo-asset";
 
 function Profile() {
+  const test = require('../../photo/startavatar.jpeg')
+  console.log('test', test);
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [photo, setPhoto] = useState(require('../../photo/startavatar.jpeg'));
@@ -48,7 +50,7 @@ function Profile() {
           dataFromStorage.photoURL === "" ||
           photo === require("../../photo/startavatar.jpeg").uri
         ) {
-          // setPhoto(require("../../photo/startavatar.jpeg").uri);
+          setPhoto(require("../../photo/startavatar.jpeg"));
         } else if (dataFromStorage.photoURL.slice(0, 4) !== "http") {
           await FileSystem.writeAsStringAsync(
             FileSystem.documentDirectory + "avatar.jpeg",
