@@ -183,54 +183,6 @@ const Home = (props) => {
 
   const uid = firebase.auth().currentUser.uid;
 
-  // const seeder = async () => {
-  //   const uid = firebase.auth().currentUser.uid;
-  //   const habit1 = await firebase
-  //     .firestore()
-  //     .collection('users')
-  //     .doc(uid)
-  //     .collection('habits')
-  //     .add({
-  //       icon: 'smoke',
-  //       title: 'do not smoke',
-  //       type: 'negative',
-  //       dates: {
-  //         '09.1': 1,
-  //         '09.2': 0,
-  //         '09.3': 1,
-  //         '09.4': 1,
-  //         '09.5': 0,
-  //         '09.6': 1,
-  //         '09.7': 1,
-  //         '09.8': 0,
-  //         '09.9': 1,
-  //         '09.10': 1,
-  //         '09.11': 0,
-  //         '09.12': 1,
-  //         '09.13': 1,
-  //         '09.14': 1,
-  //         '09.15': 0,
-  //         '09.16': 1,
-  //         '09.17': 1,
-  //         '09.18': 0,
-  //         '09.19': 0,
-  //         '09.20': 0,
-  //         '09.21': 1,
-  //         '09.22': 1,
-  //         '09.23': 1,
-  //         '09.24': 1,
-  //         '09.25': 0,
-  //         '09.26': 1,
-  //         '09.27': 1,
-  //         '09.28': 0,
-  //         '09.29': 1,
-  //         '09.30': 1,
-  //       },
-  //     });
-  // };
-
-  // seeder()
-
   useEffect(() => {
     let firestoreHabits = [];
     const uid = firebase.auth().currentUser.uid;
@@ -246,6 +198,54 @@ const Home = (props) => {
         });
         setHabits(firestoreHabits);
       });
+
+    // const seeder = async () => {
+    //   const uid = firebase.auth().currentUser.uid;
+    //   const habit1 = await firebase
+    //     .firestore()
+    //     .collection('users')
+    //     .doc(uid)
+    //     .collection('habits')
+    //     .add({
+    //       icon: 'smoke',
+    //       title: 'do not smoke',
+    //       type: 'negative',
+    //       dates: {
+    //         '09.1': 1,
+    //         '09.2': 0,
+    //         '09.3': 1,
+    //         '09.4': 1,
+    //         '09.5': 0,
+    //         '09.6': 1,
+    //         '09.7': 1,
+    //         '09.8': 0,
+    //         '09.9': 1,
+    //         '09.10': 1,
+    //         '09.11': 0,
+    //         '09.12': 1,
+    //         '09.13': 1,
+    //         '09.14': 1,
+    //         '09.15': 0,
+    //         '09.16': 1,
+    //         '09.17': 1,
+    //         '09.18': 0,
+    //         '09.19': 0,
+    //         '09.20': 0,
+    //         '09.21': 1,
+    //         '09.22': 1,
+    //         '09.23': 1,
+    //         '09.24': 1,
+    //         '09.25': 0,
+    //         '09.26': 1,
+    //         '09.27': 1,
+    //         '09.28': 0,
+    //         '09.29': 1,
+    //         '09.30': 1,
+    //       },
+    //     });
+    // };
+
+    // seeder();
     return () => {
       unsubscribe();
     };
