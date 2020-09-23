@@ -982,6 +982,14 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@callstack/react-theme-provider@^3.0.5":
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/@callstack/react-theme-provider/-/react-theme-provider-3.0.5.tgz#a173e455e9603c9c45357a3b6ace1273086527ca"
+  integrity sha512-Iec+ybWN0FvNj87sD3oWo/49edGUP0UOSdMnzCJEFJIDYr992ECIuOV89burAAh2/ibPCxgLiK6dmgv2mO/8Tg==
+  dependencies:
+    deepmerge "^3.2.0"
+    hoist-non-react-statics "^3.3.0"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -1667,30 +1675,35 @@
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
 
-"@react-navigation/core@^5.12.3":
-  version "5.12.3"
-  resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-5.12.3.tgz#0484fcca290569a0dc10b70b99f00edd3f1fd93c"
-  integrity sha512-aEOTAw4FRRNsNu6F9ibLk3SVSs4Res8BI832NEZN6qUto5ZgtuYnQHWeWV2cZ43Nc9KvUyQC/vXvO2RScwgFwA==
+"@react-navigation/core@^5.12.4":
+  version "5.12.4"
+  resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-5.12.4.tgz#1bd0c81d098895c8ffe49f8624fae60c9abc5684"
+  integrity sha512-vhaVIJGfSgln4dIoO4R2HeX9p3Vc7OJLa0/JpKHpXn/DZgNVn+RP7ktk1CRZ16ikUJ0k8CxzuvRxeRIg7EhA7w==
   dependencies:
-    "@react-navigation/routers" "^5.4.11"
+    "@react-navigation/routers" "^5.4.12"
     escape-string-regexp "^4.0.0"
     nanoid "^3.1.12"
     query-string "^6.13.1"
     react-is "^16.13.0"
     use-subscription "^1.4.0"
 
-"@react-navigation/native@^5.7.3":
-  version "5.7.3"
-  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-5.7.3.tgz#3cda5ee7b0fe0d980db6d788419f0af50a64deac"
-  integrity sha512-bXb1g/cLpGF2DW1Vxk90Ch5vbaZTk5b/4Fn5xjQlueQODgc9ca+GPEssKZ84hCrNmS+Xg+iK1m/ArawLF5gMlw==
+"@react-navigation/material-bottom-tabs@^5.2.17":
+  version "5.2.17"
+  resolved "https://registry.yarnpkg.com/@react-navigation/material-bottom-tabs/-/material-bottom-tabs-5.2.17.tgz#e7da9de4bb64c35304a2d6eaf0af485db6bb10bb"
+  integrity sha512-fpmP7k108XIKTrCCrfCTcwqmUwqTiLUeZ3BA3Xd1aFcI1/pvjN9RpyYMLSX76rUNmwuDvaMukHBPWUTshCOMIQ==
+
+"@react-navigation/native@^5.7.4":
+  version "5.7.4"
+  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-5.7.4.tgz#f55d54ab26942cf40fb3f6e1d6b9c26056e1d4e3"
+  integrity sha512-ndLojJZyWqxGdWeXlSr7ylHaMbBIwvoXnmsKHOMvUN6FV0dxv8b8L9T1yRW82b9mak4y6y6Q+1gIAWjO7FhAsQ==
   dependencies:
-    "@react-navigation/core" "^5.12.3"
+    "@react-navigation/core" "^5.12.4"
     nanoid "^3.1.12"
 
-"@react-navigation/routers@^5.4.11":
-  version "5.4.11"
-  resolved "https://registry.yarnpkg.com/@react-navigation/routers/-/routers-5.4.11.tgz#75dbec1809e282c3749068845099c5bee2c792f0"
-  integrity sha512-J/CsHdIjYBRe81UUiLOoz9NSrQ91uP23Oe21QPCALInRHx+rfwo2oPl6Fn8xAa7n8Dtt2oQUGyF+g5d05cB74w==
+"@react-navigation/routers@^5.4.12":
+  version "5.4.12"
+  resolved "https://registry.yarnpkg.com/@react-navigation/routers/-/routers-5.4.12.tgz#5c3690650c94be3a54b617a1c07510d2f604c03f"
+  integrity sha512-IwMmxeb5e6LboljhakmhtrHBXLYFrFDr2c1GjAG538e4MjT4QGi/ZYckAxCh/NqKI0knnzqKppPl2NsOMv/NoQ==
   dependencies:
     nanoid "^3.1.12"
 
@@ -6387,6 +6400,15 @@ react-native-iphone-x-helper@^1.2.1:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
 
+react-native-paper@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-4.2.0.tgz#534c0f9dbeecfd73d20f1f7b1ef3df32aa2ca4b0"
+  integrity sha512-+pM8olBygXP5cdUcPRC++BPb5DvdYPN2LJFIt2eXbT0GXs7kU7nG+hFRnsxu8awt6em6gcHVVw3ajvQGEl+CIg==
+  dependencies:
+    "@callstack/react-theme-provider" "^3.0.5"
+    color "^3.1.2"
+    react-native-safe-area-view "^0.14.9"
+
 react-native-reanimated@^2.0.0-alpha.6:
   version "2.0.0-alpha.6"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-2.0.0-alpha.6.tgz#d3b55127e8202a12b9073c97086dfe85283c9e08"
@@ -6400,6 +6422,13 @@ react-native-safe-area-context@~3.0.7:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-3.0.7.tgz#0f53de7a30d626d82936000f3f6db374ecc4b800"
   integrity sha512-dqhRTlIFe5+P1yxitj0C9XVUxLqOmjomeqzUSSY8sNOWVjtIhEY/fl4ZKYpAVnktd8dt3zl13XmJTmRmy3d0uA==
+
+react-native-safe-area-view@^0.14.9:
+  version "0.14.9"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.14.9.tgz#90ee8383037010d9a5055a97cf97e4c1da1f0c3d"
+  integrity sha512-WII/ulhpVyL/qbYb7vydq7dJAfZRBcEhg4/UWt6F6nAKpLa3gAceMOxBxI914ppwSP/TdUsandFy6lkJQE0z4A==
+  dependencies:
+    hoist-non-react-statics "^2.3.1"
 
 react-native-screens@~2.9.0:
   version "2.9.0"
@@ -6464,6 +6493,11 @@ react-native-web@~0.11.7:
     stacktrace-parser "^0.1.3"
     use-subscription "^1.0.0"
     whatwg-fetch "^3.0.0"
+
+react-navigation-transitions@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/react-navigation-transitions/-/react-navigation-transitions-1.0.12.tgz#7307668bc7d5fdbdc1954224e7891f7fe6cb5f74"
+  integrity sha512-Hp0wX9KoXwsFch6Fgiz9HpGjQZDhnyucLbCai0LcaOC3VpmgYmvkbeAg/mQ5Z5exuY6PPrh/+FXU00yMPDHkcw==
 
 react-redux@^7.2.1:
   version "7.2.1"

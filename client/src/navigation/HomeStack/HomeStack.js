@@ -28,7 +28,7 @@ const HomeStackScreen = () => {
         component={Habit}
         options={{
           headerShown: false,
-          ...TransitionPresets.SlideFromRightIOS,
+          ...TransitionPresets.ModalSlideFromBottomIOS,
         }}
       />
       <HomeStack.Screen
@@ -44,7 +44,7 @@ const HomeStackScreen = () => {
         component={IconSelect}
         options={{
           headerShown: false,
-          ...TransitionPresets.SlideFromRightIOS,
+          ...TransitionPresets.ScaleFromCenterAndroid,
         }}
       />
     </HomeStack.Navigator>
