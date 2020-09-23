@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, Alert } from 'react-native';
-import { firebase } from '../../../firebase';
 import {
   Text,
   Layout,
@@ -17,53 +16,15 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ROUTES } from '../../navigation/routes';
 
-const EditHabit = ({ navigation, route }) => {
-  const { id, title } = route.params;
-  const iconFromHabitPage = route.params.icon;
-  const [icon, setIcon] = useState(iconFromHabitPage);
-  const [titleInput, setTitleInput] = React.useState(title);
+const AddHabit = ({ navigation }) => {
+  const [icon, setIcon] = useState('unknown');
+  const [titleInput, setTitleInput] = React.useState('');
 
   const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
 
   const handlePress = () => {
     navigation.navigate(ROUTES.iconSelect, { setIcon });
   };
-
-  const handleSave = async () => {
-    const uid = firebase.auth().currentUser.uid;
-    try {
-      const habit = await firebase
-        .firestore()
-        .collection('users')
-        .doc(uid)
-        .collection('habits')
-        .doc(id)
-        .update({ title: titleInput, icon });
-      navigation.navigate(ROUTES.home);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const CreateHabitAlert = () => {
-    Alert.alert('Habit menu', 'What would you like to do?', [
-      { text: 'Delete', onPress: () => console.log('Delete'), style: 'cancel' },
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Delete'),
-        style: 'default',
-      },
-    ]);
-  };
-
-  const renderRightActions = () => (
-    <React.Fragment>
-      <TopNavigationAction
-        icon={kittenIcons.MenuIcon}
-        onPress={CreateHabitAlert}
-      />
-    </React.Fragment>
-  );
 
   const back = () => {
     navigation.goBack();
@@ -76,11 +37,7 @@ const EditHabit = ({ navigation, route }) => {
   return (
     <Layout style={[styles.container, { paddingTop }]}>
       <Layout style={styles.navContainer} level="1">
-        <TopNavigation
-          alignment="center"
-          accessoryLeft={renderBackAction}
-          accessoryRight={renderRightActions}
-        />
+        <TopNavigation alignment="center" accessoryLeft={renderBackAction} />
       </Layout>
       <Layout style={styles.iconLayout}>
         <Layout style={styles.circle}>
@@ -97,12 +54,12 @@ const EditHabit = ({ navigation, route }) => {
       <Layout style={styles.titleInputDiv}>
         <Text category="s1">Habit title:</Text>
         <Input
-          placeholder="Place your Text"
+          placeholder="Enter text"
           value={titleInput}
           onChangeText={(nextValue) => setTitleInput(nextValue)}
           style={styles.titleInput}
         />
-        <Button onPress={handleSave} style={styles.button} status="primary">
+        <Button style={styles.button} status="primary">
           <Text category="h6">SAVE</Text>
         </Button>
       </Layout>
@@ -146,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditHabit;
+export default AddHabit;
