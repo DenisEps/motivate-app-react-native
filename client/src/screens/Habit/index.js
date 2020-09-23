@@ -51,20 +51,19 @@ const CreateHabitAlert = () => {
 
 // TITLE CARD
 const Header = (props) => <View {...props}></View>;
-const TitleCard = () => (
+const TitleCard = ({ title }) => (
   <Layout style={styles.titleCard}>
     <Text category="s1">Habit Title:</Text>
-    <Text category="h5">Don't smoke</Text>
+    <Text category="h5">{title}</Text>
   </Layout>
 );
 
 const Habit = ({ navigation, route }) => {
   const [loading, setLoading] = React.useState(false);
-  const [habit, setHabit] = React.useState(false);
   const { top } = useSafeAreaInsets();
 
   const {
-    params: { id },
+    params: { id, icon, title },
   } = route;
 
   // React.useEffect(() => {
@@ -90,7 +89,7 @@ const Habit = ({ navigation, route }) => {
   };
 
   const handleEditButton = () => {
-    navigation.navigate(ROUTES.editHabit, { id });
+    navigation.navigate(ROUTES.editHabit, { id, icon, title });
   };
 
   const renderRightActions = () => (
@@ -139,13 +138,14 @@ const Habit = ({ navigation, route }) => {
       <ScrollView>
         <Layout style={styles.iconLayout}>
           <Layout style={styles.circle}>
-            {vectorIcons.smoke({ size: 75, color: '#7983a4' })}
+            {/* {vectorIcons.smoke({ size: 75, color: '#7983a4' })} */}
+            {vectorIcons[icon]({ size: 75, color: '#7983a4' })}
           </Layout>
         </Layout>
 
         <Divider />
 
-        <TitleCard />
+        <TitleCard title={title} />
 
         <Divider />
 

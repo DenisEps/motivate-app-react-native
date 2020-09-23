@@ -8,4 +8,5 @@ export const ROUTES = {
   iconSelect: 'ICON_SELECT',
   stats: 'STATS',
   profile: 'PROFILE',
+  addHabit: 'HABIT_ADD',
 };

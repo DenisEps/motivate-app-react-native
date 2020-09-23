@@ -9,6 +9,7 @@ import Home from '../../screens/Home';
 import Habit from '../../screens/Habit';
 import IconSelect from '../../components/IconSelect';
 import EditHabit from '../../screens/Habit/EditHabit';
+import AddHabit from '../../screens/Habit/AddHabit';
 
 const HomeStack = createStackNavigator();
 
@@ -40,11 +41,19 @@ const HomeStackScreen = () => {
         }}
       />
       <HomeStack.Screen
+        name={ROUTES.addHabit}
+        component={AddHabit}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <HomeStack.Screen
         name={ROUTES.iconSelect}
         component={IconSelect}
         options={{
           headerShown: false,
-          ...TransitionPresets.ScaleFromCenterAndroid,
+          ...TransitionPresets.SlideFromRightIOS,
         }}
       />
     </HomeStack.Navigator>

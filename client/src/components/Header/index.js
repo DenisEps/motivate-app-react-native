@@ -50,8 +50,8 @@ export const TopNavMain = ({ navigation }) => {
       .firestore()
       .collection("users")
       .doc(firebase.auth().currentUser.uid)
-      .onSnapshot((snap) => {
-        const user = snap.data();
+      .onSnapshot(async (snap) => {
+        const user = await snap.data();
         setDisplayName(user.displayName);
       });
     return () => {

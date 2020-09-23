@@ -46,17 +46,17 @@ const RegistrationForm = () => {
               level: 1,
             })
 
-            firebase
-            .firestore()
-            .collection('users')
-            .doc(info.user.uid)
-            .collection('habits')
-            .add({
-              type: '',
-              icon: '',
-              title: '',
-              dates: {},
-            })
+            // firebase
+            // .firestore()
+            // .collection('users')
+            // .doc(info.user.uid)
+            // .collection('habits')
+            // .add({
+            //   type: '',
+            //   icon: '',
+            //   title: '',
+            //   dates: {},
+            // })
         })
       const currentUser = firebase.auth().currentUser;
       const uid = firebase.auth().currentUser.uid;
@@ -91,48 +91,53 @@ const RegistrationForm = () => {
 
   return (
     <Layout
-      style={{
-        alignItems: "center",
-        top: 250,
-        minWidth: 200,
-      }}
+      style={styles.container}
       level="1"
     >
       <Input
-        style={{ width: "75%" }}
+        style={styles.inputs}
         placeholder="Email"
         value={email}
         onChangeText={(nextValue) => setEmail(nextValue)}
       />
       <Input
-        style={{ width: "75%" }}
+        style={styles.inputs}
         secureTextEntry={true}
         placeholder="Password"
         value={pass}
         onChangeText={(nextValue) => setPass(nextValue)}
       />
-      <Button style={{ width: "75%" }} onPress={() => CreateUser(email, pass)}>
-        Register
+      <Button style={styles.inputs} onPress={() => CreateUser(email, pass)}>
+      <Text category="h6">Registration</Text> 
       </Button>
-      {/* {error && <Text style={styles.error}>{error}</Text>}
-      {emailMessage && <Text style={styles.message}>{emailMessage}</Text>} */}
+      {error && <Text style={styles.error}>{error}</Text>}
     </Layout>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    top: 250,
+    minWidth: 200,
+  },
+  inputs: {
+    width: "75%",
+  },
   error: {
+    width: '75%',
     marginTop: 16,
     paddingVertical: 8,
     borderWidth: 2,
-    borderColor: "red",
+    borderColor: "#FEA82F",
     borderRadius: 6,
-    color: "red",
+    color: "#FEA82F",
     textAlign: "center",
-    fontSize: 25,
+    fontSize: 18,
     fontWeight: "bold",
   },
   message: {
+    width: '75%',
     marginTop: 16,
     paddingVertical: 8,
     borderWidth: 2,
@@ -142,9 +147,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 25,
     fontWeight: "bold",
-  },
-  container: {
-    flex: 1,
   },
 });
 

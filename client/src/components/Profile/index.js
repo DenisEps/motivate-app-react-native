@@ -20,43 +20,42 @@ import * as ImageManipulator from "expo-image-manipulator";
 import { firebase } from "../../../firebase";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Asset } from "expo-asset";
+import AvatarDefault from '../../photo/startavatar.jpeg';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 function Profile() {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
-  const [photo, setPhoto] = useState(require('../../photo/startavatar.jpeg'));
+  const [photo, setPhoto] = useState(AvatarDefault);
   const [err, setError] = useState(null);
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
 
   useEffect(() => {
     (async () => {
       try {
         const dataFromStorage = JSON.parse(await AsyncStorage.getItem("user"))
           ? JSON.parse(await AsyncStorage.getItem("user"))
-          : { photoURL: "" };
+          : { data: "hello" };
         setDisplayName(dataFromStorage.displayName);
         setEmail(dataFromStorage.email);
         setPhone(dataFromStorage.phoneNumber);
-     
-        if (
-          dataFromStorage.photoURL === "" ||
-          photo === require("../../photo/startavatar.jpeg").uri
-        ) {
-          // setPhoto(require("../../photo/startavatar.jpeg").uri);
-        } else if (dataFromStorage.photoURL.slice(0, 4) !== "http") {
-          await FileSystem.writeAsStringAsync(
-            FileSystem.documentDirectory + "avatar.jpeg",
-            dataFromStorage.photoURL,
-            { encoding: FileSystem.EncodingType.Base64 }
-          );
-          setPhoto(FileSystem.documentDirectory + "avatar.jpeg");
-        } else {
-          const imageFromGoogle = await Asset.fromModule(
-            dataFromStorage.photoURL
-          ).downloadAsync();
-          setPhoto(imageFromGoogle.localUri);
+        if (dataFromStorage.data !== "hello") {
+          if (dataFromStorage.photoURL.slice(0, 4) !== "http") {
+            await FileSystem.writeAsStringAsync(
+              FileSystem.documentDirectory + "avatar.jpeg",
+              dataFromStorage.photoURL,
+              { encoding: FileSystem.EncodingType.Base64 }
+            );
+            setPhoto(FileSystem.documentDirectory + "avatar.jpeg");
+          } else {
+            const imageFromGoogle = await Asset.fromModule(dataFromStorage.photoURL).downloadAsync();
+            console.log('>>>>imageFromGoogle', imageFromGoogle);
+            setPhoto(imageFromGoogle.localUri);
+          }
         }
       } catch (err) {
         console.error(err);
@@ -156,94 +155,44 @@ function Profile() {
       .catch((err) => setError(err));
   };
 
+  const derivedPhoto = typeof photo === 'string' ? { uri: photo } : photo;
+
   return (
-    <View>
+    <Layout style={[styles.container, { paddingTop, flex: 1 }]}>
       <Layout style={styles.container}>
         <Layout style={styles.containerInn}>
-          <Text
-            style={{
-              textAlign: "center",
-              marginBottom: 25,
-              color: "black",
-              fontSize: 40,
-            }}
-          >
-            Edit Profile
-          </Text>
-          <Avatar
-            style={{
-              width: 300,
-              height: 300,
-              borderWidth: 10,
-              borderColor: "orange",
-            }}
-            size="giant"
-            source={{ uri: photo }}
-          ></Avatar>
-          <Button
-            style={{
-              width: 50,
-              height: 50,
-              top: -50,
-              left: 250,
-              borderRadius: 50,
-            }}
-            onPress={() => setVisible(true)}
-          ></Button>
-          <Text style={{ marginBottom: 5 }}>Display Name</Text>
-          <Input
-            style={{ marginBottom: 10 }}
-            value={displayName}
-            onChangeText={(nextValue) => setDisplayName(nextValue)}
-          ></Input>
-          <Text style={{ marginBottom: 5 }}>Phone</Text>
-          <Input
-            style={{ marginBottom: 10 }}
-            value={phone}
-            onChangeText={(nextValue) => setPhone(nextValue)}
-          ></Input>
-          <Text style={{ marginBottom: 5 }}>Email</Text>
-          <Input
-            style={{ marginBottom: 10 }}
-            value={email}
-            onChangeText={(nextValue) => setEmail(nextValue)}
-          ></Input>
-          {/* <Text style={{ marginBottom: 5 }}>Password</Text>
-          <Input style={{ marginBottom: 10 }} value={password} onChangeText={nextValue => setPassword(nextValue)} ></Input> */}
-          <Button style={{ marginBottom: 10 }} onPress={passwordChange}>
-            Change password
-          </Button>
-          <Button style={{ marginBottom: 10 }} onPress={saveChanges}>
-            Save Changes
-          </Button>
+          <Avatar style={styles.avatar} size="giant" source={derivedPhoto}></Avatar>
+          <Button style={styles.changeAvatarButton} onPress={() => setVisible(true)}></Button>
+          <Text style={styles.insideText}>Display Name</Text>
+          <Input style={styles.inputElements} value={displayName} onChangeText={nextValue => setDisplayName(nextValue)}></Input>
+          <Text style={styles.insideText}>Phone</Text>
+          <Input style={styles.inputElements} value={phone} onChangeText={nextValue => setPhone(nextValue)}></Input>
+          <Text style={styles.insideText}>Email</Text>
+          <Input style={styles.inputElements} value={email} onChangeText={nextValue => setEmail(nextValue)} ></Input>
+          <Button style={styles.inputElements} onPress={passwordChange}>Change password</Button>
+          <Button style={styles.inputElements} onPress={saveChanges}>Save Changes</Button>
           <Button onPress={logout}>Logout</Button>
         </Layout>
       </Layout>
       <Modal
         visible={visible}
         backdropStyle={styles.backdrop}
-        style={{ width: "75%" }}
-        onBackdropPress={() => setVisible(false)}
-      >
-        <Card disabled={true}>
-          <Text style={{ textAlign: "center", marginBottom: 10 }}>
-            Change Photo
-          </Text>
-          <Button onPress={startGallery} style={{ marginBottom: 10 }}>
+        style={styles.containerInn}
+        onBackdropPress={() => setVisible(false)}>
+        <Card disabled={true} >
+          <Text style={styles.cardText}>Change Photo</Text>
+          <Button onPress={startGallery} style={styles.inputElements}>
             Gallery
           </Button>
-          <Button onPress={launchCamera} style={{ marginBottom: 10 }}>
+          <Button onPress={launchCamera} style={styles.inputElements}>
             Take Photo
           </Button>
-          <Button
-            onPress={() => setVisible(false)}
-            style={{ marginBottom: 10 }}
-          >
+          <Button onPress={() => setVisible(false)} style={styles.inputElements}>
             Close
           </Button>
         </Card>
       </Modal>
-    </View>
+    </Layout>
   );
 }
 
@@ -253,6 +202,29 @@ const styles = StyleSheet.create({
   },
   containerInn: {
     width: "75%",
+  },
+  insidetext: {
+    marginBottom: 5,
+  },
+  inputElements: {
+    marginBottom: 10
+  },
+  changeAvatarButton: {
+    width: 50,
+    height: 50,
+    top: -40,
+    left: 250,
+    borderRadius: 50
+  },
+  avatar: {
+    width: 300,
+    height: 300,
+    borderWidth: 10,
+    borderColor: "#FEA82F",
+  },
+  cardText: {
+    textAlign: "center",
+    marginBottom: 10,
   },
   backdrop: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",

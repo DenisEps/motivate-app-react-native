@@ -21,72 +21,79 @@ import { ROUTES } from '../../navigation/routes';
 import { TopNavMain } from '../../components/Header';
 import { vectorIcons, vectorIconsUtility } from '../../assets/icons';
 import AsyncStorage from '@react-native-community/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
-const habitsFB = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'Smoking',
-    goals: [0, 1, 1, 1, 0, 0, 1],
-    icon: { name: 'smoke' },
-    status: false,
-    type: 'negative',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Fastfood',
-    goals: [0, 1, 1, 1, 0, 0, 1],
-    icon: { name: 'fastfood' },
-    status: false,
-    type: 'negative',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Learning',
-    goals: [0, 1, 1, 1, 0, 0, 1],
-    icon: { name: 'learn' },
-    status: false,
-    type: 'positive',
-  },
-  // {
-  //   id: '586d94a0f-3da1-471f-bd96-145571e29d72',
-  //   title: 'Bad Words',
-  //   goals: [0, 1, 1, 1, 1, 0, 1],
-  //   icon: { name: 'badwords' },
-  //   status: true,
-  //   type: 'negative',
-  // },
-  // {
-  //   id: '58694ad0f-3da1-471f-bd96-145571e29d72',
-  //   title: 'Water',
-  //   goals: [0, 1, 1, 1, 0, 0, 1],
-  //   icon: { name: 'water' },
-  //   status: true,
-  //   type: 'positive',
-  // },
-  // {
-  //   id: '58694a0ff-3da1-471f-bd96-145571e29d72',
-  //   title: 'Code',
-  //   goals: [0, 1, 1, 1, 0, 0, 1],
-  //   icon: { name: 'code' },
-  // status: true,
-  // type: 'positive',
-  // },
-];
+// const habitsFB = [
+//   {
+//     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+//     title: 'Smoking',
+//     goals: [0, 1, 1, 1, 0, 0, 1],
+//     icon: { name: 'smoke' },
+//     status: false,
+//     type: 'negative',
+//   },
+//   {
+//     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+//     title: 'Fastfood',
+//     goals: [0, 1, 1, 1, 0, 0, 1],
+//     icon: { name: 'fastfood' },
+//     status: false,
+//     type: 'negative',
+//   },
+//   {
+//     id: '58694a0f-3da1-471f-bd96-145571e29d72',
+//     title: 'Learning',
+//     goals: [0, 1, 1, 1, 0, 0, 1],
+//     icon: { name: 'learn' },
+//     status: false,
+//     type: 'positive',
+//   },
+// {
+//   id: '586d94a0f-3da1-471f-bd96-145571e29d72',
+//   title: 'Bad Words',
+//   goals: [0, 1, 1, 1, 1, 0, 1],
+//   icon: { name: 'badwords' },
+//   status: true,
+//   type: 'negative',
+// },
+// {
+//   id: '58694ad0f-3da1-471f-bd96-145571e29d72',
+//   title: 'Water',
+//   goals: [0, 1, 1, 1, 0, 0, 1],
+//   icon: { name: 'water' },
+//   status: true,
+//   type: 'positive',
+// },
+// {
+//   id: '58694a0ff-3da1-471f-bd96-145571e29d72',
+//   title: 'Code',
+//   goals: [0, 1, 1, 1, 0, 0, 1],
+//   icon: { name: 'code' },
+// status: true,
+// type: 'positive',
+// },
+// ];
 // const uid = firebase.auth().currentUser.uid
 
 const { width, height } = Dimensions.get('window');
 const PADDING = width / 24;
 const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
 
-function Item({ item, onPress, style, handleOpen }) {
+function Item({ item, onPress, style }) {
   const iconName = item.icon;
   const [spinner, setSpinner] = useState(false);
   const [check, setCheck] = useState(false);
   const [undoButton, setUndoButton] = useState(false);
   if (!vectorIcons[iconName]) return null;
   const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
-  const iconPositive = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8BEE88' });
-  const iconNegative = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#DE4E57' });
+  const iconPositive = vectorIcons[iconName]({
+    size: ITEM_SIZE / 2,
+    color: '#8BEE88',
+  });
+  const iconNegative = vectorIcons[iconName]({
+    size: ITEM_SIZE / 2,
+    color: '#DE4E57',
+  });
 
   const downsize = 20;
   return (
@@ -104,7 +111,7 @@ function Item({ item, onPress, style, handleOpen }) {
             }, 700);
           }}
           onLongPress={() => {
-            item.goals[4] = 1;
+            // item.goals[4] = 1;
             setTimeout(() => {
               item.status = true;
             }, 1000);
@@ -117,7 +124,11 @@ function Item({ item, onPress, style, handleOpen }) {
           }}
           style={[styles.item, style]}
         >
-          {!check && <Text style={styles.title}>{item.title}</Text>}
+          {!check && (
+            <Text category="h6" style={styles.title}>
+              {item.title}
+            </Text>
+          )}
 
           {!check && icon}
 
@@ -165,29 +176,46 @@ function Item({ item, onPress, style, handleOpen }) {
               );
             })}
           </Layout>} */}
-        </TouchableOpacity>)
-
-        :
-
-        (<TouchableOpacity
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
           onPress={onPress}
-          onLongPress={(() => setUndoButton(true))}
+          onLongPress={() => setUndoButton(true)}
           style={[styles.item, style, { backgroundColor: '#7B8CDE' }]}
         >
-          {!undoButton && <Text style={styles.title}>{item.title}</Text>}
+          {!undoButton && (
+            <Text category="h6" style={styles.title}>
+              {item.title}
+            </Text>
+          )}
 
           {/* {item.type === 'positive' ? iconPositive : iconNegative} */}
 
-          {undoButton ? (<Layout style={{ borderRadius: 10 }}>
-            <Button style={{ backgroundColor: '#2B344F', width: 120, height: 120, borderRadius: 10 }} onLongPress={() => {
-              item.status = false;
-              item.goals[4] = 0;
-              setUndoButton(false)
-            }}>HOLD TO UNDO</Button>
-          </Layout>) : item.type === 'positive' ? iconPositive
-              : item.type === 'negative' ? iconNegative :
-                iconAdd
-          }
+          {undoButton ? (
+            <Layout style={{ borderRadius: 10 }}>
+              <Button
+                style={{
+                  backgroundColor: '#2B344F',
+                  width: 120,
+                  height: 120,
+                  borderRadius: 10,
+                }}
+                onLongPress={() => {
+                  item.status = false;
+                  // item.goals[4] = 0;
+                  setUndoButton(false);
+                }}
+              >
+                HOLD TO UNDO
+              </Button>
+            </Layout>
+          ) : item.type === 'positive' ? (
+            iconPositive
+          ) : item.type === 'negative' ? (
+            iconNegative
+          ) : (
+            iconAdd
+          )}
 
           {/* {!undoButton && <Layout style={styles.goals}>
             {item.goals.map((goal, i) => {
@@ -205,15 +233,15 @@ function Item({ item, onPress, style, handleOpen }) {
               );
             })}
           </Layout>} */}
-        </TouchableOpacity>)
-      }
+        </TouchableOpacity>
+      )}
     </>
   );
 }
 
-function ItemBack({ item, onPress, style, navigation, handleOpen }) {
+function ItemBack({ item, onPress, style, handleOpen }) {
   const handlePress = () => {
-    handleOpen(item.id);
+    handleOpen(item.id, item.icon, item.title);
   };
   const renderZoomIcon = () => {
     return vectorIconsUtility.menuHorizontal({ size: 50, color: '#090D20' });
@@ -238,7 +266,10 @@ function ItemBack({ item, onPress, style, navigation, handleOpen }) {
 }
 
 const Home = (props) => {
-  const iconAdd = vectorIconsUtility['plus']({ size: ITEM_SIZE / 1.3, color: '#2B344F' });
+  const iconAdd = vectorIconsUtility['plus']({
+    size: ITEM_SIZE / 1.3,
+    color: '#2B344F',
+  });
   const { navigation } = props;
   const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
   const [selectedId, setSelectedId] = useState(null);
@@ -246,7 +277,7 @@ const Home = (props) => {
 
   const uid = firebase.auth().currentUser.uid;
 
-  useEffect(() => {
+  useFocusEffect(() => {
     let firestoreHabits = [];
     const unsubscribe = firebase
       .firestore()
@@ -258,6 +289,7 @@ const Home = (props) => {
           const newData = { ...d.data(), id: d.id };
           firestoreHabits.push(newData);
         });
+
         setHabits(firestoreHabits);
       });
 
@@ -313,8 +345,6 @@ const Home = (props) => {
     };
   }, []);
 
-  const habit1 = async () => {};
-
   if (habits === null) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -323,14 +353,16 @@ const Home = (props) => {
     );
   }
 
-  const handleOpenHabit = (id) => {
+  const handleOpenHabit = (id, icon, title) => {
     navigation.navigate(ROUTES.habitDetails, {
       id,
+      icon,
+      title,
     });
   };
 
   const handleCreateNew = () => {
-    navigation.navigate(ROUTES.createNewHabit);
+    navigation.navigate(ROUTES.addHabit);
   };
 
   const renderItem = ({ item }) => {
@@ -347,7 +379,12 @@ const Home = (props) => {
         ) : (
           <Item
             item={item}
-            onPress={() => setSelectedId(item.id)}
+            onPress={() => {
+              setSelectedId(item.id);
+              setTimeout(() => {
+                setSelectedId('');
+              }, 3000);
+            }}
             style={{ backgroundColor }}
           />
         )}
@@ -377,22 +414,27 @@ const Home = (props) => {
           }}
         >
           {habits.map((h) => {
-            return <Layout key={h.id}>{renderItem({ item: h })}</Layout>
-              ;
+            return <Layout key={h.id}>{renderItem({ item: h })}</Layout>;
           })}
 
-
           {/* ADD BUTTON */}
-          {habits.length < 6 && <TouchableOpacity
-            onLongPress={handleCreateNew}
-            style={[styles.item, { backgroundColor: '#7B8CDE', justifyContent: 'space-around' }]}
-          >
-            <Text category="h6" style={{ color: '#E6ECFD' }}>ADD</Text>
-            {iconAdd}
-            <Text category="h6" style={{ color: '#E6ECFD' }}>NEW HABIT</Text>
-          </TouchableOpacity>}
-
-
+          {habits.length < 6 && (
+            <TouchableOpacity
+              onPress={handleCreateNew}
+              style={[
+                styles.item,
+                { backgroundColor: '#7B8CDE', justifyContent: 'space-around' },
+              ]}
+            >
+              <Text category="h6" style={{ color: '#E6ECFD' }}>
+                ADD
+              </Text>
+              {iconAdd}
+              <Text category="h6" style={{ color: '#E6ECFD' }}>
+                NEW HABIT
+              </Text>
+            </TouchableOpacity>
+          )}
         </Layout>
         {/* sounds button */}
         {/* <Button onPress={playSound} title="Play sound" /> */}
