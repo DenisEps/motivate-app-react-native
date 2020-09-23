@@ -40,10 +40,7 @@ function Profile() {
         setDisplayName(dataFromStorage.displayName);
         setEmail(dataFromStorage.email);
         setPhone(dataFromStorage.phoneNumber);
-        console.log(
-          "require?????",
-          photo
-        );
+     
         if (
           dataFromStorage.photoURL === "" ||
           photo === require("../../photo/startavatar.jpeg").uri

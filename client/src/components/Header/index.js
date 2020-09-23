@@ -52,7 +52,6 @@ export const TopNavMain = ({ navigation }) => {
       .doc(firebase.auth().currentUser.uid)
       .onSnapshot((snap) => {
         const user = snap.data();
-        console.log("USERcIN HABIT>>>>>>>", user);
         setDisplayName(user.displayName);
       });
     return () => {

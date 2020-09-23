@@ -23,48 +23,6 @@ import { TopNavMain } from '../../components/Header';
 import { vectorIcons, vectorIconsUtility } from '../../assets/icons';
 import AsyncStorage from '@react-native-community/async-storage';
 
-// const habits = [
-//   {
-//     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-//     title: 'Smoking',
-//     goals: [0, 1, 1, 1, 0, 0, 1],
-//     icon: { name: 'smoke' },
-//     status: false
-//   },
-//   {
-//     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-//     title: 'Fastfood',
-//     goals: [0, 1, 1, 1, 0, 0, 1],
-//     icon: { name: 'fastfood' },
-//     status: false
-//   },
-//   {
-//     id: '58694a0f-3da1-471f-bd96-145571e29d72',
-//     title: 'Learning',
-//     goals: [0, 1, 1, 1, 0, 0, 1],
-//     icon: { name: 'learn' },
-//     status: false
-//   },
-//   {
-//     id: '586d94a0f-3da1-471f-bd96-145571e29d72',
-//     title: 'Bad Words',
-//     goals: [0, 1, 1, 1, 0, 0, 1],
-//     icon: { name: 'badwords' },
-//     status: false
-//   },
-// ];
-// const uid = firebase.auth().currentUser.uid
-// const user = firebase.firestore().collection('users').doc(uid).get().then(info => console.log(info.data()))
-
-// const load = async () => {
-//   try {
-//     const user = await AsyncStorage.getItem('user');
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
-// load()
-
 const { width, height } = Dimensions.get('window');
 const PADDING = width / 24;
 const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
@@ -239,6 +197,10 @@ const Home = (props) => {
       unsubscribe();
     };
   }, []);
+
+  const habit1 = async () => {
+    
+  }
 
   if (habits === null) {
     return (

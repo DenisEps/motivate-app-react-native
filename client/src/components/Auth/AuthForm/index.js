@@ -132,7 +132,6 @@ const AuthForm = () => {
                     .doc(user.user.uid)
                     .get()
                     .then((info) => {
-                      // console.log("google auth new user!!!!!!!!!", info.data());
                       resolve(save(info.data()));
                     });
                 } else {
@@ -174,7 +173,6 @@ const AuthForm = () => {
                     .doc(user.user.uid)
                     .get()
                     .then((info) => {
-                      // console.log('>>>> USER ALREADY HERE', info.data());
                       resolve(save(info.data()));
                     });
                 }
