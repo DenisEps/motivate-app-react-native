@@ -11,6 +11,7 @@ import * as ImageManipulator from 'expo-image-manipulator';
 import { firebase } from '../../../firebase';
 import AsyncStorage from '@react-native-community/async-storage';
 
+
 function Profile() {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
@@ -28,7 +29,6 @@ function Profile() {
         setEmail(dataFromStorage.email);
         setPhone(dataFromStorage.phoneNumber);
         await FileSystem.writeAsStringAsync(FileSystem.documentDirectory + 'avatar.jpeg', dataFromStorage.photoURL, { encoding: FileSystem.EncodingType.Base64 });
-        // console.log(FileSystem.documentDirectory + 'avatar.jpeg');
         setPhoto(FileSystem.documentDirectory + 'avatar.jpeg');
       } catch (err) {
         console.error(err);
@@ -123,37 +123,33 @@ function Profile() {
     <View>
       <Layout style={styles.container}>
         <Layout style={styles.containerInn}>
-          <Text style={{ textAlign: "center", marginBottom: 25, color: "black", fontSize: 40 }}>Edit Profile</Text>
-          <Avatar style={{ width: 300, height: 300, borderWidth: 10, borderColor: "orange" }} size="giant" source={{ uri: photo }}></Avatar>
-          <Button style={{ width: 50, height: 50, top: -50, left: 250, borderRadius: 50 }} onPress={() => setVisible(true)}>
-          </Button>
-          <Text style={{ marginBottom: 5 }}>Display Name</Text>
-          <Input style={{ marginBottom: 10 }} value={displayName} onChangeText={nextValue => setDisplayName(nextValue)}></Input>
-          <Text style={{ marginBottom: 5 }}>Phone</Text>
-          <Input style={{ marginBottom: 10 }} value={phone} onChangeText={nextValue => setPhone(nextValue)}></Input>
-          <Text style={{ marginBottom: 5 }}>Email</Text>
-          <Input style={{ marginBottom: 10 }} value={email} onChangeText={nextValue => setEmail(nextValue)} ></Input>
-          {/* <Text style={{ marginBottom: 5 }}>Password</Text>
-          <Input style={{ marginBottom: 10 }} value={password} onChangeText={nextValue => setPassword(nextValue)} ></Input> */}
-          <Button style={{ marginBottom: 10 }} onPress={passwordChange}>Change password</Button>
-          <Button style={{ marginBottom: 10 }} onPress={saveChanges}>Save Changes</Button>
+          <Avatar style={styles.avatar} size="giant" source={{ uri: photo }}></Avatar>
+          <Button style={styles.changeAvatarButton} onPress={() => setVisible(true)}></Button>
+          <Text style={styles.insideText}>Display Name</Text>
+          <Input style={styles.inputElements} value={displayName} onChangeText={nextValue => setDisplayName(nextValue)}></Input>
+          <Text style={styles.insideText}>Phone</Text>
+          <Input style={styles.inputElements} value={phone} onChangeText={nextValue => setPhone(nextValue)}></Input>
+          <Text style={styles.insideText}>Email</Text>
+          <Input style={styles.inputElements} value={email} onChangeText={nextValue => setEmail(nextValue)} ></Input>
+          <Button style={styles.inputElements} onPress={passwordChange}>Change password</Button>
+          <Button style={styles.inputElements} onPress={saveChanges}>Save Changes</Button>
           <Button onPress={logout}>Logout</Button>
         </Layout>
       </Layout>
       <Modal
         visible={visible}
         backdropStyle={styles.backdrop}
-        style={{ width: "75%" }}
+        style={styles.containerInn}
         onBackdropPress={() => setVisible(false)}>
         <Card disabled={true} >
-          <Text style={{ textAlign: "center", marginBottom: 10 }}>Change Photo</Text>
-          <Button onPress={startGallery} style={{ marginBottom: 10 }}>
+          <Text style={styles.cardText}>Change Photo</Text>
+          <Button onPress={startGallery} style={styles.inputElements}>
             Gallery
           </Button>
-          <Button onPress={launchCamera} style={{ marginBottom: 10 }}>
+          <Button onPress={launchCamera} style={styles.inputElements}>
             Take Photo
           </Button>
-          <Button onPress={() => setVisible(false)} style={{ marginBottom: 10 }}>
+          <Button onPress={() => setVisible(false)} style={styles.inputElements}>
             Close
           </Button>
         </Card>
@@ -168,6 +164,30 @@ const styles = StyleSheet.create({
   },
   containerInn: {
     width: "75%",
+  },
+  insidetext: {
+    marginBottom: 5,
+  },
+  inputElements: {
+    marginBottom: 10
+  },
+  changeAvatarButton: {
+    width: 50,
+    height: 50,
+    top: -10,
+    left: 250,
+    borderRadius: 50
+  },
+  avatar: {
+    top: 35,
+    width: 300,
+    height: 300,
+    borderWidth: 10,
+    borderColor: "orange",
+  },
+  cardText: {
+    textAlign: "center",
+    marginBottom: 10,
   },
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -191,7 +211,7 @@ export default Profile;
 // import { firebase } from "../../../firebase";
 
 // function Profile() {
-  
+
 //   const user = firebase.auth().currentUser;
 //   const seeder = async () => {
 //     const data = await firebase
