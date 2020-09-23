@@ -24,7 +24,6 @@ const AuthForm = () => {
   const save = async (user) => {
     try {
       const objectValue = JSON.stringify(user);
-      console.log("USER IN SAVE FUNCTION", user);
       await AsyncStorage.setItem("user", objectValue);
       dispatch(setLoader(true));
     } catch (e) {
@@ -56,7 +55,6 @@ const AuthForm = () => {
         .doc(uid)
         .get()
         .then((info) => {
-          console.log("LOGIN USER DATA", info.data());
           save(info.data());
         });
       setEmail("");
@@ -120,7 +118,6 @@ const AuthForm = () => {
                   .doc(user.user.uid)
                   .get()
                   .then(info => {
-                    console.log("google auth new user!!!!!!!!!", info.data());
                     save(info.data());
                   });
               } else {
@@ -152,7 +149,6 @@ const AuthForm = () => {
                   .doc(user.user.uid)
                   .get()
                   .then((info) => {
-                    console.log('>>>> USER ALREADY HERE', info.data());
                     save(info.data())
                   });
               }
@@ -208,9 +204,12 @@ const AuthForm = () => {
 
       if (result.type === "success") {
         setError(null);
-        onSignIn(result);
+        setTimeout(() => {
+          dispatch(userAuth(true));
+          onSignIn(result);
+
+        }, 3000)
         setUserStore(result.user);
-        dispatch(userAuth(true));
         // save(result.user)
         return result.accessToken;
       } else {

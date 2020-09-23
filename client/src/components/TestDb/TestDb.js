@@ -28,7 +28,7 @@ export default function TestDb() {
       })
 
       // get data
-      const info = await firebase.firestore().collection('users').doc(currentUser.uid).get().then(info => console.log(info.data()))
+      const info = await firebase.firestore().collection('users').doc(currentUser.uid).get().then()
       // console.log(info);
   };
 

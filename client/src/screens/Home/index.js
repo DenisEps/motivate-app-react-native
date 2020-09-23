@@ -1,6 +1,12 @@
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { firebase } from '../../../firebase';
 import {
@@ -17,57 +23,42 @@ import { TopNavMain } from '../../components/Header';
 import { vectorIcons, vectorIconsUtility } from '../../assets/icons';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const habits = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'Smoking',
-    goals: [0, 1, 1, 1, 0, 0, 1],
-    icon: { name: 'smoke' },
-    status: false
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Fastfood',
-    goals: [0, 1, 1, 1, 0, 0, 1],
-    icon: { name: 'fastfood' },
-    status: false
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Learning',
-    goals: [0, 1, 1, 1, 0, 0, 1],
-    icon: { name: 'learn' },
-    status: false
-  },
-  {
-    id: '586d94a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Bad Words',
-    goals: [0, 1, 1, 1, 0, 0, 1],
-    icon: { name: 'badwords' },
-    status: false
-  },
-  // {
-  //   id: '58694ad0f-3da1-471f-bd96-145571e29d72',
-  //   title: 'Water',
-  //   goals: [0, 1, 1, 1, 0, 0, 1],
-  //   icon: { name: 'water' },
-  // status: true
-  // },
-  // {
-  //   id: '58694a0ff-3da1-471f-bd96-145571e29d72',
-  //   title: 'Code',
-  //   goals: [0, 1, 1, 1, 0, 0, 1],
-  //   icon: { name: 'code' },
-  // status: true
-  // },
-];
+// const habits = [
+//   {
+//     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+//     title: 'Smoking',
+//     goals: [0, 1, 1, 1, 0, 0, 1],
+//     icon: { name: 'smoke' },
+//     status: false
+//   },
+//   {
+//     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+//     title: 'Fastfood',
+//     goals: [0, 1, 1, 1, 0, 0, 1],
+//     icon: { name: 'fastfood' },
+//     status: false
+//   },
+//   {
+//     id: '58694a0f-3da1-471f-bd96-145571e29d72',
+//     title: 'Learning',
+//     goals: [0, 1, 1, 1, 0, 0, 1],
+//     icon: { name: 'learn' },
+//     status: false
+//   },
+//   {
+//     id: '586d94a0f-3da1-471f-bd96-145571e29d72',
+//     title: 'Bad Words',
+//     goals: [0, 1, 1, 1, 0, 0, 1],
+//     icon: { name: 'badwords' },
+//     status: false
+//   },
+// ];
 // const uid = firebase.auth().currentUser.uid
 // const user = firebase.firestore().collection('users').doc(uid).get().then(info => console.log(info.data()))
 
 // const load = async () => {
 //   try {
 //     const user = await AsyncStorage.getItem('user');
-//     console.log(user);
 //   } catch (e) {
 //     console.log(e);
 //   }
@@ -79,17 +70,17 @@ const PADDING = width / 24;
 const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
 
 function Item({ item, onPress, style, handleOpen }) {
-  const iconName = item.icon.name;
+  const iconName = item.icon;
   const [spinner, setSpinner] = useState(false);
   const [check, setCheck] = useState(false);
-  const [styleOnStatys, setStyleOnStatys] = useState({})
+  const [styleOnStatys, setStyleOnStatys] = useState({});
   if (!vectorIcons[iconName]) return null;
   const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
   const downsize = 20;
   return (
     <>
-      {!item.status ?
-        (<TouchableOpacity
+      {!item.status ? (
+        <TouchableOpacity
           onPress={onPress}
           onPressIn={() => {
             setTimeout(() => {
@@ -104,7 +95,7 @@ function Item({ item, onPress, style, handleOpen }) {
             item.goals[4] = 1;
             setTimeout(() => {
               item.status = true;
-            }, 1000)
+            }, 1000);
           }}
           onPressOut={() => {
             setSpinner(false);
@@ -146,25 +137,27 @@ function Item({ item, onPress, style, handleOpen }) {
             />
           )}
 
-          {!check && <Layout style={styles.goals}>
-            {item.goals.map((goal, i) => {
-              let color = '';
-              let type = '';
-              if (goal === 1) {
-                color = '#8BEE88';
-                type = 'checkmark';
-              } else {
-                color = '#DE4E57';
-                type = 'close';
-              }
-              return (
-                <Icon key={i} style={styles.icon} fill={color} name={type} />
-              );
-            })}
-          </Layout>}
-        </TouchableOpacity>) :
-
-        (<TouchableOpacity
+          {/* {!check && (
+            <Layout style={styles.goals}>
+              {item.goals.map((goal, i) => {
+                let color = '';
+                let type = '';
+                if (goal === 1) {
+                  color = '#8BEE88';
+                  type = 'checkmark';
+                } else {
+                  color = '#DE4E57';
+                  type = 'close';
+                }
+                return (
+                  <Icon key={i} style={styles.icon} fill={color} name={type} />
+                );
+              })}
+            </Layout>
+          )} */}
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
           onPress={onPress}
           style={[styles.item, style, { backgroundColor: '#00664B' }]}
         >
@@ -172,7 +165,7 @@ function Item({ item, onPress, style, handleOpen }) {
 
           {icon}
 
-          <Layout style={styles.goals}>
+          {/* <Layout style={styles.goals}>
             {item.goals.map((goal, i) => {
               let color = '';
               let type = '';
@@ -187,9 +180,9 @@ function Item({ item, onPress, style, handleOpen }) {
                 <Icon key={i} style={styles.icon} fill={color} name={type} />
               );
             })}
-          </Layout>
-        </TouchableOpacity>)
-      }
+          </Layout> */}
+        </TouchableOpacity>
+      )}
     </>
   );
 }
@@ -224,7 +217,35 @@ const Home = (props) => {
   const { navigation } = props;
   const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
   const [selectedId, setSelectedId] = useState(null);
-  const dispatch = useDispatch();
+  const [habits, setHabits] = useState(null);
+
+  useEffect(() => {
+    let firestoreHabits = [];
+    const uid = firebase.auth().currentUser.uid;
+    const unsubscribe = firebase
+      .firestore()
+      .collection('users')
+      .doc(uid)
+      .collection('habits')
+      .onSnapshot((snap) => {
+        snap.docs.forEach((d) => {
+          const newData = {...d.data(), id: d.id}
+          firestoreHabits.push(newData);
+        });
+        setHabits(firestoreHabits);
+      });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  if (habits === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   const handleOpenHabit = (id) => {
     navigation.navigate(ROUTES.habitDetails, {
@@ -249,12 +270,12 @@ const Home = (props) => {
             handleOpen={handleOpenHabit}
           />
         ) : (
-            <Item
-              item={item}
-              onPress={() => setSelectedId(item.id)}
-              style={{ backgroundColor }}
-            />
-          )}
+          <Item
+            item={item}
+            onPress={() => setSelectedId(item.id)}
+            style={{ backgroundColor }}
+          />
+        )}
       </View>
     );
   };
