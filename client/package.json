@@ -22,6 +22,7 @@
     "@ui-kitten/components": "^5.0.0",
     "@ui-kitten/eva-icons": "^5.0.0",
     "expo": "~38.0.8",
+    "expo-asset": "^8.2.0",
     "expo-av": "^8.4.0",
     "expo-constants": "^9.1.1",
     "expo-file-system": "~9.0.1",

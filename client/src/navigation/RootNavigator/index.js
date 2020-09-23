@@ -18,7 +18,7 @@ const RootNavigator = () => {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const auth = useSelector(state => state.user);
-
+console.log('>>>>>>>AUTHDASLKDKDDKASDKASD))))!!!!!!',auth);
   useEffect(() => {
     load();
     // if (auth === true) {
@@ -43,7 +43,7 @@ const RootNavigator = () => {
     }
   }
   // return <AuthForm />
-  return true ? <TabNavigator /> : <StartForm />;
+  return auth ? <TabNavigator /> : <StartForm />;
 };
 
 export default RootNavigator;

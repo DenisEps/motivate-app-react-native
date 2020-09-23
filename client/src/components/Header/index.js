@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import {
   Avatar,
   Icon,
@@ -10,11 +10,11 @@ import {
   TopNavigation,
   TopNavigationAction,
   Layout,
-} from '@ui-kitten/components';
-import { firebase } from '../../../firebase';
-import { deleteUser } from '../../redux/actions';
-import AsyncStorage from '@react-native-community/async-storage';
-import { ROUTES } from '../../navigation/routes';
+} from "@ui-kitten/components";
+import { firebase } from "../../../firebase";
+import { deleteUser } from "../../redux/actions";
+import AsyncStorage from "@react-native-community/async-storage";
+import { ROUTES } from "../../navigation/routes";
 
 const MenuIcon = (props) => <Icon {...props} name="more-vertical" />;
 const InfoIcon = (props) => <Icon {...props} name="info" />;
@@ -22,12 +22,12 @@ const LogoutIcon = (props) => <Icon {...props} name="log-out" />;
 
 export const TopNavMain = ({ navigation }) => {
   const [menuVisible, setMenuVisible] = React.useState(false);
-  const [displayName, setDisplayName] = useState('anonymous');
+  const [displayName, setDisplayName] = useState("");
   const dispatch = useDispatch();
 
   const remove = async () => {
     try {
-      await AsyncStorage.removeItem('user');
+      await AsyncStorage.removeItem("user");
     } catch (e) {
       const err = new Error(e);
       setError(err.message);
@@ -40,21 +40,53 @@ export const TopNavMain = ({ navigation }) => {
     await firebase.auth().signOut();
     const user = firebase.auth().currentUser;
     return user
-      ? console.log('somthing went wrong')
-      : console.log('logout is successfullllllll');
+      ? console.log("somthing went wrong")
+      : console.log("logout is successfullllllll");
   };
 
   useEffect(() => {
-    (async function () {
-      const user = await firebase
-        .firestore()
-        .collection('users')
-        .doc(firebase.auth().currentUser.uid)
-        .get()
-        .then((info) => info.data());
-      setDisplayName(user.displayName);
+    (function () {
+      setTimeout(async () => {
+        try {
+          // const user = JSON.parse(await AsyncStorage.getItem('user'))
+          // console.log('USER IN HABIT',user);
+          setDisplayName(
+            JSON.parse(await AsyncStorage.getItem("user")).displayName
+          );
+        } catch (e) {
+          const error = new Error(e);
+          console.error(error.message);
+        }
+      }, 2000);
+      // await firebase
+      //   .firestore()
+      //   .collection('users')
+      //   .doc(firebase.auth().currentUser.uid)
+      //   .get()
+      //   .then((info) => {
+      //     const user = info.data()
+      //     setDisplayName(user.displayName);
+      //     console.log(user);
+      //   });
     })();
-  }, []);
+  });
+
+  // const uid = firebase.auth().currentUser.uid
+  // const name = firebase.auth().currentUser.displayName
+  // useEffect(() => {
+  //   (async () => {
+  //     firebase
+  //     .firestore()
+  //     .collection('users')
+  //     .doc(uid)
+  //     .get()
+  //     .then(info => {
+  //       const user = info.data()
+  //       setDisplayName(user.displayName)
+  //       console.log('>>>>USER>>>>>>>HOME PAGE',user);
+  //     })
+  //   })()
+  // }, [name])
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -89,7 +121,7 @@ export const TopNavMain = ({ navigation }) => {
           style={styles.logo}
           source={{
             uri:
-              'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=100&q=100',
+              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=100&q=100",
           }}
         />
       </TouchableOpacity>
@@ -106,8 +138,8 @@ export const TopNavMain = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   logo: {
     marginHorizontal: 16,

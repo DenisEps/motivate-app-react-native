@@ -19,13 +19,14 @@ const AuthForm = () => {
   const [test, setTest] = useState(false);
   const [userStore, setUserStore] = useState(null);
   const dispatch = useDispatch();
-  const loader = useSelector(state => state.loader)
+  const loader = useSelector((state) => state.loader);
 
   const save = async (user) => {
     try {
       const objectValue = JSON.stringify(user);
+      console.log("USER IN SAVE FUNCTION", user);
       await AsyncStorage.setItem("user", objectValue);
-      dispatch(setLoader(true))
+      dispatch(setLoader(true));
     } catch (e) {
       const error = new Error(e);
       setError(error.message);
@@ -55,8 +56,9 @@ const AuthForm = () => {
         .doc(uid)
         .get()
         .then((info) => {
-          console.log(info.data);
-          save(info.data())});
+          console.log("LOGIN USER DATA", info.data());
+          save(info.data());
+        });
       setEmail("");
       setPass("");
       setTest(true);
@@ -100,7 +102,9 @@ const AuthForm = () => {
                   .set({
                     email: userAuth.email == null ? "" : userAuth.email,
                     displayName:
-                      userAuth.displayName == null ? "" : userAuth.displayName,
+                      userAuth.displayName == null
+                        ? "Anonymous"
+                        : userAuth.displayName,
                     phoneNumber:
                       userAuth.phoneNumber == null ? "" : userAuth.phoneNumber,
                     photoURL:
@@ -112,12 +116,16 @@ const AuthForm = () => {
                     // habits: [],
                     // level: 1,
                   });
+                  console.log('>>>>>>>>>>>>>>USER UID',user.user.uid);
                 await firebase
                   .firestore()
                   .collection("users")
                   .doc(user.user.uid)
                   .get()
-                  .then((info) => save(info.data()));
+                  .then(info => {
+                    console.log("google auth new user!!!!!!!!!", info.data());
+                    save(info.data());
+                  });
               } else {
                 const userAuth = user.user;
                 await firebase
@@ -127,7 +135,9 @@ const AuthForm = () => {
                   .update({
                     email: userAuth.email == null ? "" : userAuth.email,
                     displayName:
-                      userAuth.displayName == null ? "Anonymous" : userAuth.displayName,
+                      userAuth.displayName == null
+                        ? "Anonymous"
+                        : userAuth.displayName,
                     phoneNumber:
                       userAuth.phoneNumber == null ? "" : userAuth.phoneNumber,
                     photoURL:
@@ -144,7 +154,10 @@ const AuthForm = () => {
                   .collection("users")
                   .doc(user.user.uid)
                   .get()
-                  .then((info) => save(info.data()));
+                  .then((info) => {
+                    console.log('>>>> USER ALREADY HERE', info.data());
+                    save(info.data())
+                  });
               }
             })
             .catch(function (error) {
