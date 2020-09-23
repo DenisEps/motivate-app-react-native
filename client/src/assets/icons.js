@@ -34,6 +34,7 @@ export const vectorIconsUtility = {
   ),
   zoomOut: (props) => <MaterialIcons name="zoom-out-map" {...props} />,
   edit: (props) => <Feather name="edit" {...props} />,
+  plus: (props) => <Entypo name="plus" {...props} />
 };
 
 export const kittenIcons = {

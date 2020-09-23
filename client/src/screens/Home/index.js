@@ -17,11 +17,62 @@ import {
   Layout as View,
 } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
-import { setHabits } from '../../redux/actions';
 import { ROUTES } from '../../navigation/routes';
 import { TopNavMain } from '../../components/Header';
 import { vectorIcons, vectorIconsUtility } from '../../assets/icons';
 import AsyncStorage from '@react-native-community/async-storage';
+
+const habitsFB = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    title: 'Smoking',
+    goals: [0, 1, 1, 1, 0, 0, 1],
+    icon: { name: 'smoke' },
+    status: false,
+    type: 'negative',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    title: 'Fastfood',
+    goals: [0, 1, 1, 1, 0, 0, 1],
+    icon: { name: 'fastfood' },
+    status: false,
+    type: 'negative',
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    title: 'Learning',
+    goals: [0, 1, 1, 1, 0, 0, 1],
+    icon: { name: 'learn' },
+    status: false,
+    type: 'positive',
+  },
+  // {
+  //   id: '586d94a0f-3da1-471f-bd96-145571e29d72',
+  //   title: 'Bad Words',
+  //   goals: [0, 1, 1, 1, 1, 0, 1],
+  //   icon: { name: 'badwords' },
+  //   status: true,
+  //   type: 'negative',
+  // },
+  // {
+  //   id: '58694ad0f-3da1-471f-bd96-145571e29d72',
+  //   title: 'Water',
+  //   goals: [0, 1, 1, 1, 0, 0, 1],
+  //   icon: { name: 'water' },
+  //   status: true,
+  //   type: 'positive',
+  // },
+  // {
+  //   id: '58694a0ff-3da1-471f-bd96-145571e29d72',
+  //   title: 'Code',
+  //   goals: [0, 1, 1, 1, 0, 0, 1],
+  //   icon: { name: 'code' },
+  // status: true,
+  // type: 'positive',
+  // },
+];
+// const uid = firebase.auth().currentUser.uid
 
 const { width, height } = Dimensions.get('window');
 const PADDING = width / 24;
@@ -31,13 +82,12 @@ function Item({ item, onPress, style, handleOpen }) {
   const iconName = item.icon;
   const [spinner, setSpinner] = useState(false);
   const [check, setCheck] = useState(false);
-  const [styleOnStatys, setStyleOnStatys] = useState({});
+  const [undoButton, setUndoButton] = useState(false);
   if (!vectorIcons[iconName]) return null;
   const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
-  const iconActive = vectorIcons[iconName]({
-    size: ITEM_SIZE / 2,
-    color: '#2B344F',
-  });
+  const iconPositive = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8BEE88' });
+  const iconNegative = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#DE4E57' });
+
   const downsize = 20;
   return (
     <>
@@ -99,35 +149,7 @@ function Item({ item, onPress, style, handleOpen }) {
             />
           )}
 
-          {/* {!check && (
-            <Layout style={styles.goals}>
-              {item.goals.map((goal, i) => {
-                let color = '';
-                let type = '';
-                if (goal === 1) {
-                  color = '#8BEE88';
-                  type = 'checkmark';
-                } else {
-                  color = '#DE4E57';
-                  type = 'close';
-                }
-                return (
-                  <Icon key={i} style={styles.icon} fill={color} name={type} />
-                );
-              })}
-            </Layout>
-          )} */}
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          onPress={onPress}
-          style={[styles.item, style, { backgroundColor: '#7B8CDE' }]}
-        >
-          <Text style={styles.title}>{item.title}</Text>
-
-          {iconActive}
-
-          {/* <Layout style={styles.goals}>
+          {/* {!check && <Layout style={styles.goals}>
             {item.goals.map((goal, i) => {
               let color = '';
               let type = '';
@@ -142,9 +164,49 @@ function Item({ item, onPress, style, handleOpen }) {
                 <Icon key={i} style={styles.icon} fill={color} name={type} />
               );
             })}
-          </Layout> */}
-        </TouchableOpacity>
-      )}
+          </Layout>} */}
+        </TouchableOpacity>)
+
+        :
+
+        (<TouchableOpacity
+          onPress={onPress}
+          onLongPress={(() => setUndoButton(true))}
+          style={[styles.item, style, { backgroundColor: '#7B8CDE' }]}
+        >
+          {!undoButton && <Text style={styles.title}>{item.title}</Text>}
+
+          {/* {item.type === 'positive' ? iconPositive : iconNegative} */}
+
+          {undoButton ? (<Layout style={{ borderRadius: 10 }}>
+            <Button style={{ backgroundColor: '#2B344F', width: 120, height: 120, borderRadius: 10 }} onLongPress={() => {
+              item.status = false;
+              item.goals[4] = 0;
+              setUndoButton(false)
+            }}>HOLD TO UNDO</Button>
+          </Layout>) : item.type === 'positive' ? iconPositive
+              : item.type === 'negative' ? iconNegative :
+                iconAdd
+          }
+
+          {/* {!undoButton && <Layout style={styles.goals}>
+            {item.goals.map((goal, i) => {
+              let color = '';
+              let type = '';
+              if (goal === 1) {
+                color = '#8BEE88';
+                type = 'checkmark';
+              } else {
+                color = '#DE4E57';
+                type = 'close';
+              }
+              return (
+                <Icon key={i} style={styles.icon} fill={color} name={type} />
+              );
+            })}
+          </Layout>} */}
+        </TouchableOpacity>)
+      }
     </>
   );
 }
@@ -176,6 +238,7 @@ function ItemBack({ item, onPress, style, navigation, handleOpen }) {
 }
 
 const Home = (props) => {
+  const iconAdd = vectorIconsUtility['plus']({ size: ITEM_SIZE / 1.3, color: '#2B344F' });
   const { navigation } = props;
   const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
   const [selectedId, setSelectedId] = useState(null);
@@ -185,7 +248,6 @@ const Home = (props) => {
 
   useEffect(() => {
     let firestoreHabits = [];
-    const uid = firebase.auth().currentUser.uid;
     const unsubscribe = firebase
       .firestore()
       .collection('users')
@@ -273,7 +335,6 @@ const Home = (props) => {
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#7B8CDE' : '#2B344F';
-
     return (
       <View>
         {item.id === selectedId ? (
@@ -309,7 +370,6 @@ const Home = (props) => {
     <Layout style={[styles.container, { paddingTop }]}>
       <View>
         <TopNavMain />
-
         <Layout
           style={{
             flexDirection: 'row',
@@ -317,8 +377,22 @@ const Home = (props) => {
           }}
         >
           {habits.map((h) => {
-            return <Layout key={h.id}>{renderItem({ item: h })}</Layout>;
+            return <Layout key={h.id}>{renderItem({ item: h })}</Layout>
+              ;
           })}
+
+
+          {/* ADD BUTTON */}
+          {habits.length < 6 && <TouchableOpacity
+            onLongPress={handleCreateNew}
+            style={[styles.item, { backgroundColor: '#7B8CDE', justifyContent: 'space-around' }]}
+          >
+            <Text category="h7" style={{ color: '#E6ECFD' }}>ADD</Text>
+            {iconAdd}
+            <Text category="h7" style={{ color: '#E6ECFD' }}>NEW HABIT</Text>
+          </TouchableOpacity>}
+
+
         </Layout>
         {/* sounds button */}
         {/* <Button onPress={playSound} title="Play sound" /> */}
@@ -359,6 +433,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
+    shadowColor: '#fff',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   itemBack: {
     padding: PADDING,
@@ -369,6 +451,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: '#fff',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   title: {
     color: '#E6ECFD',
