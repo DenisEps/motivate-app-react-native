@@ -147,7 +147,7 @@ function Item({ item, onPress, style, handleOpen }) {
             />
           )}
 
-          {!check && <Layout style={styles.goals}>
+          {/* {!check && <Layout style={styles.goals}>
             {item.goals.map((goal, i) => {
               let color = '';
               let type = '';
@@ -162,7 +162,7 @@ function Item({ item, onPress, style, handleOpen }) {
                 <Icon key={i} style={styles.icon} fill={color} name={type} />
               );
             })}
-          </Layout>}
+          </Layout>} */}
         </TouchableOpacity>)
 
         :
@@ -185,7 +185,7 @@ function Item({ item, onPress, style, handleOpen }) {
           </Layout>
           }
 
-          {!undoButton && <Layout style={styles.goals}>
+          {/* {!undoButton && <Layout style={styles.goals}>
             {item.goals.map((goal, i) => {
               let color = '';
               let type = '';
@@ -200,7 +200,7 @@ function Item({ item, onPress, style, handleOpen }) {
                 <Icon key={i} style={styles.icon} fill={color} name={type} />
               );
             })}
-          </Layout>}
+          </Layout>} */}
         </TouchableOpacity>)
       }
     </>
