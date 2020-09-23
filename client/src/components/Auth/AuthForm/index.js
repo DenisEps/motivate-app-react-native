@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, ActivityIndicator } from "react-native";
-import { Input, Button, Layout, Text } from "@ui-kitten/components";
+import { Input, Button, Layout, Text, Icon } from "@ui-kitten/components";
 import { useDispatch, useSelector } from "react-redux";
 import { userAuth, deleteUser, setLoader } from "../../../redux/actions";
 import TestDb from "../../TestDb/TestDb";
@@ -16,7 +16,6 @@ const AuthForm = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [err, setError] = useState(null);
-  const [test, setTest] = useState(false);
   const [userStore, setUserStore] = useState(null);
   const dispatch = useDispatch();
   const loader = useSelector((state) => state.loader);
@@ -91,6 +90,7 @@ const AuthForm = () => {
               .signInWithCredential(credential)
               .then(async function (user) {
                 if (user.additionalUserInfo.isNewUser) {
+                  const photo = firebase.auth().currentUser.photoURL
                   const userAuth = user.user;
                   await firebase
                     .firestore()
@@ -107,24 +107,24 @@ const AuthForm = () => {
                           ? ""
                           : userAuth.phoneNumber,
                       photoURL:
-                        userAuth.photoURL == null ? "" : userAuth.photoURL,
+                        userAuth.photoURL == null ? "" : photo,
                       emailVerified:
                         userAuth.emailVerified == null
                           ? ""
                           : userAuth.emailVerified,
                     });
 
-                  await firebase
-                    .firestore()
-                    .collection("users")
-                    .doc(user.user.uid)
-                    .collection("habits")
-                    .add({
-                      type: "",
-                      icon: "",
-                      title: "",
-                      dates: {},
-                    });
+                  // await firebase
+                  //   .firestore()
+                  //   .collection("users")
+                  //   .doc(user.user.uid)
+                  //   .collection("habits")
+                  //   .add({
+                  //     type: "",
+                  //     icon: "",
+                  //     title: "",
+                  //     dates: {},
+                  //   });
 
                   await firebase
                     .firestore()
@@ -136,6 +136,8 @@ const AuthForm = () => {
                     });
                 } else {
                   const userAuth = user.user;
+                  console.log(userAuth.photoURL);
+                  const photo = firebase.auth().currentUser.photoURL
                   await firebase
                     .firestore()
                     .collection("users")
@@ -151,13 +153,11 @@ const AuthForm = () => {
                           ? ""
                           : userAuth.phoneNumber,
                       photoURL:
-                        userAuth.photoURL == null ? "" : userAuth.photoURL,
+                        userAuth.photoURL == null ? "" : photo,
                       emailVerified:
                         userAuth.emailVerified == null
                           ? ""
                           : userAuth.emailVerified,
-                      // habits: [],
-                      // level: 1,
                     });
 
                   // await firebase
@@ -245,13 +245,12 @@ const AuthForm = () => {
     }
   }
 
+  const GoogleIcon = (props) => <Icon {...props} fill="#E3B23C" size='28' name="google" />;
+
   return (
-    <Layout
-      style={{ backgroundColor: "white", alignItems: "center", top: 250 }}
-      level="1"
-    >
+    <Layout style={styles.container} level="1">
       <Input
-        style={{ width: "75%" }}
+        style={styles.inputs}
         placeholder="Email"
         autoCapitalize="none"
         autoCorrect={false}
@@ -259,33 +258,58 @@ const AuthForm = () => {
         onChangeText={(nextValue) => setEmail(nextValue)}
       />
       <Input
-        style={{ width: "75%" }}
+        style={styles.inputs}
         secureTextEntry={true}
         placeholder="Password"
         value={pass}
         onChangeText={(nextValue) => setPass(nextValue)}
       />
-      <Button style={{ width: "75%", marginBottom: 5 }} onPress={Login}>
-        Sign In
+      <Button style={styles.inputs} onPress={Login}>
+      <Text category="h6">Sign In </Text> 
       </Button>
-      <Button
-        style={{ width: "75%", marginBottom: 5 }}
-        onPress={() => signInWithGoogleAsync()}
-      >
-        Sign In With Google
-      </Button>
-      <Button style={{ width: "75%", marginBottom: 5 }} onPress={logout}>
-        Logout
-      </Button>
-      {test ? <TestDb /> : null}
-      {err ? <Text>{err}</Text> : null}
+      <Layout style={styles.inputsGoogle}>
+        <Button
+          style={styles.button}
+          accessoryLeft={GoogleIcon}
+          onPress={signInWithGoogleAsync}
+          category="h2"
+        >
+         <Text category="h6">Sign In With Google</Text> 
+        </Button>
+      </Layout>
+      {err ? <Text style={styles.error}>{err}</Text> : null}
     </Layout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    alignItems: "center",
+    top: 250,
+  },
+  inputs: {
+    width: "75%",
+    marginBottom: 5,
+  },
+  inputsGoogle: {
+    width: "75%",
+    marginBottom: 5,
+    fontSize: 26,
+  },
+  button: {
+    margin: 1,
+  },
+  error: {
+    width: '75%',
+    marginTop: 16,
+    paddingVertical: 8,
+    borderWidth: 2,
+    borderColor: "#FEA82F",
+    borderRadius: 6,
+    color: "#FEA82F",
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 
