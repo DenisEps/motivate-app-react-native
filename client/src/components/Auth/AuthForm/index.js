@@ -92,6 +92,7 @@ const AuthForm = () => {
               .signInWithCredential(credential)
               .then(async function (user) {
                 if (user.additionalUserInfo.isNewUser) {
+                  const photo = firebase.auth().currentUser.photoURL
                   const userAuth = user.user;
                   await firebase
                     .firestore()
@@ -108,7 +109,7 @@ const AuthForm = () => {
                           ? ""
                           : userAuth.phoneNumber,
                       photoURL:
-                        userAuth.photoURL == null ? "" : userAuth.photoURL,
+                        userAuth.photoURL == null ? "" : photo,
                       emailVerified:
                         userAuth.emailVerified == null
                           ? ""
@@ -137,6 +138,8 @@ const AuthForm = () => {
                     });
                 } else {
                   const userAuth = user.user;
+                  console.log(userAuth.photoURL);
+                  const photo = firebase.auth().currentUser.photoURL
                   await firebase
                     .firestore()
                     .collection("users")
@@ -152,7 +155,7 @@ const AuthForm = () => {
                           ? ""
                           : userAuth.phoneNumber,
                       photoURL:
-                        userAuth.photoURL == null ? "" : userAuth.photoURL,
+                        userAuth.photoURL == null ? "" : photo,
                       emailVerified:
                         userAuth.emailVerified == null
                           ? ""

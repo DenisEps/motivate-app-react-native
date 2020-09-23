@@ -21,49 +21,42 @@ import * as ImageManipulator from "expo-image-manipulator";
 import { firebase } from "../../../firebase";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Asset } from "expo-asset";
+import AvatarDefault from '../../photo/startavatar.jpeg';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 function Profile() {
-  const test = require('../../photo/startavatar.jpeg')
-  console.log('test', test);
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
-  const [photo, setPhoto] = useState(require('../../photo/startavatar.jpeg'));
+  const [photo, setPhoto] = useState(AvatarDefault);
   const [err, setError] = useState(null);
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
 
   useEffect(() => {
     (async () => {
       try {
         const dataFromStorage = JSON.parse(await AsyncStorage.getItem("user"))
           ? JSON.parse(await AsyncStorage.getItem("user"))
-          : { photoURL: "" };
+          : { data: "hello" };
         setDisplayName(dataFromStorage.displayName);
         setEmail(dataFromStorage.email);
         setPhone(dataFromStorage.phoneNumber);
-        console.log(
-          "require?????",
-          photo
-        );
-        if (
-          dataFromStorage.photoURL === "" ||
-          photo === require("../../photo/startavatar.jpeg").uri
-        ) {
-          setPhoto(require("../../photo/startavatar.jpeg"));
-        } else if (dataFromStorage.photoURL.slice(0, 4) !== "http") {
-          await FileSystem.writeAsStringAsync(
-            FileSystem.documentDirectory + "avatar.jpeg",
-            dataFromStorage.photoURL,
-            { encoding: FileSystem.EncodingType.Base64 }
-          );
-          setPhoto(FileSystem.documentDirectory + "avatar.jpeg");
-        } else {
-          const imageFromGoogle = await Asset.fromModule(
-            dataFromStorage.photoURL
-          ).downloadAsync();
-          setPhoto(imageFromGoogle.localUri);
+        if (dataFromStorage.data !== "hello") {
+          if (dataFromStorage.photoURL.slice(0, 4) !== "http") {
+            await FileSystem.writeAsStringAsync(
+              FileSystem.documentDirectory + "avatar.jpeg",
+              dataFromStorage.photoURL,
+              { encoding: FileSystem.EncodingType.Base64 }
+            );
+            setPhoto(FileSystem.documentDirectory + "avatar.jpeg");
+          } else {
+            const imageFromGoogle = await Asset.fromModule(dataFromStorage.photoURL).downloadAsync();
+            console.log('>>>>imageFromGoogle', imageFromGoogle);
+            setPhoto(imageFromGoogle.localUri);
+          }
         }
       } catch (err) {
         console.error(err);
@@ -163,11 +156,13 @@ function Profile() {
       .catch((err) => setError(err));
   };
 
+  const derivedPhoto = typeof photo === 'string' ? { uri: photo } : photo;
+
   return (
-    <View>
+    <Layout style={[styles.container, { paddingTop, flex: 1 }]}>
       <Layout style={styles.container}>
         <Layout style={styles.containerInn}>
-          <Avatar style={styles.avatar} size="giant" source={{ uri: photo }}></Avatar>
+          <Avatar style={styles.avatar} size="giant" source={derivedPhoto}></Avatar>
           <Button style={styles.changeAvatarButton} onPress={() => setVisible(true)}></Button>
           <Text style={styles.insideText}>Display Name</Text>
           <Input style={styles.inputElements} value={displayName} onChangeText={nextValue => setDisplayName(nextValue)}></Input>
@@ -198,7 +193,7 @@ function Profile() {
           </Button>
         </Card>
       </Modal>
-    </View>
+    </Layout>
   );
 }
 
@@ -218,16 +213,15 @@ const styles = StyleSheet.create({
   changeAvatarButton: {
     width: 50,
     height: 50,
-    top: -10,
+    top: -40,
     left: 250,
     borderRadius: 50
   },
   avatar: {
-    top: 35,
     width: 300,
     height: 300,
     borderWidth: 10,
-    borderColor: "orange",
+    borderColor: "#FEA82F",
   },
   cardText: {
     textAlign: "center",
