@@ -42,9 +42,9 @@ const habits = [
   {
     id: '586d94a0f-3da1-471f-bd96-145571e29d72',
     title: 'Bad Words',
-    goals: [0, 1, 1, 1, 0, 0, 1],
+    goals: [0, 1, 1, 1, 1, 0, 1],
     icon: { name: 'badwords' },
-    status: false
+    status: true
   },
   // {
   //   id: '58694ad0f-3da1-471f-bd96-145571e29d72',
@@ -82,8 +82,7 @@ function Item({ item, onPress, style, handleOpen }) {
   const iconName = item.icon.name;
   const [spinner, setSpinner] = useState(false);
   const [check, setCheck] = useState(false);
-  // const [styleOnStatys, setStyleOnStatys] = useState('#8389E6')
-
+  const [undoButton, setUndoButton] = useState(false);
   if (!vectorIcons[iconName]) return null;
   const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
   const iconActive = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#2B344F' });
@@ -164,17 +163,29 @@ function Item({ item, onPress, style, handleOpen }) {
               );
             })}
           </Layout>}
-        </TouchableOpacity>) :
+        </TouchableOpacity>)
+
+        :
 
         (<TouchableOpacity
           onPress={onPress}
+          onLongPress={(() => setUndoButton(true))}
           style={[styles.item, style, { backgroundColor: '#7B8CDE' }]}
         >
-          <Text style={styles.title}>{item.title}</Text>
+          {!undoButton && <Text style={styles.title}>{item.title}</Text>}
 
-          {iconActive}
+          {!undoButton && iconActive}
 
-          <Layout style={styles.goals}>
+          {undoButton && <Layout style={{ borderRadius: 10 }}>
+            <Button style={{ backgroundColor: '#2B344F', width: 120, height: 120, borderRadius: 10 }} onLongPress={() => {
+              item.status = false;
+              item.goals[4] = 0;
+              setUndoButton(false)
+            }}>HOLD TO UNDO</Button>
+          </Layout>
+          }
+
+          {!undoButton && <Layout style={styles.goals}>
             {item.goals.map((goal, i) => {
               let color = '';
               let type = '';
@@ -189,7 +200,7 @@ function Item({ item, onPress, style, handleOpen }) {
                 <Icon key={i} style={styles.icon} fill={color} name={type} />
               );
             })}
-          </Layout>
+          </Layout>}
         </TouchableOpacity>)
       }
     </>
@@ -326,6 +337,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
+    shadowColor: '#fff',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   itemBack: {
     padding: PADDING,
@@ -336,6 +355,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: '#fff',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   title: {
     color: '#E6ECFD',
