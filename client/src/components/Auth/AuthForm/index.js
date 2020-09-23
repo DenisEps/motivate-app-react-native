@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, ActivityIndicator } from "react-native";
-import { Input, Button, Layout, Text } from "@ui-kitten/components";
+import { Input, Button, Layout, Text, Icon } from "@ui-kitten/components";
 import { useDispatch, useSelector } from "react-redux";
 import { userAuth, deleteUser, setLoader } from "../../../redux/actions";
 import TestDb from "../../TestDb/TestDb";
@@ -210,7 +210,7 @@ const AuthForm = () => {
       for (let i = 0; i < providerData.length; i++) {
         if (
           providerData[i].providerId ===
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
           providerData[i].uid === googleUser.getBasicProfile().getId()
         ) {
           return true;
@@ -246,11 +246,10 @@ const AuthForm = () => {
     }
   }
 
+  const GoogleIcon = (props) => <Icon {...props} fill="#E3B23C" size='28' name="google" />;
+
   return (
-    <Layout
-      style={styles.container}
-      level="1"
-    >
+    <Layout style={styles.container} level="1">
       <Input
         style={styles.inputs}
         placeholder="Email"
@@ -267,18 +266,19 @@ const AuthForm = () => {
         onChangeText={(nextValue) => setPass(nextValue)}
       />
       <Button style={styles.inputs} onPress={Login}>
-        Sign In
+      <Text category="h6">Sign In </Text> 
       </Button>
-      <Button
-        style={styles.inputs}
-        onPress={() => signInWithGoogleAsync()}
-      >
-        Sign In With Google
-      </Button>
-      {/* <Button style={styles.inputs} onPress={logout}>
-        Logout
-      </Button> */}
-      {err ? <Text>{err}</Text> : null}
+      <Layout style={styles.inputsGoogle}>
+        <Button
+          style={styles.button}
+          accessoryLeft={GoogleIcon}
+          onPress={signInWithGoogleAsync}
+          category="h2"
+        >
+         <Text category="h6">Sign In With Google</Text> 
+        </Button>
+      </Layout>
+      {err ? <Text style={styles.error}>{err}</Text> : null}
     </Layout>
   );
 };
@@ -291,6 +291,26 @@ const styles = StyleSheet.create({
   inputs: {
     width: "75%",
     marginBottom: 5,
+  },
+  inputsGoogle: {
+    width: "75%",
+    marginBottom: 5,
+    fontSize: 26,
+  },
+  button: {
+    margin: 1,
+  },
+  error: {
+    width: '75%',
+    marginTop: 16,
+    paddingVertical: 8,
+    borderWidth: 2,
+    borderColor: "#FEA82F",
+    borderRadius: 6,
+    color: "#FEA82F",
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 

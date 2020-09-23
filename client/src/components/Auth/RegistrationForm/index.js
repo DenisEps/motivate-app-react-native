@@ -108,10 +108,9 @@ const RegistrationForm = () => {
         onChangeText={(nextValue) => setPass(nextValue)}
       />
       <Button style={styles.inputs} onPress={() => CreateUser(email, pass)}>
-        Register
+      <Text category="h6">Registration</Text> 
       </Button>
-      {/* {error && <Text style={styles.error}>{error}</Text>}
-      {emailMessage && <Text style={styles.message}>{emailMessage}</Text>} */}
+      {error && <Text style={styles.error}>{error}</Text>}
     </Layout>
   );
 };
@@ -126,17 +125,19 @@ const styles = StyleSheet.create({
     width: "75%",
   },
   error: {
+    width: '75%',
     marginTop: 16,
     paddingVertical: 8,
     borderWidth: 2,
-    borderColor: "red",
+    borderColor: "#FEA82F",
     borderRadius: 6,
-    color: "red",
+    color: "#FEA82F",
     textAlign: "center",
-    fontSize: 25,
+    fontSize: 18,
     fontWeight: "bold",
   },
   message: {
+    width: '75%',
     marginTop: 16,
     paddingVertical: 8,
     borderWidth: 2,
