@@ -162,9 +162,9 @@ const Habit = ({ navigation, route }) => {
 
   if (habit === null) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" />
-      </View>
+      </Layout>
     );
   }
 

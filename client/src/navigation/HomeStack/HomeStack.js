@@ -29,7 +29,7 @@ const HomeStackScreen = () => {
         component={Habit}
         options={{
           headerShown: false,
-          ...TransitionPresets.ModalSlideFromBottomIOS,
+          ...TransitionPresets.SlideFromRightIOS,
         }}
       />
       <HomeStack.Screen
