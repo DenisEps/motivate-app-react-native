@@ -1,31 +1,31 @@
-import { AnimatedCircularProgress } from "react-native-circular-progress";
-import React, { useState, useEffect } from "react";
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
   Image,
   ActivityIndicator,
-} from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { firebase } from "../../../firebase";
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { firebase } from '../../../firebase';
 import {
   Layout,
   Icon,
   Button,
   Text,
   Layout as View,
-} from "@ui-kitten/components";
-import { useDispatch, useSelector } from "react-redux";
-import { ROUTES } from "../../navigation/routes";
-import { TopNavMain } from "../../components/Header";
-import { vectorIcons, vectorIconsUtility } from "../../assets/icons";
-import AsyncStorage from "@react-native-community/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
-import { setHabits } from "../../redux/actions";
-import { format } from "date-fns";
+} from '@ui-kitten/components';
+import { useDispatch, useSelector } from 'react-redux';
+import { ROUTES } from '../../navigation/routes';
+import { TopNavMain } from '../../components/Header';
+import { vectorIcons, vectorIconsUtility } from '../../assets/icons';
+import AsyncStorage from '@react-native-community/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
+import { setHabits } from '../../redux/actions';
+import { format } from 'date-fns';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 const PADDING = width / 24;
 const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
 
@@ -35,14 +35,14 @@ function Item({ item, onPress, style, changeStatus }) {
   const [check, setCheck] = useState(false);
   const [undoButton, setUndoButton] = useState(false);
   if (!vectorIcons[iconName]) return null;
-  const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: "#8389E6" });
+  const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
   const iconPositive = vectorIcons[iconName]({
     size: ITEM_SIZE / 2,
-    color: "#8BEE88",
+    color: '#8BEE88',
   });
   const iconNegative = vectorIcons[iconName]({
     size: ITEM_SIZE / 2,
-    color: "#DE4E57",
+    color: '#DE4E57',
   });
 
   const downsize = 20;
@@ -91,9 +91,9 @@ function Item({ item, onPress, style, changeStatus }) {
                 left: 0,
                 bottom: 0,
                 zIndex: 1,
-                position: "absolute",
+                position: 'absolute',
               }}
-              source={require("../../img/spinner4.gif")}
+              source={require('../../img/spinner4.gif')}
             />
           )}
 
@@ -105,9 +105,9 @@ function Item({ item, onPress, style, changeStatus }) {
                 left: downsize / 2,
                 bottom: downsize / 2,
                 zIndex: 1,
-                position: "absolute",
+                position: 'absolute',
               }}
-              source={require("../../img/check1.png")}
+              source={require('../../img/check1.png')}
             />
           )}
 
@@ -132,7 +132,7 @@ function Item({ item, onPress, style, changeStatus }) {
         <TouchableOpacity
           onPress={onPress}
           onLongPress={() => setUndoButton(true)}
-          style={[styles.item, style, { backgroundColor: "#7B8CDE" }]}
+          style={[styles.item, style, { backgroundColor: '#7B8CDE' }]}
         >
           {!undoButton && (
             <Text category="h6" style={styles.title}>
@@ -146,7 +146,7 @@ function Item({ item, onPress, style, changeStatus }) {
             <Layout style={{ borderRadius: 10 }}>
               <Button
                 style={{
-                  backgroundColor: "#2B344F",
+                  backgroundColor: '#2B344F',
                   width: ITEM_SIZE / 1.25,
                   height: ITEM_SIZE / 1.25,
                   borderRadius: 10,
@@ -195,7 +195,7 @@ function ItemBack({ item, onPress, style, handleOpen }) {
     handleOpen(item.id, item.icon, item.title, item.type);
   };
   const renderZoomIcon = () => {
-    return vectorIconsUtility.menuHorizontal({ size: 50, color: "#090D20" });
+    return vectorIconsUtility.menuHorizontal({ size: 50, color: '#090D20' });
   };
   return (
     <TouchableOpacity
@@ -209,51 +209,108 @@ function ItemBack({ item, onPress, style, handleOpen }) {
         accessoryLeft={renderZoomIcon}
         onPress={handlePress}
       />
-      <Text category="s1" style={{ color: "#090D20" }}>
+      <Text category="s1" style={{ color: '#090D20' }}>
         DETAILS
       </Text>
     </TouchableOpacity>
   );
 }
 
-const seeder = () => {
+const seeder = async () => {
   const uid = firebase.auth().currentUser.uid;
-  firebase
+  const smoke = await firebase
     .firestore()
-    .collection("users")
+    .collection('users')
     .doc(uid)
-    .collection("habits")
-    // update({...d.data(), dates: {...d.data.dates(), '02-09-20': 1}})
+    .collection('habits')
     .add({
-      icon: "smoke",
-      title: "do not smoke",
+      icon: 'smoke',
+      title: 'do not smoke',
       type: 0,
       createdAt: Date.parse(new Date(2020, 8, 1)),
       dates: {
-        "01-09-2020": 1,
-        "02-09-2020": 1,
-        "03-09-2020": 1,
-        "04-09-2020": 1,
-        "05-09-2020": 1,
-        "06-09-2020": 1,
-        "07-09-2020": 1,
-        "08-09-2020": 1,
-        "09-09-2020": 1,
-        "10-09-2020": 1,
-        "11-09-2020": 1,
-        "12-09-2020": 1,
-        "13-09-2020": 1,
-        "14-09-2020": 1,
-        "15-09-2020": 1,
-        "16-09-2020": 1,
-        "17-09-2020": 1,
-        "18-09-2020": 1,
-        "19-09-2020": 1,
-        "20-09-2020": 1,
-        "21-09-2020": 1,
-        "22-09-2020": 1,
-        "23-09-2020": 1,
-        "25-09-2020": 1,
+        '01-09-2020': 1,
+        '02-09-2020': 1,
+        '03-09-2020': 1,
+        '04-09-2020': 1,
+        '05-09-2020': 1,
+        '06-09-2020': 1,
+        '08-09-2020': 1,
+        '09-09-2020': 1,
+        '10-09-2020': 1,
+        '11-09-2020': 1,
+        '12-09-2020': 1,
+        '13-09-2020': 1,
+        '14-09-2020': 1,
+        '15-09-2020': 1,
+        '17-09-2020': 1,
+        '18-09-2020': 1,
+        '19-09-2020': 1,
+        '20-09-2020': 1,
+        '21-09-2020': 1,
+        '22-09-2020': 1,
+        '23-09-2020': 1,
+      },
+    });
+  const running = await firebase
+    .firestore()
+    .collection('users')
+    .doc(uid)
+    .collection('habits')
+    .add({
+      icon: 'running',
+      title: 'Go running',
+      type: 1,
+      createdAt: Date.parse(new Date(2020, 8, 1)),
+      dates: {
+        '01-09-2020': 1,
+        '03-09-2020': 1,
+        '04-09-2020': 1,
+        '05-09-2020': 1,
+        '07-09-2020': 1,
+        '08-09-2020': 1,
+        '09-09-2020': 1,
+        '10-09-2020': 1,
+        '11-09-2020': 1,
+        '13-09-2020': 1,
+        '14-09-2020': 1,
+        '15-09-2020': 1,
+        '16-09-2020': 1,
+        '17-09-2020': 1,
+        '18-09-2020': 1,
+        '19-09-2020': 1,
+        '22-09-2020': 1,
+        '23-09-2020': 1,
+      },
+    });
+  const read = await firebase
+    .firestore()
+    .collection('users')
+    .doc(uid)
+    .collection('habits')
+    .add({
+      icon: 'read',
+      title: 'Read 30 minutes',
+      type: 1,
+      createdAt: Date.parse(new Date(2020, 8, 1)),
+      dates: {
+        '01-09-2020': 1,
+        '03-09-2020': 1,
+        '04-09-2020': 1,
+        '05-09-2020': 1,
+        '07-09-2020': 1,
+        '09-09-2020': 1,
+        '11-09-2020': 1,
+        '13-09-2020': 1,
+        '14-09-2020': 1,
+        '15-09-2020': 1,
+        '16-09-2020': 1,
+        '17-09-2020': 1,
+        '18-09-2020': 1,
+        '19-09-2020': 1,
+        '20-09-2020': 1,
+        '22-09-2020': 1,
+        '24-09-2020': 1,
       },
     });
 };
@@ -261,9 +318,9 @@ const seeder = () => {
 // seeder()
 
 const Home = (props) => {
-  const iconAdd = vectorIconsUtility["plus"]({
+  const iconAdd = vectorIconsUtility['plus']({
     size: ITEM_SIZE / 1.3,
-    color: "#2B344F",
+    color: '#2B344F',
   });
   const { navigation } = props;
   const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
@@ -278,9 +335,9 @@ const Home = (props) => {
     React.useCallback(() => {
       const unsubscribe = firebase
         .firestore()
-        .collection("users")
+        .collection('users')
         .doc(uid)
-        .collection("habits")
+        .collection('habits')
         .onSnapshot((snap) => {
           let firestoreHabits = [];
           snap.docs.forEach((d) => {
@@ -301,7 +358,7 @@ const Home = (props) => {
             100;
           setProgressBar(donat);
           setHabits(firestoreHabits);
-          console.log("set");
+          console.log('set');
         });
       return () => {
         unsubscribe();
@@ -381,7 +438,7 @@ const Home = (props) => {
 
   if (habits === null) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -400,8 +457,8 @@ const Home = (props) => {
     const { title, type, id } = item;
 
     const oneHabit = habits.filter((el) => el.id === id);
-    const dataToday = format(new Date(), "dd-MM-yyyy");
-    const check = oneHabit[0].dates[format(new Date(), "dd-MM-yyyy")];
+    const dataToday = format(new Date(), 'dd-MM-yyyy');
+    const check = oneHabit[0].dates[format(new Date(), 'dd-MM-yyyy')];
 
     const variable = status ? 1 : 0;
     let payload;
@@ -414,9 +471,9 @@ const Home = (props) => {
     }
     const habitUpdateStatus = await firebase
       .firestore()
-      .collection("users")
+      .collection('users')
       .doc(firebase.auth().currentUser.uid)
-      .collection("habits")
+      .collection('habits')
       .doc(id)
       .update(payload);
     navigation.navigate(ROUTES.home);
@@ -427,13 +484,13 @@ const Home = (props) => {
   };
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#7B8CDE" : "#2B344F";
+    const backgroundColor = item.id === selectedId ? '#7B8CDE' : '#2B344F';
     return (
       <View>
         {item.id === selectedId ? (
           <ItemBack
             item={item}
-            onPress={() => setSelectedId("")}
+            onPress={() => setSelectedId('')}
             style={{ backgroundColor }}
             handleOpen={handleOpenHabit}
           />
@@ -443,7 +500,7 @@ const Home = (props) => {
             onPress={() => {
               setSelectedId(item.id);
               setTimeout(() => {
-                setSelectedId("");
+                setSelectedId('');
               }, 3000);
             }}
             changeStatus={handleChangeStatus}
@@ -471,8 +528,8 @@ const Home = (props) => {
         <TopNavMain navigation={navigation} />
         <Layout
           style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
+            flexDirection: 'row',
+            flexWrap: 'wrap',
           }}
         >
           {habits.map((h) => {
@@ -485,14 +542,14 @@ const Home = (props) => {
               onPress={handleCreateNew}
               style={[
                 styles.item,
-                { backgroundColor: "#7B8CDE", justifyContent: "space-around" },
+                { backgroundColor: '#7B8CDE', justifyContent: 'space-around' },
               ]}
             >
-              <Text category="h6" style={{ color: "#E6ECFD" }}>
+              <Text category="h6" style={{ color: '#E6ECFD' }}>
                 ADD
               </Text>
               {iconAdd}
-              <Text category="h6" style={{ color: "#E6ECFD" }}>
+              <Text category="h6" style={{ color: '#E6ECFD' }}>
                 NEW HABIT
               </Text>
             </TouchableOpacity>
@@ -501,7 +558,7 @@ const Home = (props) => {
         {/* sounds button */}
         {/* <Button onPress={playSound} title="Play sound" /> */}
       </View>
-      <Layout style={{ alignItems: "center" }}>
+      <Layout style={{ alignItems: 'center' }}>
         <AnimatedCircularProgress
           size={110}
           width={15}
@@ -522,11 +579,11 @@ const Home = (props) => {
 };
 
 const styles = StyleSheet.create({
-  goals: { flexDirection: "row", backgroundColor: "rgba(0,0,0,0)" },
+  goals: { flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0)' },
   icon: { width: 20, height: 20 },
   container: {
     flex: 1,
-    position: "relative",
+    position: 'relative',
   },
   item: {
     padding: PADDING,
@@ -535,9 +592,9 @@ const styles = StyleSheet.create({
     height: ITEM_SIZE,
     width: ITEM_SIZE,
     borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "space-between",
-    shadowColor: "#fff",
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    shadowColor: '#fff',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -553,9 +610,9 @@ const styles = StyleSheet.create({
     height: ITEM_SIZE,
     width: ITEM_SIZE,
     borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#fff",
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#fff',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -565,7 +622,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   title: {
-    color: "#E6ECFD",
+    color: '#E6ECFD',
   },
 });
 
