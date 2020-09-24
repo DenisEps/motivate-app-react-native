@@ -18,6 +18,7 @@ import {
 } from '../../assets/icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ROUTES } from '../../navigation/routes';
+import {details} from '../../audioFunctions'
 
 const EditHabit = ({ navigation, route }) => {
   const { id, title} = route.params;

@@ -10,7 +10,7 @@ import { format, parse } from 'date-fns';
 import compareAsc from 'date-fns/compareAsc';
 import { firebase } from '../../../firebase';
 import { useFocusEffect } from '@react-navigation/native';
-
+import {deleteHabitAudio} from '../../audioFunctions'
 import {
   Calendar,
   Layout,
@@ -92,6 +92,7 @@ const Habit = ({ navigation, route }) => {
   } = route;
   
   const deleteHabit = async (id) => {
+    deleteHabitAudio()
     const uid = await firebase.auth().currentUser.uid;
     firebase
     .firestore()

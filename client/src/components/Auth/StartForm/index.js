@@ -6,7 +6,13 @@ import {
   Text,
   ButtonGroup,
 } from "@ui-kitten/components";
-import { Animated, View, ActivityIndicator, StyleSheet, Image } from "react-native";
+import {
+  Animated,
+  View,
+  ActivityIndicator,
+  StyleSheet,
+  Image,
+} from "react-native";
 import AuthForm from "../AuthForm";
 import RegistrationForm from "../RegistrationForm";
 import CustomTheme from "../../../../custom-theme.json";
