@@ -51,7 +51,7 @@ const AddHabit = ({ navigation }) => {
         .collection('users')
         .doc(uid)
         .collection('habits')
-        .add({ title: titleInput, icon, type, status: false });
+        .add({ title: titleInput, icon, type, status: false, createdAt: Date.now(), dates: {} });
       navigation.goBack();
     } catch (error) {
       console.log(error);

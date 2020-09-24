@@ -23,6 +23,7 @@ import { vectorIcons, vectorIconsUtility } from "../../assets/icons";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { setHabits } from "../../redux/actions";
+import { format } from 'date-fns';
 
 const { width, height } = Dimensions.get("window");
 const PADDING = width / 24;
@@ -63,7 +64,7 @@ function Item({ item, onPress, style, changeStatus }) {
             // item.goals[4] = 1;
 
             setTimeout(() => {
-              changeStatus(true, item)
+              changeStatus(true, item);
             }, 1000);
           }}
           onPressOut={() => {
@@ -152,9 +153,8 @@ function Item({ item, onPress, style, changeStatus }) {
                 }}
                 onLongPress={() => {
                   // item.goals[4] = 0;
-                  changeStatus(false, item)
+                  changeStatus(false, item);
                   setUndoButton(false);
-
                 }}
               >
                 HOLD TO UNDO
@@ -220,39 +220,41 @@ const seeder = () => {
   const uid = firebase.auth().currentUser.uid;
   firebase
     .firestore()
-    .collection('users')
+    .collection("users")
     .doc(uid)
-    .collection('habits')
+    .collection("habits")
+    // update({...d.data(), dates: {...d.data.dates(), '02-09-20': 1}})
     .add({
-      icon: 'smoke',
-      title: 'do not smoke',
-      type: 'negative',
+      icon: "smoke",
+      title: "do not smoke",
+      type: 0,
+      createdAt: Date.parse(new Date(2020, 8, 1)),
       dates: {
-        '01-09-2020': 1,
-        '02-09-2020': 1,
-        '03-09-2020': 1,
-        '04-09-2020': 1,
-        '05-09-2020': 1,
-        '06-09-2020': 1,
-        '07-09-2020': 1,
-        '08-09-2020': 1,
-        '09-09-2020': 1,
-        '10-09-2020': 1,
-        '11-09-2020': 1,
-        '12-09-2020': 1,
-        '13-09-2020': 1,
-        '14-09-2020': 1,
-        '15-09-2020': 1,
-        '16-09-2020': 1,
-        '17-09-2020': 1,
-        '18-09-2020': 1,
-        '19-09-2020': 1,
-        '20-09-2020': 1,
-        '21-09-2020': 1,
-        '22-09-2020': 1,
-        '23-09-2020': 1,
-        '24-09-2020': 1,
-        '25-09-2020': 1,
+        "01-09-2020": 1,
+        "02-09-2020": 1,
+        "03-09-2020": 1,
+        "04-09-2020": 1,
+        "05-09-2020": 1,
+        "06-09-2020": 1,
+        "07-09-2020": 1,
+        "08-09-2020": 1,
+        "09-09-2020": 1,
+        "10-09-2020": 1,
+        "11-09-2020": 1,
+        "12-09-2020": 1,
+        "13-09-2020": 1,
+        "14-09-2020": 1,
+        "15-09-2020": 1,
+        "16-09-2020": 1,
+        "17-09-2020": 1,
+        "18-09-2020": 1,
+        "19-09-2020": 1,
+        "20-09-2020": 1,
+        "21-09-2020": 1,
+        "22-09-2020": 1,
+        "23-09-2020": 1,
+        "24-09-2020": 1,
+        "25-09-2020": 1,
       },
     });
 };
@@ -276,12 +278,12 @@ const Home = (props) => {
   useFocusEffect(
     React.useCallback(() => {
       const unsubscribe = firebase
-      .firestore()
-      .collection("users")
-      .doc(uid)
-      .collection("habits")
-      .onSnapshot((snap) => {
-        let firestoreHabits = [];
+        .firestore()
+        .collection("users")
+        .doc(uid)
+        .collection("habits")
+        .onSnapshot((snap) => {
+          let firestoreHabits = [];
           snap.docs.forEach((d) => {
             const newData = { ...d.data(), id: d.id };
             firestoreHabits.push(newData);
@@ -390,19 +392,24 @@ const Home = (props) => {
     });
   };
 
-const handleChangeStatus = (status, item) => {
-  const {title, type, id} = item
-  firebase
-  .firestore()
-  .collection("users")
-  .doc(firebase.auth().currentUser.uid)
-  .collection("habits")
-  .doc(id)
-  .update({
-    status: status,
-  });
-  navigation.navigate(ROUTES.home)
-}
+  const handleChangeStatus = (status, item) => {
+    const { title, type, id } = item;
+    // const check = habits.find(el => {
+    //   console.log("ELEMENT", el);
+    //  return el.dates[format(new Date(), 'dd-MM-yyyy')] !== undefined
+    // })
+    // console.log('>>>>',check);
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("habits")
+      .doc(id)
+      .update({
+        status: status,
+      });
+    navigation.navigate(ROUTES.home);
+  };
 
   const handleCreateNew = () => {
     navigation.navigate(ROUTES.addHabit);
