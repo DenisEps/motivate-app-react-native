@@ -9,4 +9,5 @@ export const ROUTES = {
   stats: 'STATS',
   profile: 'PROFILE',
   quote: 'QUOTE',
+  addHabit: 'HABIT_ADD',
 };

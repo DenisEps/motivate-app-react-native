@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator, } from '@react-navigation/bottom-tabs';
 import {
   BottomNavigation,
   BottomNavigationTab,
@@ -13,6 +13,7 @@ import { StatsStackScreen } from '../StatsStack';
 import { QuoteStackScreen } from '../QuoteStack';
 import Profile from '../../components/Profile';
 import { vectorIcons, kittenIcons } from '../../assets/icons';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -37,7 +38,6 @@ const BottomTabBar = ({ navigation, state }) => {
 };
 
 const TabNavigator = () => {
-  // const habits = useSelector((state) => state.habits);
   return (
     <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
       <Screen name={ROUTES.homeTab} component={HomeStackScreen} />

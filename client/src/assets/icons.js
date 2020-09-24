@@ -15,7 +15,7 @@ export const vectorIcons = {
   smoke: (props) => <MaterialIcons name="smoke-free" {...props} />,
   running: (props) => <FontAwesome5 name="running" {...props} />,
   water: (props) => <MaterialCommunityIcons name="cup-water" {...props} />,
-  sport: (props) => <FontAwesome5 name="running" {...props} />,
+  sport: (props) => <Ionicons name="ios-fitness" {...props} />,
   fastfood: (props) => <MaterialCommunityIcons name="food-off" {...props} />,
   read: (props) => <FontAwesome5 name="readme" {...props} />,
   learn: (props) => <MaterialCommunityIcons name="brain" {...props} />,
@@ -25,7 +25,8 @@ export const vectorIcons = {
   bottle: (props) => <FontAwesome5 name="wine-bottle" {...props} />,
   dog: (props) => <FontAwesome5 name="dog" {...props} />,
   medicine: (props) => <MaterialCommunityIcons name="pill" {...props} />,
-  meditation: (props) => <Ionicons name="ios-sunny" />,
+  meditation: (props) => <Ionicons name="ios-sunny" {...props} />,
+  unknown: (props) => <FontAwesome5 name="question" {...props} />,
 };
 
 export const vectorIconsUtility = {
@@ -34,6 +35,7 @@ export const vectorIconsUtility = {
   ),
   zoomOut: (props) => <MaterialIcons name="zoom-out-map" {...props} />,
   edit: (props) => <Feather name="edit" {...props} />,
+  plus: (props) => <Entypo name="plus" {...props} />,
 };
 
 export const kittenIcons = {

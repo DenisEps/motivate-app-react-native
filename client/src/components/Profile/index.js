@@ -13,7 +13,6 @@ import {
   Modal,
   Card,
 } from "@ui-kitten/components";
-import TabNavigator from "../../navigation/TabNavigator";
 import { View } from "react-native-animatable";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -245,7 +244,6 @@ export default Profile;
 //   Avatar,
 //   Icon,
 // } from "@ui-kitten/components";
-// import TabNavigator from "../../navigation/TabNavigator";
 // import { firebase } from "../../../firebase";
 
 // function Profile() {
@@ -446,7 +444,6 @@ export default Profile;
 //       </Text>
 //       <Input style={{ width: "75%", marginBottom: 10 }}></Input>
 //       <Button style={{ width: "75%" }}>Save Changes</Button>
-//       <TabNavigator />
 //     </Layout>
 //   );
 // }

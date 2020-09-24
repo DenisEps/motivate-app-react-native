@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, ActivityIndicator } from "react-native";
-import { Input, Button, Layout, Text } from "@ui-kitten/components";
+import { Input, Button, Layout, Text, Icon } from "@ui-kitten/components";
 import { useDispatch, useSelector } from "react-redux";
 import { userAuth, deleteUser, setLoader } from "../../../redux/actions";
 import TestDb from "../../TestDb/TestDb";
@@ -23,7 +23,6 @@ const AuthForm = () => {
   const save = async (user) => {
     try {
       const objectValue = JSON.stringify(user);
-      // console.log("USER IN SAVE FUNCTION", user);
       await AsyncStorage.setItem("user", objectValue);
       dispatch(setLoader(true));
     } catch (e) {
@@ -53,7 +52,6 @@ const AuthForm = () => {
         .doc(uid)
         .get()
         .then((info) => {
-          // console.log("LOGIN USER DATA", info.data());
           save(info.data());
         });
       setEmail("");
@@ -92,6 +90,7 @@ const AuthForm = () => {
               .signInWithCredential(credential)
               .then(async function (user) {
                 if (user.additionalUserInfo.isNewUser) {
+                  const photo = firebase.auth().currentUser.photoURL
                   const userAuth = user.user;
                   await firebase
                     .firestore()
@@ -108,7 +107,7 @@ const AuthForm = () => {
                           ? ""
                           : userAuth.phoneNumber,
                       photoURL:
-                        userAuth.photoURL == null ? "" : userAuth.photoURL,
+                        userAuth.photoURL == null ? "" : photo,
                       emailVerified:
                         userAuth.emailVerified == null
                           ? ""
@@ -137,6 +136,8 @@ const AuthForm = () => {
                     });
                 } else {
                   const userAuth = user.user;
+                  console.log(userAuth.photoURL);
+                  const photo = firebase.auth().currentUser.photoURL
                   await firebase
                     .firestore()
                     .collection("users")
@@ -152,7 +153,7 @@ const AuthForm = () => {
                           ? ""
                           : userAuth.phoneNumber,
                       photoURL:
-                        userAuth.photoURL == null ? "" : userAuth.photoURL,
+                        userAuth.photoURL == null ? "" : photo,
                       emailVerified:
                         userAuth.emailVerified == null
                           ? ""
@@ -172,7 +173,6 @@ const AuthForm = () => {
                     .doc(user.user.uid)
                     .get()
                     .then((info) => {
-                      // console.log('>>>> USER ALREADY HERE', info.data());
                       resolve(save(info.data()));
                     });
                 }
@@ -210,7 +210,7 @@ const AuthForm = () => {
       for (let i = 0; i < providerData.length; i++) {
         if (
           providerData[i].providerId ===
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
           providerData[i].uid === googleUser.getBasicProfile().getId()
         ) {
           return true;
@@ -234,7 +234,6 @@ const AuthForm = () => {
         setError(null);
         await onSignIn(result);
         setUserStore(result.user);
-        dispatch(userAuth(true));
         // save(result.user)
         return result.accessToken;
       } else {
@@ -246,11 +245,10 @@ const AuthForm = () => {
     }
   }
 
+  const GoogleIcon = (props) => <Icon {...props} fill="#E3B23C" size='28' name="google" />;
+
   return (
-    <Layout
-      style={styles.container}
-      level="1"
-    >
+    <Layout style={styles.container} level="1">
       <Input
         style={styles.inputs}
         placeholder="Email"
@@ -267,18 +265,19 @@ const AuthForm = () => {
         onChangeText={(nextValue) => setPass(nextValue)}
       />
       <Button style={styles.inputs} onPress={Login}>
-        Sign In
+      <Text category="h6">Sign In </Text> 
       </Button>
-      <Button
-        style={styles.inputs}
-        onPress={() => signInWithGoogleAsync()}
-      >
-        Sign In With Google
-      </Button>
-      {/* <Button style={styles.inputs} onPress={logout}>
-        Logout
-      </Button> */}
-      {err ? <Text>{err}</Text> : null}
+      <Layout style={styles.inputsGoogle}>
+        <Button
+          style={styles.button}
+          accessoryLeft={GoogleIcon}
+          onPress={signInWithGoogleAsync}
+          category="h2"
+        >
+         <Text category="h6">Sign In With Google</Text> 
+        </Button>
+      </Layout>
+      {err ? <Text style={styles.error}>{err}</Text> : null}
     </Layout>
   );
 };
@@ -291,6 +290,26 @@ const styles = StyleSheet.create({
   inputs: {
     width: "75%",
     marginBottom: 5,
+  },
+  inputsGoogle: {
+    width: "75%",
+    marginBottom: 5,
+    fontSize: 26,
+  },
+  button: {
+    margin: 1,
+  },
+  error: {
+    width: '75%',
+    marginTop: 16,
+    paddingVertical: 8,
+    borderWidth: 2,
+    borderColor: "#FEA82F",
+    borderRadius: 6,
+    color: "#FEA82F",
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 

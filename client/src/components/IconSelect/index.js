@@ -19,7 +19,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Item = ({ item, onPress, style }) => {
   if (!vectorIcons[item]) return null;
-  const icon = vectorIcons[item]({ size: 35, color: '#FFFFFF' });
+  const icon = vectorIcons[item]({ size: 45, color: '#FFFFFF' });
 
   return (
     <TouchableOpacity
@@ -56,8 +56,9 @@ const IconSelect = ({ route, navigation }) => {
         onPress={() => {
           setSelectedId(item);
           setIcon(item);
+          navigation.goBack();
         }}
-        style={{ backgroundColor }}
+        style={[styles.item, { backgroundColor, height: 90, width: 90 }]}
       />
     );
   };
@@ -79,7 +80,6 @@ const IconSelect = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -95,8 +95,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 32,

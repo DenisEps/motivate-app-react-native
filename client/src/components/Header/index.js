@@ -1,7 +1,7 @@
-import React, { useState, useLayoutEffect, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import React, { useState, useLayoutEffect, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   Avatar,
   Icon,
@@ -31,7 +31,7 @@ export const TopNavMain = ({ navigation }) => {
 
   const remove = async () => {
     try {
-      await AsyncStorage.removeItem("user");
+      await AsyncStorage.removeItem('user');
     } catch (e) {
       const err = new Error(e);
       setError(err.message);
@@ -44,14 +44,14 @@ export const TopNavMain = ({ navigation }) => {
     await firebase.auth().signOut();
     const user = firebase.auth().currentUser;
     return user
-      ? console.log("somthing went wrong")
-      : console.log("logout is successfullllllll");
+      ? console.log('somthing went wrong')
+      : console.log('logout is successfullllllll');
   };
 
   useEffect(() => {
     const unsubscribe = firebase
       .firestore()
-      .collection("users")
+      .collection('users')
       .doc(firebase.auth().currentUser.uid)
       .onSnapshot(async (snap) => {
         const user = await snap.data();
@@ -75,9 +75,9 @@ export const TopNavMain = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log("focused ✅");
+      console.log('focused ✅');
       return () => {
-        console.log("unfocused ❌");
+        console.log('unfocused ❌');
       };
     }, [])
   );
@@ -130,8 +130,8 @@ export const TopNavMain = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   logo: {
     marginHorizontal: 16,

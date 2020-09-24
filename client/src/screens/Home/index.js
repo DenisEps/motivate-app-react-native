@@ -1,97 +1,55 @@
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { firebase } from '../../../firebase';
+import { AnimatedCircularProgress } from "react-native-circular-progress";
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+  ActivityIndicator,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { firebase } from "../../../firebase";
 import {
   Layout,
   Icon,
   Button,
   Text,
   Layout as View,
-} from '@ui-kitten/components';
-import { useDispatch, useSelector } from 'react-redux';
-import { setHabits } from '../../redux/actions';
-import { ROUTES } from '../../navigation/routes';
-import { TopNavMain } from '../../components/Header';
-import { vectorIcons, vectorIconsUtility } from '../../assets/icons';
-import AsyncStorage from '@react-native-community/async-storage';
+} from "@ui-kitten/components";
+import { useDispatch, useSelector } from "react-redux";
+import { ROUTES } from "../../navigation/routes";
+import { TopNavMain } from "../../components/Header";
+import { vectorIcons, vectorIconsUtility } from "../../assets/icons";
+import AsyncStorage from "@react-native-community/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
+import { setHabits } from "../../redux/actions";
+import { format } from "date-fns";
 
-const habits = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'Smoking',
-    goals: [0, 1, 1, 1, 0, 0, 1],
-    icon: { name: 'smoke' },
-    status: false
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Fastfood',
-    goals: [0, 1, 1, 1, 0, 0, 1],
-    icon: { name: 'fastfood' },
-    status: false
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Learning',
-    goals: [0, 1, 1, 1, 0, 0, 1],
-    icon: { name: 'learn' },
-    status: false
-  },
-  {
-    id: '586d94a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Bad Words',
-    goals: [0, 1, 1, 1, 0, 0, 1],
-    icon: { name: 'badwords' },
-    status: false
-  },
-  // {
-  //   id: '58694ad0f-3da1-471f-bd96-145571e29d72',
-  //   title: 'Water',
-  //   goals: [0, 1, 1, 1, 0, 0, 1],
-  //   icon: { name: 'water' },
-  // status: true
-  // },
-  // {
-  //   id: '58694a0ff-3da1-471f-bd96-145571e29d72',
-  //   title: 'Code',
-  //   goals: [0, 1, 1, 1, 0, 0, 1],
-  //   icon: { name: 'code' },
-  // status: true
-  // },
-];
-// const uid = firebase.auth().currentUser.uid
-// const user = firebase.firestore().collection('users').doc(uid).get().then(info => console.log(info.data()))
-
-// const load = async () => {
-//   try {
-//     const user = await AsyncStorage.getItem('user');
-//     console.log(user);
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
-// load()
-
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 const PADDING = width / 24;
 const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
 
-function Item({ item, onPress, style, handleOpen }) {
-  const iconName = item.icon.name;
+function Item({ item, onPress, style, changeStatus }) {
+  const iconName = item.icon;
   const [spinner, setSpinner] = useState(false);
   const [check, setCheck] = useState(false);
-  // const [styleOnStatys, setStyleOnStatys] = useState('#8389E6')
-
+  const [undoButton, setUndoButton] = useState(false);
   if (!vectorIcons[iconName]) return null;
-  const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#8389E6' });
-  const iconActive = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: '#2B344F' });
+  const icon = vectorIcons[iconName]({ size: ITEM_SIZE / 2, color: "#8389E6" });
+  const iconPositive = vectorIcons[iconName]({
+    size: ITEM_SIZE / 2,
+    color: "#8BEE88",
+  });
+  const iconNegative = vectorIcons[iconName]({
+    size: ITEM_SIZE / 2,
+    color: "#DE4E57",
+  });
+
   const downsize = 20;
   return (
     <>
-      {!item.status ?
-        (<TouchableOpacity
+      {!item.status ? (
+        <TouchableOpacity
           onPress={onPress}
           onPressIn={() => {
             setTimeout(() => {
@@ -103,10 +61,11 @@ function Item({ item, onPress, style, handleOpen }) {
             }, 700);
           }}
           onLongPress={() => {
-            item.goals[4] = 1;
+            // item.goals[4] = 1;
+
             setTimeout(() => {
-              item.status = true;
-            }, 1000)
+              changeStatus(true, item);
+            }, 1000);
           }}
           onPressOut={() => {
             setSpinner(false);
@@ -116,7 +75,11 @@ function Item({ item, onPress, style, handleOpen }) {
           }}
           style={[styles.item, style]}
         >
-          {!check && <Text style={styles.title}>{item.title}</Text>}
+          {!check && (
+            <Text category="h6" style={styles.title}>
+              {item.title}
+            </Text>
+          )}
 
           {!check && icon}
 
@@ -128,9 +91,9 @@ function Item({ item, onPress, style, handleOpen }) {
                 left: 0,
                 bottom: 0,
                 zIndex: 1,
-                position: 'absolute',
+                position: "absolute",
               }}
-              source={require('../../img/spinner4.gif')}
+              source={require("../../img/spinner4.gif")}
             />
           )}
 
@@ -142,13 +105,13 @@ function Item({ item, onPress, style, handleOpen }) {
                 left: downsize / 2,
                 bottom: downsize / 2,
                 zIndex: 1,
-                position: 'absolute',
+                position: "absolute",
               }}
-              source={require('../../img/check1.png')}
+              source={require("../../img/check1.png")}
             />
           )}
 
-          {!check && <Layout style={styles.goals}>
+          {/* {!check && <Layout style={styles.goals}>
             {item.goals.map((goal, i) => {
               let color = '';
               let type = '';
@@ -163,18 +126,49 @@ function Item({ item, onPress, style, handleOpen }) {
                 <Icon key={i} style={styles.icon} fill={color} name={type} />
               );
             })}
-          </Layout>}
-        </TouchableOpacity>) :
-
-        (<TouchableOpacity
+          </Layout>} */}
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
           onPress={onPress}
-          style={[styles.item, style, { backgroundColor: '#7B8CDE' }]}
+          onLongPress={() => setUndoButton(true)}
+          style={[styles.item, style, { backgroundColor: "#7B8CDE" }]}
         >
-          <Text style={styles.title}>{item.title}</Text>
+          {!undoButton && (
+            <Text category="h6" style={styles.title}>
+              {item.title}
+            </Text>
+          )}
 
-          {iconActive}
+          {/* {item.type === 'positive' ? iconPositive : iconNegative} */}
 
-          <Layout style={styles.goals}>
+          {undoButton ? (
+            <Layout style={{ borderRadius: 10 }}>
+              <Button
+                style={{
+                  backgroundColor: "#2B344F",
+                  width: ITEM_SIZE / 1.25,
+                  height: ITEM_SIZE / 1.25,
+                  borderRadius: 10,
+                }}
+                onLongPress={() => {
+                  // item.goals[4] = 0;
+                  changeStatus(false, item);
+                  setUndoButton(false);
+                }}
+              >
+                HOLD TO UNDO
+              </Button>
+            </Layout>
+          ) : item.type === 1 ? (
+            iconPositive
+          ) : item.type === 0 ? (
+            iconNegative
+          ) : (
+            iconAdd
+          )}
+
+          {/* {!undoButton && <Layout style={styles.goals}>
             {item.goals.map((goal, i) => {
               let color = '';
               let type = '';
@@ -189,19 +183,19 @@ function Item({ item, onPress, style, handleOpen }) {
                 <Icon key={i} style={styles.icon} fill={color} name={type} />
               );
             })}
-          </Layout>
-        </TouchableOpacity>)
-      }
+          </Layout>} */}
+        </TouchableOpacity>
+      )}
     </>
   );
 }
 
-function ItemBack({ item, onPress, style, navigation, handleOpen }) {
+function ItemBack({ item, onPress, style, handleOpen }) {
   const handlePress = () => {
-    handleOpen(item.id);
+    handleOpen(item.id, item.icon, item.title, item.type);
   };
   const renderZoomIcon = () => {
-    return vectorIconsUtility.menuHorizontal({ size: 50, color: '#090D20' });
+    return vectorIconsUtility.menuHorizontal({ size: 50, color: "#090D20" });
   };
   return (
     <TouchableOpacity
@@ -215,48 +209,242 @@ function ItemBack({ item, onPress, style, navigation, handleOpen }) {
         accessoryLeft={renderZoomIcon}
         onPress={handlePress}
       />
-      <Text category="s1" style={{ color: '#090D20' }}>
+      <Text category="s1" style={{ color: "#090D20" }}>
         DETAILS
       </Text>
     </TouchableOpacity>
   );
 }
 
+const seeder = () => {
+  const uid = firebase.auth().currentUser.uid;
+  firebase
+    .firestore()
+    .collection("users")
+    .doc(uid)
+    .collection("habits")
+    // update({...d.data(), dates: {...d.data.dates(), '02-09-20': 1}})
+    .add({
+      icon: "smoke",
+      title: "do not smoke",
+      type: 0,
+      createdAt: Date.parse(new Date(2020, 8, 1)),
+      dates: {
+        "01-09-2020": 1,
+        "02-09-2020": 1,
+        "03-09-2020": 1,
+        "04-09-2020": 1,
+        "05-09-2020": 1,
+        "06-09-2020": 1,
+        "07-09-2020": 1,
+        "08-09-2020": 1,
+        "09-09-2020": 1,
+        "10-09-2020": 1,
+        "11-09-2020": 1,
+        "12-09-2020": 1,
+        "13-09-2020": 1,
+        "14-09-2020": 1,
+        "15-09-2020": 1,
+        "16-09-2020": 1,
+        "17-09-2020": 1,
+        "18-09-2020": 1,
+        "19-09-2020": 1,
+        "20-09-2020": 1,
+        "21-09-2020": 1,
+        "22-09-2020": 1,
+        "23-09-2020": 1,
+        "25-09-2020": 1,
+      },
+    });
+};
+
+// seeder()
+
 const Home = (props) => {
+  const iconAdd = vectorIconsUtility["plus"]({
+    size: ITEM_SIZE / 1.3,
+    color: "#2B344F",
+  });
   const { navigation } = props;
   const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
   const [selectedId, setSelectedId] = useState(null);
-  const dispatch = useDispatch();
+  const [habits, setHabits] = useState([]);
+  const [progressBar, setProgressBar] = useState(0);
+  // console.log(habits, "....>>>>dsadsaads");
 
-  const handleOpenHabit = (id) => {
+  const uid = firebase.auth().currentUser.uid;
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const unsubscribe = firebase
+        .firestore()
+        .collection("users")
+        .doc(uid)
+        .collection("habits")
+        .onSnapshot((snap) => {
+          let firestoreHabits = [];
+          snap.docs.forEach((d) => {
+            const newData = { ...d.data(), id: d.id };
+            firestoreHabits.push(newData);
+          });
+          const donat =
+            firestoreHabits.reduce((result, { status }) => {
+              if (status) {
+                result += 1;
+              }
+              return result;
+            }, 0) / firestoreHabits.length;
+          setProgressBar(donat);
+          setHabits(firestoreHabits);
+          console.log("set");
+        });
+      return () => {
+        unsubscribe();
+      };
+    }, [])
+  );
+
+  // useFocusEffect(() => {
+  //   let firestoreHabits = [];
+  //   const unsubscribe = firebase
+  //     .firestore()
+  //     .collection("users")
+  //     .doc(uid)
+  //     .collection("habits")
+  //     .onSnapshot((snap) => {
+  //       snap.docs.forEach((d) => {
+  //         const newData = { ...d.data(), id: d.id };
+  //         firestoreHabits.push(newData);
+  //       });
+
+  // if (habits.length !== firestoreHabits.length) {
+  //   console.log(firestoreHabits);
+  //   setHabits(firestoreHabits);
+  // }
+  // });
+  // const seeder = async () => {
+  //   const uid = firebase.auth().currentUser.uid;
+  //   const habit1 = await firebase
+  //     .firestore()
+  //     .collection('users')
+  //     .doc(uid)
+  //     .collection('habits')
+  //     .add({
+  //       icon: 'smoke',
+  //       title: 'do not smoke',
+  //       type: 'negative',
+  //       dates: {
+  //         '09.1': 1,
+  //         '09.2': 0,
+  //         '09.3': 1,
+  //         '09.4': 1,
+  //         '09.5': 0,
+  //         '09.6': 1,
+  //         '09.7': 1,
+  //         '09.8': 0,
+  //         '09.9': 1,
+  //         '09.10': 1,
+  //         '09.11': 0,
+  //         '09.12': 1,
+  //         '09.13': 1,
+  //         '09.14': 1,
+  //         '09.15': 0,
+  //         '09.16': 1,
+  //         '09.17': 1,
+  //         '09.18': 0,
+  //         '09.19': 0,
+  //         '09.20': 0,
+  //         '09.21': 1,
+  //         '09.22': 1,
+  //         '09.23': 1,
+  //         '09.24': 1,
+  //         '09.25': 0,
+  //         '09.26': 1,
+  //         '09.27': 1,
+  //         '09.28': 0,
+  //         '09.29': 1,
+  //         '09.30': 1,
+  //       },
+  //     });
+  // };
+
+  // seeder();
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
+
+  if (habits === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  const handleOpenHabit = (id, icon, title, type) => {
     navigation.navigate(ROUTES.habitDetails, {
       id,
+      icon,
+      title,
+      type,
     });
   };
 
+  const handleChangeStatus = async (status, item) => {
+    const { title, type, id } = item;
+
+    const oneHabit = habits.filter((el) => el.id === id);
+    const dataToday = format(new Date(), "dd-MM-yyyy");
+    const check = oneHabit[0].dates[format(new Date(), "dd-MM-yyyy")];
+
+    const variable = status ? 1 : 0;
+    let payload;
+    if (variable === 1) {
+      payload = { status };
+      payload[`dates.${dataToday}`] = variable;
+    } else if (variable === 0) {
+      payload = { status };
+      payload[`dates.${dataToday}`] = firebase.firestore.FieldValue.delete();
+    }
+    const habitUpdateStatus = await firebase
+      .firestore()
+      .collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("habits")
+      .doc(id)
+      .update(payload);
+    navigation.navigate(ROUTES.home);
+  };
+
   const handleCreateNew = () => {
-    navigation.navigate(ROUTES.createNewHabit);
+    navigation.navigate(ROUTES.addHabit);
   };
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? '#7B8CDE' : '#2B344F';
-
+    const backgroundColor = item.id === selectedId ? "#7B8CDE" : "#2B344F";
     return (
       <View>
         {item.id === selectedId ? (
           <ItemBack
             item={item}
-            onPress={() => setSelectedId('')}
+            onPress={() => setSelectedId("")}
             style={{ backgroundColor }}
             handleOpen={handleOpenHabit}
           />
         ) : (
-            <Item
-              item={item}
-              onPress={() => setSelectedId(item.id)}
-              style={{ backgroundColor }}
-            />
-          )}
+          <Item
+            item={item}
+            onPress={() => {
+              setSelectedId(item.id);
+              setTimeout(() => {
+                setSelectedId("");
+              }, 3000);
+            }}
+            changeStatus={handleChangeStatus}
+            style={{ backgroundColor }}
+          />
+        )}
       </View>
     );
   };
@@ -275,27 +463,45 @@ const Home = (props) => {
   return (
     <Layout style={[styles.container, { paddingTop }]}>
       <View>
-        <TopNavMain />
-
+        <TopNavMain navigation={navigation} />
         <Layout
           style={{
-            flexDirection: 'row',
-            flexWrap: 'wrap',
+            flexDirection: "row",
+            flexWrap: "wrap",
           }}
         >
           {habits.map((h) => {
             return <Layout key={h.id}>{renderItem({ item: h })}</Layout>;
           })}
+
+          {/* ADD BUTTON */}
+          {habits.length < 6 && (
+            <TouchableOpacity
+              onPress={handleCreateNew}
+              style={[
+                styles.item,
+                { backgroundColor: "#7B8CDE", justifyContent: "space-around" },
+              ]}
+            >
+              <Text category="h6" style={{ color: "#E6ECFD" }}>
+                ADD
+              </Text>
+              {iconAdd}
+              <Text category="h6" style={{ color: "#E6ECFD" }}>
+                NEW HABIT
+              </Text>
+            </TouchableOpacity>
+          )}
         </Layout>
         {/* sounds button */}
         {/* <Button onPress={playSound} title="Play sound" /> */}
       </View>
-      <Layout style={{ alignItems: 'center' }}>
+      <Layout style={{ alignItems: "center" }}>
         <AnimatedCircularProgress
           size={110}
           width={15}
           backgroundWidth={5}
-          fill={40}
+          fill={progressBar}
           tintColor="#F39B6D"
           tintColorSecondary="#7FC29B"
           backgroundColor="rgba(243,155,109,0.5)"
@@ -311,11 +517,11 @@ const Home = (props) => {
 };
 
 const styles = StyleSheet.create({
-  goals: { flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0)' },
+  goals: { flexDirection: "row", backgroundColor: "rgba(0,0,0,0)" },
   icon: { width: 20, height: 20 },
   container: {
     flex: 1,
-    position: 'relative',
+    position: "relative",
   },
   item: {
     padding: PADDING,
@@ -324,8 +530,16 @@ const styles = StyleSheet.create({
     height: ITEM_SIZE,
     width: ITEM_SIZE,
     borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    alignItems: "center",
+    justifyContent: "space-between",
+    shadowColor: "#fff",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   itemBack: {
     padding: PADDING,
@@ -334,11 +548,19 @@ const styles = StyleSheet.create({
     height: ITEM_SIZE,
     width: ITEM_SIZE,
     borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#fff",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   title: {
-    color: '#E6ECFD',
+    color: "#E6ECFD",
   },
 });
 
