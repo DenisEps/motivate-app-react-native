@@ -21,9 +21,9 @@ import {firebase} from '../../../firebase'
 
 const AddHabit = ({ navigation }) => {
   const [icon, setIcon] = useState("unknown");
-  const [titleInput, setTitleInput] = React.useState("");
+  const [titleInput, setTitleInput] = React.useState("Unknown");
 
-  const [type, setType] = useState(null)
+  const [type, setType] = useState(0)
 
   //radio
   // const successRadioState = useRadioState();
@@ -78,6 +78,7 @@ const AddHabit = ({ navigation }) => {
       <Layout style={styles.titleInputDiv}>
         <Text category="h4">Habit title:</Text>
         <Input
+
           placeholder="Enter text"
           value={titleInput}
           onChangeText={(nextValue) => setTitleInput(nextValue)}

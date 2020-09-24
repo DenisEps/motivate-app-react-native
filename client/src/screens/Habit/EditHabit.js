@@ -50,25 +50,25 @@ console.log(typeFromHabit);
     }
   };
 
-  const CreateHabitAlert = () => {
-    Alert.alert('Habit menu', 'What would you like to do?', [
-      { text: 'Delete', onPress: () => console.log('Delete'), style: 'cancel' },
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Delete'),
-        style: 'default',
-      },
-    ]);
-  };
+  // const CreateHabitAlert = () => {
+  //   Alert.alert('Habit menu', 'What would you like to do?', [
+  //     { text: 'Delete', onPress: () => console.log('Delete'), style: 'cancel' },
+  //     {
+  //       text: 'Cancel',
+  //       onPress: () => console.log('Delete'),
+  //       style: 'default',
+  //     },а
+  //   ]);
+  // };
 
-  const renderRightActions = () => (
-    <React.Fragment>
-      <TopNavigationAction
-        icon={kittenIcons.MenuIcon}
-        onPress={CreateHabitAlert}
-      />
-    </React.Fragment>
-  );
+  // const renderRightActions = () => (
+  //   <React.Fragment>
+  //     <TopNavigationAction
+  //       icon={kittenIcons.MenuIcon}
+  //       onPress={CreateHabitAlert}
+  //     />
+  //   </React.Fragment>
+  // );
 
   const back = () => {
     navigation.goBack();
@@ -84,7 +84,7 @@ console.log(typeFromHabit);
         <TopNavigation
           alignment="center"
           accessoryLeft={renderBackAction}
-          accessoryRight={renderRightActions}
+          // accessoryRight={renderRightActions}
         />
       </Layout>
       <Layout style={styles.iconLayout}>
