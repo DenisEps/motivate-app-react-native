@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
-import { StyleSheet, Alert, View, ScrollView } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import {
+  StyleSheet,
+  Alert,
+  View,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
+import { format, parse } from 'date-fns';
+import compareAsc from 'date-fns/compareAsc';
+import { firebase } from '../../../firebase';
+import { useFocusEffect } from '@react-navigation/native';
+
 import {
   Calendar,
-  Icon,
   Layout,
-  MenuItem,
-  OverflowMenu,
-  Card,
   TopNavigation,
   TopNavigationAction,
   Text,
@@ -15,29 +22,53 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { kittenIcons, vectorIcons } from '../../assets/icons';
 import { ROUTES } from '../../navigation/routes';
-import {firebase} from '../../../firebase'
+import HabitCTX from './habitCTX';
 
 // CALENDAR
-const CellStatus = ({ date }, style) => {
-  
+
+const badgeStyle = StyleSheet.create({
+  badgeOk: {
+    width: 10,
+    height: 10,
+    borderRadius: 10 / 2,
+    backgroundColor: '#44AF69',
+  },
+  badgeFailed: {
+    width: 10,
+    height: 10,
+    borderRadius: 10 / 2,
+    backgroundColor: '#EE6352',
+  },
+});
+
+const CellStatus = ({ date, myData }, style) => {
+  const today = format(new Date(), 'dd-MM-yyyy');
+  const key = format(date, 'dd-MM-yyyy');
+  const { dates, type } = myData;
+  const record = dates[key];
+
   return (
     <View style={[styles.dayContainer, style.container]}>
       <Text style={style.text}>{`${date.getDate()}`}</Text>
-      <Text style={[style.text, styles.value]}>
-        {`${date.getDate()}.${date.getMonth() + 1}`}
-      </Text>
+      {new Date() < date ? null : record !== undefined ? (
+        <Layout style={badgeStyle.badgeOk}></Layout>
+      ) : (
+        <Layout style={badgeStyle.badgeFailed}></Layout>
+      )}
     </View>
   );
 };
 
-const CalendarComponent = () => {
-  const [date, setDate] = React.useState(null);
+const CalendarComponent = (props) => {
+  const [date, setDate] = useState(null);
+
+  const { dates, type } = useContext(HabitCTX);
 
   return (
     <Calendar
       date={date}
       onSelect={(nextDate) => setDate(nextDate)}
-      renderDay={CellStatus}
+      renderDay={(props) => <CellStatus myData={{ dates, type }} {...props} />}
       style={styles.calendar}
     />
   );
@@ -54,9 +85,8 @@ const TitleCard = ({ title }) => (
 );
 
 const Habit = ({ navigation, route }) => {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   const { top } = useSafeAreaInsets();
-
   const {
     params: { id, icon, title, type },
   } = route;
@@ -70,7 +100,7 @@ const Habit = ({ navigation, route }) => {
     .collection('habits')
     .doc(id)
     .delete()
-    .then(() => console.log('deleted hyinia'));
+    .then(() => console.log('deleted'));
     navigation.goBack()
   }
   
@@ -81,7 +111,27 @@ const Habit = ({ navigation, route }) => {
       { text: 'Cancel', onPress: () => console.log('Delete'), style: 'default' },
     ]);
   };
-  
+
+  const [habit, setHabit] = useState(null);
+
+  useEffect(() => {
+    const uid = firebase.auth().currentUser.uid;
+    try {
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(uid)
+        .collection('habits')
+        .doc(id)
+        .get()
+        .then((d) => {
+          setHabit(d.data());
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [id]);
+
   // React.useEffect(() => {
 
   //   const fetchHabitById = async () => {
@@ -91,7 +141,7 @@ const Habit = ({ navigation, route }) => {
   //         .firestore()
   //         .collection(userId) // брать from redux - id аутентифифрованного юзера
   //         .doc('habits')
-  //         .collection('treatments')
+  //         .collection('habits')
   //         .orderBy('date', 'desc')
   //         setHabit(habit)
   //         setLoading(false)
@@ -99,6 +149,38 @@ const Habit = ({ navigation, route }) => {
 
   //   fetchHabitById()
   // }, [id]);
+
+  // const handleAddRecord = async () => {
+  //   const uid = firebase.auth().currentUser.uid;
+  //   const ref = firebase
+  //     .firestore()
+  //     .collection('users')
+  //     .doc(uid)
+  //     .collection('habits')
+  //     .doc(id);
+
+  //   const key = format(date, 'dd-MM-yyyy');
+
+  //   try {
+  //     await ref.update({
+  //       dates: {
+  //         ...habit.dates,
+  //         [key]: 1,
+  //       },
+  //     });
+  //     navigation.navigate(ROUTES.home);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  if (habit === null) {
+    return (
+      <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </Layout>
+    );
+  }
 
   const back = () => {
     navigation.goBack();
@@ -125,7 +207,7 @@ const Habit = ({ navigation, route }) => {
     <TopNavigationAction onPress={back} icon={kittenIcons.BackIcon} />
   );
 
-  if (loading) {
+  if (loading || !habit) {
     return (
       <Layout style={[styles.container, { paddingTop: top }]}>
         <Layout style={styles.navContainer} level="1">
@@ -143,33 +225,35 @@ const Habit = ({ navigation, route }) => {
   }
 
   return (
-    <Layout style={[styles.container, { paddingTop: top }]}>
-      <Layout style={styles.navContainer} level="1">
-        <TopNavigation
-          alignment="center"
-          accessoryLeft={renderBackAction}
-          accessoryRight={renderRightActions}
-        />
-      </Layout>
-      <ScrollView>
-        <Layout style={styles.iconLayout}>
-          <Layout style={styles.circle}>
-            {/* {vectorIcons.smoke({ size: 75, color: '#7983a4' })} */}
-            {vectorIcons[icon]({ size: 75, color: '#7983a4' })}
+    <HabitCTX.Provider value={habit}>
+      <Layout style={[styles.container, { paddingTop: top }]}>
+        <Layout style={styles.navContainer} level="1">
+          <TopNavigation
+            alignment="center"
+            accessoryLeft={renderBackAction}
+            accessoryRight={renderRightActions}
+          />
+        </Layout>
+        <ScrollView>
+          <Layout style={styles.iconLayout}>
+            <Layout style={styles.circle}>
+              {/* {vectorIcons.smoke({ size: 75, color: '#7983a4' })} */}
+              {vectorIcons[icon]({ size: 75, color: '#7983a4' })}
+            </Layout>
           </Layout>
-        </Layout>
 
-        <Divider />
+          <Divider />
 
-        <TitleCard title={title} />
+          <TitleCard title={title} />
 
-        <Divider />
+          <Divider />
 
-        <Layout style={styles.calendarLayout}>
-          <CalendarComponent />
-        </Layout>
-      </ScrollView>
-    </Layout>
+          <Layout style={styles.calendarLayout}>
+            <CalendarComponent />
+          </Layout>
+        </ScrollView>
+      </Layout>
+    </HabitCTX.Provider>
   );
 };
 

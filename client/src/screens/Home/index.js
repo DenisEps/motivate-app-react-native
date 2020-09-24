@@ -216,6 +216,49 @@ function ItemBack({ item, onPress, style, handleOpen }) {
   );
 }
 
+const seeder = () => {
+  const uid = firebase.auth().currentUser.uid;
+  firebase
+    .firestore()
+    .collection('users')
+    .doc(uid)
+    .collection('habits')
+    .add({
+      icon: 'smoke',
+      title: 'do not smoke',
+      type: 'negative',
+      dates: {
+        '01-09-2020': 1,
+        '02-09-2020': 1,
+        '03-09-2020': 1,
+        '04-09-2020': 1,
+        '05-09-2020': 1,
+        '06-09-2020': 1,
+        '07-09-2020': 1,
+        '08-09-2020': 1,
+        '09-09-2020': 1,
+        '10-09-2020': 1,
+        '11-09-2020': 1,
+        '12-09-2020': 1,
+        '13-09-2020': 1,
+        '14-09-2020': 1,
+        '15-09-2020': 1,
+        '16-09-2020': 1,
+        '17-09-2020': 1,
+        '18-09-2020': 1,
+        '19-09-2020': 1,
+        '20-09-2020': 1,
+        '21-09-2020': 1,
+        '22-09-2020': 1,
+        '23-09-2020': 1,
+        '24-09-2020': 1,
+        '25-09-2020': 1,
+      },
+    });
+};
+
+// seeder()
+
 const Home = (props) => {
   const iconAdd = vectorIconsUtility["plus"]({
     size: ITEM_SIZE / 1.3,
@@ -407,7 +450,7 @@ const handleChangeStatus = (status, item) => {
   return (
     <Layout style={[styles.container, { paddingTop }]}>
       <View>
-        <TopNavMain />
+        <TopNavMain navigation={navigation} />
         <Layout
           style={{
             flexDirection: "row",
