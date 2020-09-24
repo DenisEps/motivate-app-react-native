@@ -74,13 +74,6 @@ const CalendarComponent = (props) => {
   );
 };
 
-// ALERT
-const CreateHabitAlert = () => {
-  Alert.alert('Habit menu', 'What would you like to do?', [
-    { text: 'Delete', onPress: () => console.log('Delete'), style: 'cancel' },
-    { text: 'Cancel', onPress: () => console.log('Delete'), style: 'default' },
-  ]);
-};
 
 // TITLE CARD
 const Header = (props) => <View {...props}></View>;
@@ -95,8 +88,29 @@ const Habit = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
   const { top } = useSafeAreaInsets();
   const {
-    params: { id, icon, title },
+    params: { id, icon, title, type },
   } = route;
+  
+  const deleteHabit = async (id) => {
+    const uid = await firebase.auth().currentUser.uid;
+    firebase
+    .firestore()
+    .collection('users')
+    .doc(uid)
+    .collection('habits')
+    .doc(id)
+    .delete()
+    .then(() => console.log('deleted'));
+    navigation.goBack()
+  }
+  
+  // ALERT
+  const CreateHabitAlert = (id) => {
+    Alert.alert('Habit menu', 'What would you like to do?', [
+      { text: 'Delete', onPress: () => deleteHabit(id), style: 'cancel' },
+      { text: 'Cancel', onPress: () => console.log('Delete'), style: 'default' },
+    ]);
+  };
 
   const [habit, setHabit] = useState(null);
 
@@ -173,7 +187,7 @@ const Habit = ({ navigation, route }) => {
   };
 
   const handleEditButton = () => {
-    navigation.navigate(ROUTES.editHabit, { id, icon, title });
+    navigation.navigate(ROUTES.editHabit, { id, icon, title, type });
   };
 
   const renderRightActions = () => (
@@ -184,7 +198,7 @@ const Habit = ({ navigation, route }) => {
       />
       <TopNavigationAction
         icon={kittenIcons.MenuIcon}
-        onPress={CreateHabitAlert}
+        onPress={() => CreateHabitAlert(id)}
       />
     </React.Fragment>
   );

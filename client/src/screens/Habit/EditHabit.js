@@ -8,6 +8,8 @@ import {
   TopNavigationAction,
   Input,
   Button,
+  Radio,
+  RadioGroup
 } from '@ui-kitten/components';
 import {
   kittenIcons,
@@ -18,11 +20,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ROUTES } from '../../navigation/routes';
 
 const EditHabit = ({ navigation, route }) => {
-  const { id, title } = route.params;
+  const { id, title} = route.params;
+const typeFromHabit = route.params.type;
   const iconFromHabitPage = route.params.icon;
   const [icon, setIcon] = useState(iconFromHabitPage);
   const [titleInput, setTitleInput] = React.useState(title);
+  const [type, setType] = useState(typeFromHabit)
 
+console.log(typeFromHabit);
   const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
 
   const handlePress = () => {
@@ -38,32 +43,32 @@ const EditHabit = ({ navigation, route }) => {
         .doc(uid)
         .collection('habits')
         .doc(id)
-        .update({ title: titleInput, icon });
+        .update({ title: titleInput, icon, type });
       navigation.navigate(ROUTES.home);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const CreateHabitAlert = () => {
-    Alert.alert('Habit menu', 'What would you like to do?', [
-      { text: 'Delete', onPress: () => console.log('Delete'), style: 'cancel' },
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Delete'),
-        style: 'default',
-      },
-    ]);
-  };
+  // const CreateHabitAlert = () => {
+  //   Alert.alert('Habit menu', 'What would you like to do?', [
+  //     { text: 'Delete', onPress: () => console.log('Delete'), style: 'cancel' },
+  //     {
+  //       text: 'Cancel',
+  //       onPress: () => console.log('Delete'),
+  //       style: 'default',
+  //     },а
+  //   ]);
+  // };
 
-  const renderRightActions = () => (
-    <React.Fragment>
-      <TopNavigationAction
-        icon={kittenIcons.MenuIcon}
-        onPress={CreateHabitAlert}
-      />
-    </React.Fragment>
-  );
+  // const renderRightActions = () => (
+  //   <React.Fragment>
+  //     <TopNavigationAction
+  //       icon={kittenIcons.MenuIcon}
+  //       onPress={CreateHabitAlert}
+  //     />
+  //   </React.Fragment>
+  // );
 
   const back = () => {
     navigation.goBack();
@@ -79,7 +84,7 @@ const EditHabit = ({ navigation, route }) => {
         <TopNavigation
           alignment="center"
           accessoryLeft={renderBackAction}
-          accessoryRight={renderRightActions}
+          // accessoryRight={renderRightActions}
         />
       </Layout>
       <Layout style={styles.iconLayout}>
@@ -102,6 +107,19 @@ const EditHabit = ({ navigation, route }) => {
           onChangeText={(nextValue) => setTitleInput(nextValue)}
           style={styles.titleInput}
         />
+        <RadioGroup 
+        onChange={index => setType(index)}
+          selectedIndex={type}
+        style={{justifyContent: "space-around", flexDirection: 'row', marginTop: 10,}}
+        >
+          <Radio status="danger">
+            Negative
+          </Radio>
+
+          <Radio  status="success" >
+            Positive
+          </Radio>
+        </RadioGroup>
         <Button onPress={handleSave} style={styles.button} status="primary">
           <Text category="h6">SAVE</Text>
         </Button>
