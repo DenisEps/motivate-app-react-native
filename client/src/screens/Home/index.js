@@ -265,6 +265,49 @@ function ItemBack({ item, onPress, style, handleOpen }) {
   );
 }
 
+const seeder = () => {
+  const uid = firebase.auth().currentUser.uid;
+  firebase
+    .firestore()
+    .collection('users')
+    .doc(uid)
+    .collection('habits')
+    .add({
+      icon: 'smoke',
+      title: 'do not smoke',
+      type: 'negative',
+      dates: {
+        '01-09-2020': 1,
+        '02-09-2020': 1,
+        '03-09-2020': 1,
+        '04-09-2020': 1,
+        '05-09-2020': 1,
+        '06-09-2020': 1,
+        '07-09-2020': 1,
+        '08-09-2020': 1,
+        '09-09-2020': 1,
+        '10-09-2020': 1,
+        '11-09-2020': 1,
+        '12-09-2020': 1,
+        '13-09-2020': 1,
+        '14-09-2020': 1,
+        '15-09-2020': 1,
+        '16-09-2020': 1,
+        '17-09-2020': 1,
+        '18-09-2020': 1,
+        '19-09-2020': 1,
+        '20-09-2020': 1,
+        '21-09-2020': 1,
+        '22-09-2020': 1,
+        '23-09-2020': 1,
+        '24-09-2020': 1,
+        '25-09-2020': 1,
+      },
+    });
+};
+
+// seeder()
+
 const Home = (props) => {
   const iconAdd = vectorIconsUtility['plus']({
     size: ITEM_SIZE / 1.3,
@@ -277,95 +320,27 @@ const Home = (props) => {
 
   const uid = firebase.auth().currentUser.uid;
 
-  useFocusEffect(() => {
-    let firestoreHabits = [];
-    const unsubscribe = firebase
-      .firestore()
-      .collection('users')
-      .doc(uid)
-      .collection('habits')
-      .onSnapshot((snap) => {
-        snap.docs.forEach((d) => {
-          const newData = { ...d.data(), id: d.id };
-          firestoreHabits.push(newData);
-        });
-
-        setHabits(firestoreHabits);
-      });
-
-    const seeder = async () => {
-      const uid = firebase.auth().currentUser.uid;
-      const habit1 = await firebase
+  useFocusEffect(
+    React.useCallback(() => {
+      let firestoreHabits = [];
+      const unsubscribe = firebase
         .firestore()
         .collection('users')
         .doc(uid)
         .collection('habits')
-        .add({
-          icon: 'smoke',
-          title: 'do not smoke',
-          type: 'negative',
-          dates: [
-            {day: 1, month: 9, value: 1},
-            {day: 2, month: 9, value: 0},
-            {day: 3, month: 9, value: 0},
-            {day: 4, month: 9, value: 1},
-            {day: 5, month: 9, value: 1},
-            {day: 6, month: 9, value: 0},
-            {day: 7, month: 9, value: 1},
-            {day: 8, month: 9, value: 0},
-            {day: 9, month: 9, value: 1},
-            {day: 10, month: 9, value: 1},
-            {day: 11, month: 9, value: 0},
-            {day: 12, month: 9, value: 0},
-            {day: 13, month: 9, value: 0},
-            {day: 14, month: 9, value: 1},
-            {day: 15, month: 9, value: 1},
-            {day: 16, month: 9, value: 0},
-            {day: 17, month: 9, value: 1},
-            {day: 18, month: 9, value: 0},
-            {day: 19, month: 9, value: 1},
-            {day: 20, month: 9, value: 1},
-            {day: 21, month: 9, value: 0},
-            {day: 22, month: 9, value: 1},
-            {day: 23, month: 9, value: 1},
-    //         '09.2': 0,
-    //         '09.3': 1,
-    //         '09.4': 1,
-    //         '09.5': 0,
-    //         '09.6': 1,
-    //         '09.7': 1,
-    //         '09.8': 0,
-    //         '09.9': 1,
-    //         '09.10': 1,
-    //         '09.11': 0,
-    //         '09.12': 1,
-    //         '09.13': 1,
-    //         '09.14': 1,
-    //         '09.15': 0,
-    //         '09.16': 1,
-    //         '09.17': 1,
-    //         '09.18': 0,
-    //         '09.19': 0,
-    //         '09.20': 0,
-    //         '09.21': 1,
-    //         '09.22': 1,
-    //         '09.23': 1,
-    //         '09.24': 1,
-    //         '09.25': 0,
-    //         '09.26': 1,
-    //         '09.27': 1,
-    //         '09.28': 0,
-    //         '09.29': 1,
-    //         '09.30': 1,
-          ],
-        });
-    };
+        .onSnapshot((snap) => {
+          snap.docs.forEach((d) => {
+            const newData = { ...d.data(), id: d.id };
+            firestoreHabits.push(newData);
+          });
 
-    // seeder();
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+          setHabits(firestoreHabits);
+        });
+      return () => {
+        unsubscribe();
+      };
+    }, [])
+  );
 
   if (habits === null) {
     return (
