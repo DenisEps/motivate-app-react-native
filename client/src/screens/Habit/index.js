@@ -23,7 +23,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { kittenIcons, vectorIcons } from '../../assets/icons';
 import { ROUTES } from '../../navigation/routes';
 import HabitCTX from './habitCTX';
-import { setHabits } from '../../redux/actions';
 
 // CALENDAR
 
@@ -32,13 +31,13 @@ const badgeStyle = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 10 / 2,
-    backgroundColor: 'green',
+    backgroundColor: '#44AF69',
   },
   badgeFailed: {
     width: 10,
     height: 10,
     borderRadius: 10 / 2,
-    backgroundColor: 'red',
+    backgroundColor: '#EE6352',
   },
 });
 
