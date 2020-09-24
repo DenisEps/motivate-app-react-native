@@ -287,14 +287,19 @@ const Home = (props) => {
             const newData = { ...d.data(), id: d.id };
             firestoreHabits.push(newData);
           });
+          const totalHabits = firestoreHabits.length
+            ? firestoreHabits.length
+            : 1;
           const donat =
             (firestoreHabits.reduce((result, { status }) => {
               if (status) {
                 result += 1;
               }
               return result;
-            }, 0) / firestoreHabits.length) * 100;
-          setProgressBar(donat < 1 && 0);
+            }, 0) /
+              totalHabits) *
+            100;
+          setProgressBar(donat);
           setHabits(firestoreHabits);
           console.log("set");
         });
