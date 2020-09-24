@@ -24,10 +24,10 @@ const QuoteMain = () => {
 
   return (
     <Layout style={[styles.mainContainer, { paddingTop }]}>
-          <Card disabled={true} style={{borderColor: "#FEA82F", width: "85%"}}>
-            <Text style={styles.cardText, {fontSize: 25}}>"{quote.q}"</Text>
-            <Text style={styles.cardText, { textAlign: "right", fontSize: 20 }}>{"\n"} {quote.a}</Text>
-          </Card>
+      <Card disabled={true} style={styles.card}>
+        <Text style={styles.quote }>"{quote.q}"</Text>
+        <Text style={styles.quoteAuthor}>{"\n"} {quote.a}</Text>
+      </Card>
     </Layout>
   );
 };
@@ -36,7 +36,18 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+  },
+  card: {
+    borderColor: "#FEA82F",
+    width: "85%",
+  },
+  quote: {
+    fontSize: 25,
+  },
+  quoteAuthor: {
+    textAlign: "right",
+    fontSize: 20,
   },
   backdrop: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",

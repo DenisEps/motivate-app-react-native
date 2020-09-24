@@ -30,7 +30,7 @@ const BottomTabBar = ({ navigation, state }) => {
     >
       <BottomNavigationTab icon={kittenIcons.HomeOutline} title="HOME" />
       <BottomNavigationTab icon={kittenIcons.PieChart} title="STATS" />
-      <BottomNavigationTab icon={kittenIcons.PieChart} title="QUOTE" />
+      <BottomNavigationTab icon={kittenIcons.QuoteIcon} title="QUOTE" />
       <BottomNavigationTab icon={kittenIcons.profile} title="PROFILE" />
     </BottomNavigation>
   );

@@ -40,6 +40,7 @@ export const kittenIcons = {
   BackIcon: (props) => <Icon {...props} name="arrow-back" />,
   EditIcon: (props) => <Icon {...props} name="edit" />,
   MenuIcon: (props) => <Icon {...props} name="more-vertical" />,
+  QuoteIcon: (props) => <Icon {...props} name="message-square-outline"/>,
   MenuIconHorizontal: (props) => (
     <Icon
       {...props}
