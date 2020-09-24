@@ -54,7 +54,7 @@ function Profile() {
             setPhoto(FileSystem.documentDirectory + "avatar.jpeg");
           } else {
             const imageFromGoogle = await Asset.fromModule(dataFromStorage.photoURL).downloadAsync();
-            console.log('>>>>imageFromGoogle', imageFromGoogle);
+            
             setPhoto(imageFromGoogle.localUri);
           }
         }

@@ -10,6 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ROUTES } from '../routes';
 import { HomeStackScreen } from '../HomeStack/HomeStack';
 import { StatsStackScreen } from '../StatsStack';
+import { QuoteStackScreen } from '../QuoteStack';
 import Profile from '../../components/Profile';
 import { vectorIcons, kittenIcons } from '../../assets/icons';
 
@@ -29,6 +30,7 @@ const BottomTabBar = ({ navigation, state }) => {
     >
       <BottomNavigationTab icon={kittenIcons.HomeOutline} title="HOME" />
       <BottomNavigationTab icon={kittenIcons.PieChart} title="STATS" />
+      <BottomNavigationTab icon={kittenIcons.PieChart} title="QUOTE" />
       <BottomNavigationTab icon={kittenIcons.profile} title="PROFILE" />
     </BottomNavigation>
   );
@@ -40,6 +42,7 @@ const TabNavigator = () => {
     <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
       <Screen name={ROUTES.homeTab} component={HomeStackScreen} />
       <Screen name={ROUTES.stats} component={StatsStackScreen} />
+      <Screen name={ROUTES.quote} component={QuoteStackScreen} />
       <Screen name={ROUTES.profile} component={Profile} />
     </Navigator>
   );
