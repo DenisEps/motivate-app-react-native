@@ -23,7 +23,7 @@ import { vectorIcons, vectorIconsUtility } from "../../assets/icons";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { setHabits } from "../../redux/actions";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 const { width, height } = Dimensions.get("window");
 const PADDING = width / 24;
@@ -253,7 +253,6 @@ const seeder = () => {
         "21-09-2020": 1,
         "22-09-2020": 1,
         "23-09-2020": 1,
-        "24-09-2020": 1,
         "25-09-2020": 1,
       },
     });
@@ -392,22 +391,29 @@ const Home = (props) => {
     });
   };
 
-  const handleChangeStatus = (status, item) => {
+  const handleChangeStatus = async (status, item) => {
     const { title, type, id } = item;
-    // const check = habits.find(el => {
-    //   console.log("ELEMENT", el);
-    //  return el.dates[format(new Date(), 'dd-MM-yyyy')] !== undefined
-    // })
-    // console.log('>>>>',check);
-    firebase
+
+    const oneHabit = habits.filter((el) => el.id === id);
+    const dataToday = format(new Date(), "dd-MM-yyyy");
+    const check = oneHabit[0].dates[format(new Date(), "dd-MM-yyyy")];
+
+    const variable = status ? 1 : 0;
+    let payload;
+    if (variable === 1) {
+      payload = { status };
+      payload[`dates.${dataToday}`] = variable;
+    } else if (variable === 0) {
+      payload = { status };
+      payload[`dates.${dataToday}`] = firebase.firestore.FieldValue.delete();
+    }
+    const habitUpdateStatus = await firebase
       .firestore()
       .collection("users")
       .doc(firebase.auth().currentUser.uid)
       .collection("habits")
       .doc(id)
-      .update({
-        status: status,
-      });
+      .update(payload);
     navigation.navigate(ROUTES.home);
   };
 
