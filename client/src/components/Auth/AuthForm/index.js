@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, ActivityIndicator } from "react-native";
-import { Input, Button, Layout, Text, Icon } from "@ui-kitten/components";
-import { useDispatch, useSelector } from "react-redux";
-import { userAuth, deleteUser, setLoader } from "../../../redux/actions";
-import TestDb from "../../TestDb/TestDb";
-import { firebase } from "../../../../firebase";
-import "@firebase/firestore";
-import "@firebase/auth";
-import * as Google from "expo-google-app-auth";
-import AsyncStorage from "@react-native-community/async-storage";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, ActivityIndicator } from 'react-native';
+import { Input, Button, Layout, Text, Icon } from '@ui-kitten/components';
+import { useDispatch, useSelector } from 'react-redux';
+import { userAuth, deleteUser, setLoader } from '../../../redux/actions';
+import TestDb from '../../TestDb/TestDb';
+import { firebase } from '../../../../firebase';
+import '@firebase/firestore';
+import '@firebase/auth';
+import * as Google from 'expo-google-app-auth';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
 const AuthForm = () => {
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
   const [err, setError] = useState(null);
-  const [userStore, setUserStore] = useState(null);
+  // const [userStore, setUserStore] = useState(null);
   const dispatch = useDispatch();
   const loader = useSelector((state) => state.loader);
 
   const save = async (user) => {
     try {
       const objectValue = JSON.stringify(user);
-      await AsyncStorage.setItem("user", objectValue);
+      await AsyncStorage.setItem('user', objectValue);
       dispatch(setLoader(true));
     } catch (e) {
       const error = new Error(e);
@@ -33,12 +33,12 @@ const AuthForm = () => {
 
   const remove = async () => {
     try {
-      await AsyncStorage.removeItem("user");
+      await AsyncStorage.removeItem('user');
     } catch (e) {
       const error = new Error(e);
       setError(error.message);
     } finally {
-      setUserStore("");
+      // setUserStore('');
     }
   };
 
@@ -48,14 +48,14 @@ const AuthForm = () => {
       const uid = await firebase.auth().currentUser.uid;
       await firebase
         .firestore()
-        .collection("users")
+        .collection('users')
         .doc(uid)
         .get()
         .then((info) => {
           save(info.data());
         });
-      setEmail("");
-      setPass("");
+      setEmail('');
+      setPass('');
       setTest(true);
       dispatch(userAuth(true));
     } catch (err) {
@@ -69,7 +69,7 @@ const AuthForm = () => {
     remove();
     await firebase.auth().signOut();
     const user = firebase.auth().currentUser;
-    return user ? console.log("logout", user) : console.log("signOut");
+    return user ? console.log('logout', user) : console.log('signOut');
   };
 
   const onSignIn = (googleUser) => {
@@ -90,27 +90,26 @@ const AuthForm = () => {
               .signInWithCredential(credential)
               .then(async function (user) {
                 if (user.additionalUserInfo.isNewUser) {
-                  const photo = firebase.auth().currentUser.photoURL
+                  const photo = firebase.auth().currentUser.photoURL;
                   const userAuth = user.user;
                   await firebase
                     .firestore()
-                    .collection("users")
+                    .collection('users')
                     .doc(user.user.uid)
                     .set({
-                      email: userAuth.email == null ? "" : userAuth.email,
+                      email: userAuth.email == null ? '' : userAuth.email,
                       displayName:
                         userAuth.displayName == null
-                          ? "Anonymous"
+                          ? 'Anonymous'
                           : userAuth.displayName,
                       phoneNumber:
                         userAuth.phoneNumber == null
-                          ? ""
+                          ? ''
                           : userAuth.phoneNumber,
-                      photoURL:
-                        userAuth.photoURL == null ? "" : photo,
+                      photoURL: userAuth.photoURL == null ? '' : photo,
                       emailVerified:
                         userAuth.emailVerified == null
-                          ? ""
+                          ? ''
                           : userAuth.emailVerified,
                     });
 
@@ -128,7 +127,7 @@ const AuthForm = () => {
 
                   await firebase
                     .firestore()
-                    .collection("users")
+                    .collection('users')
                     .doc(user.user.uid)
                     .get()
                     .then((info) => {
@@ -137,26 +136,25 @@ const AuthForm = () => {
                 } else {
                   const userAuth = user.user;
                   console.log(userAuth.photoURL);
-                  const photo = firebase.auth().currentUser.photoURL
+                  const photo = firebase.auth().currentUser.photoURL;
                   await firebase
                     .firestore()
-                    .collection("users")
+                    .collection('users')
                     .doc(user.user.uid)
                     .update({
-                      email: userAuth.email == null ? "" : userAuth.email,
+                      email: userAuth.email == null ? '' : userAuth.email,
                       displayName:
                         userAuth.displayName == null
-                          ? "Anonymous"
+                          ? 'Anonymous'
                           : userAuth.displayName,
                       phoneNumber:
                         userAuth.phoneNumber == null
-                          ? ""
+                          ? ''
                           : userAuth.phoneNumber,
-                      photoURL:
-                        userAuth.photoURL == null ? "" : photo,
+                      photoURL: userAuth.photoURL == null ? '' : photo,
                       emailVerified:
                         userAuth.emailVerified == null
-                          ? ""
+                          ? ''
                           : userAuth.emailVerified,
                     });
 
@@ -169,7 +167,7 @@ const AuthForm = () => {
 
                   await firebase
                     .firestore()
-                    .collection("users")
+                    .collection('users')
                     .doc(user.user.uid)
                     .get()
                     .then((info) => {
@@ -193,7 +191,7 @@ const AuthForm = () => {
                 reject(error);
               });
           } else {
-            const err = new Error("User already signed-in Firebase.");
+            const err = new Error('User already signed-in Firebase.');
             setError(err.message);
             console.log(err);
             reject(err);
@@ -224,20 +222,20 @@ const AuthForm = () => {
     try {
       const result = await Google.logInAsync({
         // androidClientId: YOUR_CLIENT_ID_HERE,
-        behavior: "web",
+        behavior: 'web',
         iosClientId:
-          "531972357750-se0jv52p37gs986lcv4j8sma2crlom3i.apps.googleusercontent.com",
-        scopes: ["profile", "email"],
+          '531972357750-se0jv52p37gs986lcv4j8sma2crlom3i.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
       });
 
-      if (result.type === "success") {
+      if (result.type === 'success') {
         setError(null);
         await onSignIn(result);
-        setUserStore(result.user);
+        // setUserStore(result.user);
         // save(result.user)
         return result.accessToken;
       } else {
-        return setError("Something went wrong");
+        return setError('Something went wrong');
       }
     } catch (e) {
       const error = new Error(e);
@@ -245,7 +243,9 @@ const AuthForm = () => {
     }
   }
 
-  const GoogleIcon = (props) => <Icon {...props} fill="#E3B23C" size='28' name="google" />;
+  const GoogleIcon = (props) => (
+    <Icon {...props} fill="#E3B23C" size="28" name="google" />
+  );
 
   return (
     <Layout style={styles.container} level="1">
@@ -265,7 +265,7 @@ const AuthForm = () => {
         onChangeText={(nextValue) => setPass(nextValue)}
       />
       <Button style={styles.inputs} onPress={Login}>
-      <Text category="h6">Sign In </Text> 
+        <Text category="h6">Sign In </Text>
       </Button>
       <Layout style={styles.inputsGoogle}>
         <Button
@@ -274,7 +274,7 @@ const AuthForm = () => {
           onPress={signInWithGoogleAsync}
           category="h2"
         >
-         <Text category="h6">Sign In With Google</Text> 
+          <Text category="h6">Sign In With Google</Text>
         </Button>
       </Layout>
       {err ? <Text style={styles.error}>{err}</Text> : null}
@@ -284,15 +284,15 @@ const AuthForm = () => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
+    alignItems: 'center',
     top: 250,
   },
   inputs: {
-    width: "75%",
+    width: '75%',
     marginBottom: 5,
   },
   inputsGoogle: {
-    width: "75%",
+    width: '75%',
     marginBottom: 5,
     fontSize: 26,
   },
@@ -304,12 +304,12 @@ const styles = StyleSheet.create({
     marginTop: 16,
     paddingVertical: 8,
     borderWidth: 2,
-    borderColor: "#FEA82F",
+    borderColor: '#FEA82F',
     borderRadius: 6,
-    color: "#FEA82F",
-    textAlign: "center",
+    color: '#FEA82F',
+    textAlign: 'center',
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });
 

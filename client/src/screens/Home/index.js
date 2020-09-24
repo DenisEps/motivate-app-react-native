@@ -26,8 +26,15 @@ import { setHabits } from '../../redux/actions';
 import { format } from 'date-fns';
 
 const { width, height } = Dimensions.get('window');
+console.log(height);
 const PADDING = width / 24;
 const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
+const headerHeight = 64;
+const bottomNavHeight = 88.5;
+const AnimatedCircularProgressHeight = 110;
+const availableHeight =
+  height - headerHeight - bottomNavHeight - AnimatedCircularProgressHeight;
+const ITEM_SIZE_v2 = availableHeight / 3 - PADDING * 2;
 
 function Item({ item, onPress, style, changeStatus }) {
   const iconName = item.icon;
@@ -128,11 +135,8 @@ function Item({ item, onPress, style, changeStatus }) {
             })}
           </Layout>} */}
         </TouchableOpacity>
-      ) 
-
-      : item.status && item.type === 0 ? 
-      
-      (<TouchableOpacity
+      ) : item.status && item.type === 0 ? (
+        <TouchableOpacity
           onPress={onPress}
           onPressIn={() => {
             setTimeout(() => {
@@ -174,9 +178,9 @@ function Item({ item, onPress, style, changeStatus }) {
                 left: 0,
                 bottom: 0,
                 zIndex: 1,
-                position: "absolute",
+                position: 'absolute',
               }}
-              source={require("../../img/spinner4.gif")}
+              source={require('../../img/spinner4.gif')}
             />
           )}
 
@@ -188,9 +192,9 @@ function Item({ item, onPress, style, changeStatus }) {
                 left: downsize / 2,
                 bottom: downsize / 2,
                 zIndex: 1,
-                position: "absolute",
+                position: 'absolute',
               }}
-              source={require("../../img/check1.png")}
+              source={require('../../img/check1.png')}
             />
           )}
 
@@ -211,11 +215,7 @@ function Item({ item, onPress, style, changeStatus }) {
             })}
           </Layout>} */}
         </TouchableOpacity>
-      ) 
-
-      :
-      
-      (
+      ) : (
         <TouchableOpacity
           onPress={onPress}
           onLongPress={() => setUndoButton(true)}
@@ -548,17 +548,17 @@ const Home = (props) => {
     const check = oneHabit[0].dates[format(new Date(), 'dd-MM-yyyy')];
 
     const variable = status ? 1 : 0;
-    let statusLoad = status && type === 1 ? true 
-    : !status && type === 0 ? true : false;
+    let statusLoad =
+      status && type === 1 ? true : !status && type === 0 ? true : false;
 
-console.log('statusLoad', statusLoad);
+    console.log('statusLoad', statusLoad);
 
     let payload;
     if (variable === 1) {
-      payload = { status : statusLoad };
+      payload = { status: statusLoad };
       payload[`dates.${dataToday}`] = variable;
     } else if (variable === 0) {
-      payload = { status : statusLoad };
+      payload = { status: statusLoad };
       payload[`dates.${dataToday}`] = firebase.firestore.FieldValue.delete();
     }
     const habitUpdateStatus = await firebase
@@ -622,6 +622,7 @@ console.log('statusLoad', statusLoad);
           style={{
             flexDirection: 'row',
             flexWrap: 'wrap',
+            justifyContent: 'center',
           }}
         >
           {habits.map((h) => {
@@ -650,9 +651,11 @@ console.log('statusLoad', statusLoad);
         {/* sounds button */}
         {/* <Button onPress={playSound} title="Play sound" /> */}
       </View>
-      <Layout style={{ alignItems: 'center' }}>
+      <Layout
+        style={{ alignItems: 'center', position: 'absolute', left: 0, right: 0, bottom: 0 }}
+      >
         <AnimatedCircularProgress
-          size={110}
+          size={AnimatedCircularProgressHeight}
           width={15}
           backgroundWidth={5}
           fill={progressBar}
@@ -663,7 +666,11 @@ console.log('statusLoad', statusLoad);
           rotation={240}
           lineCap="round"
         >
-          {(fill) => <Text>{`${Math.round(fill)}%`}</Text>}
+          {(fill) => (
+            <Text style={{ color: 'white' }} category="h6">{`${Math.round(
+              fill
+            )}%`}</Text>
+          )}
         </AnimatedCircularProgress>
       </Layout>
     </Layout>
@@ -679,10 +686,10 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: PADDING,
-    marginVertical: PADDING,
-    marginHorizontal: PADDING,
-    height: ITEM_SIZE,
-    width: ITEM_SIZE,
+    marginBottom: PADDING,
+    marginHorizontal: PADDING / 2,
+    height: ITEM_SIZE_v2,
+    width: ITEM_SIZE_v2,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -697,10 +704,10 @@ const styles = StyleSheet.create({
   },
   itemBack: {
     padding: PADDING,
-    marginVertical: PADDING,
-    marginHorizontal: PADDING,
-    height: ITEM_SIZE,
-    width: ITEM_SIZE,
+    marginBottom: PADDING,
+    marginHorizontal: PADDING / 2,
+    height: ITEM_SIZE_v2,
+    width: ITEM_SIZE_v2,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',

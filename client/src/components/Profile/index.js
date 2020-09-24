@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Animated, Image } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { deleteUser } from '../../redux/actions';
 import {
@@ -13,7 +13,6 @@ import {
   Card,
 } from '@ui-kitten/components';
 import { vectorIconsUtility } from '../../assets/icons';
-import { View } from 'react-native-animatable';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -24,10 +23,13 @@ import AvatarDefault from '../../photo/startavatar.jpeg';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ROUTES } from '../../navigation/routes';
 
+const defaultAvatar = require('../../assets/img/medved.jpg');
+
 function Profile({ navigation }) {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [photo, setPhoto] = useState(AvatarDefault);
+  const [userAvatar, setUserAvatar] = useState('');
   const [err, setError] = useState(null);
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
@@ -63,6 +65,22 @@ function Profile({ navigation }) {
         console.error(err);
       }
     })();
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = firebase
+      .firestore()
+      .collection('users')
+      .doc(firebase.auth().currentUser.uid)
+      .onSnapshot(async (snap) => {
+        const user = await snap.data();
+        if(user.photoURL) {
+          setUserAvatar(user.photoURL)
+        }
+      });
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   async function photoPreparation(galPhotoUri) {
@@ -158,17 +176,18 @@ function Profile({ navigation }) {
       .catch((err) => setError(err));
   };
 
-  const derivedPhoto = typeof photo === 'string' ? { uri: photo } : photo;
+  // const derivedPhoto = typeof photo === 'string' ? { uri: photo } : photo;
 
   return (
     <Layout style={[styles.container, { paddingTop, flex: 1 }]}>
       <Layout style={styles.container}>
         <Layout style={styles.avatarContainer}>
-          <Avatar
+          {/* <Avatar
             style={styles.avatar}
             size="giant"
             source={derivedPhoto}
-          ></Avatar>
+          /> */}
+          {userAvatar ? <Image style={styles.avatar} source={{uri: userAvatar}}/> : <Image style={styles.avatar} source={defaultAvatar}/>}
           {vectorIconsUtility.edit({
             size: 40,
             color: '#A1A8CE',
@@ -249,6 +268,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 200,
     height: 200,
+    borderRadius: 200/2,
     borderWidth: 10,
     borderColor: '#F39B6D',
   },
