@@ -288,13 +288,13 @@ const Home = (props) => {
             firestoreHabits.push(newData);
           });
           const donat =
-            firestoreHabits.reduce((result, { status }) => {
+            (firestoreHabits.reduce((result, { status }) => {
               if (status) {
                 result += 1;
               }
               return result;
-            }, 0) / firestoreHabits.length;
-          setProgressBar(donat);
+            }, 0) / firestoreHabits.length) * 100;
+          setProgressBar(donat < 1 && 0);
           setHabits(firestoreHabits);
           console.log("set");
         });
