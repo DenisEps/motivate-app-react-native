@@ -6,7 +6,13 @@ import {
   Text,
   ButtonGroup,
 } from "@ui-kitten/components";
-import { Animated, View, ActivityIndicator, StyleSheet, Image } from "react-native";
+import {
+  Animated,
+  View,
+  ActivityIndicator,
+  StyleSheet,
+  Image,
+} from "react-native";
 import AuthForm from "../AuthForm";
 import RegistrationForm from "../RegistrationForm";
 import CustomTheme from "../../../../custom-theme.json";
@@ -70,8 +76,21 @@ function StartForm() {
     }
   }
   return (
-    <Layout>
+    <Layout style={{ flexDirection: "column", flex: 1 }}>
       <Animated.View style={{ top: fadeAnim }}>
+        <Image
+          style={{
+            width: 150,
+            height: 150,
+            justifyContent: "center",
+            alignSelf: "center",
+            marginBottom: 20,
+            borderRadius: 100,
+            borderColor: '#7B8CDE',
+            borderWidth: 10,
+          }}
+          source={require("../../../img/main.png")}
+        ></Image>
         <ButtonGroup style={styles.buttonGroup}>
           <Button
             style={{ backgroundColor: btnSIColor }}
@@ -87,12 +106,15 @@ function StartForm() {
           </Button>
         </ButtonGroup>
       </Animated.View>
-      {/* <Animated.View style={{ opacity: opacitySIAnim, top: fadeAnim }}>
-        <Image style={{width: 150, height: 150}}
-          source={require('../../../img/main.png')}
-        ></Image>
-      </Animated.View> */}
-      <Animated.View style={{ opacity: opacitySIAnim, top: fadeAnim }}>
+
+      <Animated.View
+        style={{
+          opacity: opacitySIAnim,
+          zIndex: -1,
+          marginTop: -220,
+          top: fadeAnim,
+        }}
+      >
         {signIn && <AuthForm />}
       </Animated.View>
       <Animated.View style={{ opacity: opacitySUAnim, top: fadeAnim }}>

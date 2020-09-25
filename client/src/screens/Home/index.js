@@ -24,6 +24,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { setHabits } from '../../redux/actions';
 import { format } from 'date-fns';
+import {playSound, donatDone, details} from '../../audioFunctions'
 
 const { width, height } = Dimensions.get('window');
 console.log(height);
@@ -279,6 +280,7 @@ function Item({ item, onPress, style, changeStatus }) {
 
 function ItemBack({ item, onPress, style, handleOpen }) {
   const handlePress = () => {
+    details()
     handleOpen(item.id, item.icon, item.title, item.type);
   };
   const renderZoomIcon = () => {
@@ -418,6 +420,12 @@ const Home = (props) => {
 
   const uid = firebase.auth().currentUser.uid;
 
+  useEffect(() => {
+    if (progressBar === 100) {
+      donatDone()
+    }
+  }, [progressBar])
+
   useFocusEffect(
     React.useCallback(() => {
       const unsubscribe = firebase
@@ -443,7 +451,7 @@ const Home = (props) => {
             }, 0) /
               totalHabits) *
             100;
-          setProgressBar(donat);
+            setProgressBar(donat);
           setHabits(firestoreHabits);
           console.log('set');
         });
@@ -539,8 +547,9 @@ const Home = (props) => {
       type,
     });
   };
-
+  
   const handleChangeStatus = async (status, item) => {
+    playSound()
     const { title, type, id } = item;
 
     const oneHabit = habits.filter((el) => el.id === id);
@@ -603,16 +612,7 @@ const Home = (props) => {
     );
   };
 
-  // const playSound = async () => {
-  //   try {
-  //     await Audio.setIsEnabledAsync(true);
-  //     const soundObject = new Audio.Sound();
-  //     await soundObject.loadAsync(require("../../audio/click.mp3"));
-  //     await soundObject.playAsync();
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+
 
   return (
     <Layout style={[styles.container, { paddingTop }]}>
