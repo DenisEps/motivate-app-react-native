@@ -1,23 +1,21 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import {
-  Avatar,
+
   Icon,
   MenuItem,
   OverflowMenu,
   Text,
   TopNavigation,
   TopNavigationAction,
-  Layout,
-} from "@ui-kitten/components";
-import { firebase } from "../../../firebase";
-import { deleteUser } from "../../redux/actions";
-import AsyncStorage from "@react-native-community/async-storage";
-import { ROUTES } from "../../navigation/routes";
-import AvatarDefault from '../../photo/startavatar.jpeg';
-import * as FileSystem from "expo-file-system";
+} from '@ui-kitten/components';
+import { firebase } from '../../../firebase';
+import { deleteUser } from '../../redux/actions';
+import AsyncStorage from '@react-native-community/async-storage';
+import { ROUTES } from '../../navigation/routes';
+
+const defaultAvatar = require('../../assets/img/medved.jpg');
 
 const MenuIcon = (props) => <Icon {...props} name="more-vertical" />;
 const InfoIcon = (props) => <Icon {...props} name="info" />;
@@ -25,8 +23,8 @@ const LogoutIcon = (props) => <Icon {...props} name="log-out" />;
 
 export const TopNavMain = ({ navigation }) => {
   const [menuVisible, setMenuVisible] = React.useState(false);
-  const [displayName, setDisplayName] = useState("");
-  const [photo, setPhoto] = useState(AvatarDefault);
+  const [displayName, setDisplayName] = useState('');
+  const [photo, setPhoto] = useState(''); // https:/// .... path to photo
   const dispatch = useDispatch();
 
   const remove = async () => {
@@ -56,31 +54,15 @@ export const TopNavMain = ({ navigation }) => {
       .onSnapshot(async (snap) => {
         const user = await snap.data();
         setDisplayName(user.displayName);
-        if (user.photoURL.slice(0, 4) !== 'http') {
-          await FileSystem.writeAsStringAsync(
-            FileSystem.documentDirectory + "avatar.jpeg",
-            user.photoURL,
-            { encoding: FileSystem.EncodingType.Base64 }
-          );
-          setPhoto(FileSystem.documentDirectory + "avatar.jpeg");
-        } else {
-          const imageFromGoogle = await Asset.fromModule(dataFromStorage.photoURL).downloadAsync();
-          setPhoto(imageFromGoogle.localUri);
+        console.log(user);
+        if(user.photoURL) {
+          setPhoto(user.photoURL)
         }
       });
     return () => {
       unsubscribe();
     };
   }, []);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      console.log('focused ✅');
-      return () => {
-        console.log('unfocused ❌');
-      };
-    }, [])
-  );
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -107,15 +89,11 @@ export const TopNavMain = ({ navigation }) => {
   );
 
   const navigateToProfile = () => navigation.navigate(ROUTES.profile);
-  const derivedPhoto = typeof photo === 'string' ? { uri: photo } : photo;
 
   const renderTitle = (props) => (
     <View style={styles.titleContainer}>
       <TouchableOpacity onPress={navigateToProfile}>
-        <Avatar
-          style={styles.logo}
-          source={derivedPhoto}
-        />
+        {photo ? <Image style={styles.avatar} source={{uri: photo}}/> : <Image style={styles.avatar} source={defaultAvatar}/>}
       </TouchableOpacity>
       <Text {...props}>Hi, {displayName}</Text>
     </View>
@@ -136,4 +114,10 @@ const styles = StyleSheet.create({
   logo: {
     marginHorizontal: 16,
   },
+  avatar: {
+    width: 48,
+    height: 48,
+    borderRadius: 48/2,
+    marginHorizontal: 16,
+  }
 });

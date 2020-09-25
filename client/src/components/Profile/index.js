@@ -131,6 +131,7 @@ function Profile({ navigation }) {
         encoding: FileSystem.EncodingType.Base64,
       });
       const currentUser = firebase.auth().currentUser;
+      console.log(currentUser);
       await firebase
         .firestore()
         .collection('users')
@@ -176,18 +177,18 @@ function Profile({ navigation }) {
       .catch((err) => setError(err));
   };
 
-  // const derivedPhoto = typeof photo === 'string' ? { uri: photo } : photo;
+  const derivedPhoto = typeof photo === 'string' ? { uri: photo } : photo;
 
   return (
     <Layout style={[styles.container, { paddingTop, flex: 1 }]}>
       <Layout style={styles.container}>
         <Layout style={styles.avatarContainer}>
-          {/* <Avatar
+          <Avatar
             style={styles.avatar}
             size="giant"
             source={derivedPhoto}
-          /> */}
-          {userAvatar ? <Image style={styles.avatar} source={{uri: userAvatar}}/> : <Image style={styles.avatar} source={defaultAvatar}/>}
+          />
+          {/* {userAvatar ? <Image style={styles.avatar} source={{uri: userAvatar}}/> : <Image style={styles.avatar} source={defaultAvatar}/>} */}
           {vectorIconsUtility.edit({
             size: 40,
             color: '#A1A8CE',
