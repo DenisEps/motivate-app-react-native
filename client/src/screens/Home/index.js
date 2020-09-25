@@ -225,9 +225,9 @@ const seeder = () => {
     .collection("habits")
     // update({...d.data(), dates: {...d.data.dates(), '02-09-20': 1}})
     .add({
-      icon: "smoke",
-      title: "do not smoke",
-      type: 0,
+      icon: "water",
+      title: "",
+      type: 1,
       createdAt: Date.parse(new Date(2020, 8, 1)),
       dates: {
         "01-09-2020": 1,
