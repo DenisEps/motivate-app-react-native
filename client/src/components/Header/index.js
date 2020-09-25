@@ -110,6 +110,7 @@ export const TopNavMain = ({ navigation }) => {
   const derivedPhoto = typeof photo === 'string' ? { uri: photo } : photo;
 
   const renderTitle = (props) => (
+    
     <View style={styles.titleContainer}>
       <TouchableOpacity onPress={navigateToProfile}>
         <Avatar
