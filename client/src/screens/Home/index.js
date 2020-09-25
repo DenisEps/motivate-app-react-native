@@ -280,6 +280,7 @@ function Item({ item, onPress, style, changeStatus }) {
 
 function ItemBack({ item, onPress, style, handleOpen }) {
   const handlePress = () => {
+    details()
     handleOpen(item.id, item.icon, item.title, item.type);
   };
   const renderZoomIcon = () => {
