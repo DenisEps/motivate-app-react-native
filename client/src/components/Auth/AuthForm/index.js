@@ -9,6 +9,7 @@ import '@firebase/firestore';
 import '@firebase/auth';
 import * as Google from 'expo-google-app-auth';
 import AsyncStorage from '@react-native-community/async-storage';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -248,37 +249,37 @@ const AuthForm = () => {
   );
 
   return (
-    <Layout style={styles.container} level="1">
-      <Input
-        style={styles.inputs}
-        placeholder="Email"
-        autoCapitalize="none"
-        autoCorrect={false}
-        value={email}
-        onChangeText={(nextValue) => setEmail(nextValue)}
-      />
-      <Input
-        style={styles.inputs}
-        secureTextEntry={true}
-        placeholder="Password"
-        value={pass}
-        onChangeText={(nextValue) => setPass(nextValue)}
-      />
-      <Button style={styles.inputs} onPress={Login}>
-        <Text category="h6">Sign In </Text>
-      </Button>
-      <Layout style={styles.inputsGoogle}>
-        <Button
-          style={styles.button}
-          accessoryLeft={GoogleIcon}
-          onPress={signInWithGoogleAsync}
-          category="h2"
-        >
-          <Text category="h6">Sign In With Google</Text>
-        </Button>
-      </Layout>
-      {err ? <Text style={styles.error}>{err}</Text> : null}
-    </Layout>
+        <Layout style={styles.container} level="1">
+          <Input
+            style={styles.inputs}
+            placeholder="Email"
+            autoCapitalize="none"
+            autoCorrect={false}
+            value={email}
+            onChangeText={(nextValue) => setEmail(nextValue)}
+          />
+          <Input
+            style={styles.inputs}
+            secureTextEntry={true}
+            placeholder="Password"
+            value={pass}
+            onChangeText={(nextValue) => setPass(nextValue)}
+          />
+          <Button style={styles.inputs} onPress={Login}>
+            <Text category="h6">Sign In </Text>
+          </Button>
+          <Layout style={styles.inputsGoogle}>
+            <Button
+              style={styles.button}
+              accessoryLeft={GoogleIcon}
+              onPress={signInWithGoogleAsync}
+              category="h2"
+            >
+              <Text category="h6">Sign In With Google</Text>
+            </Button>
+          </Layout>
+          {err ? <Text style={styles.error}>{err}</Text> : null}
+        </Layout>
   );
 };
 
