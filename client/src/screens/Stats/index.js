@@ -253,7 +253,7 @@ const StatsMain = () => {
     <Layout style={[styles.mainContainer, { paddingTop }]}>
       <Layout style={styles.overviewContainer}>
         <Layout style={styles.overviewBox}>
-          <Text category="h3">2</Text>
+          <Text category="h3">7</Text>
           <Text category="p2">BEST STREAK</Text>
         </Layout>
         <Layout style={styles.overviewBox}>
@@ -288,6 +288,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: PADDING,
   },
   overviewContainer: {
+    marginTop: 150,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingBottom: 15,
