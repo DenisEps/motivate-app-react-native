@@ -44,6 +44,13 @@ const AddHabit = ({ navigation }) => {
   );
 
   const handleSave = async () => {
+let status;
+if(type === 0) {
+  status = true
+} else {
+  status = false
+}
+
     const uid = firebase.auth().currentUser.uid;
     try {
       await firebase
@@ -51,7 +58,7 @@ const AddHabit = ({ navigation }) => {
         .collection('users')
         .doc(uid)
         .collection('habits')
-        .add({ title: titleInput, icon, type, status: false, createdAt: Date.now(), dates: {} });
+        .add({ title: titleInput, icon, type, status, createdAt: Date.now(), dates: {} });
       navigation.goBack();
     } catch (error) {
       console.log(error);

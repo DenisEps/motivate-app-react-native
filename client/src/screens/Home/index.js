@@ -24,10 +24,18 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { setHabits } from '../../redux/actions';
 import { format } from 'date-fns';
+import {playSound, donatDone, details} from '../../audioFunctions'
 
 const { width, height } = Dimensions.get('window');
+console.log(height);
 const PADDING = width / 24;
 const ITEM_SIZE = (width - PADDING * 2) / 2 - PADDING;
+const headerHeight = 64;
+const bottomNavHeight = 88.5;
+const AnimatedCircularProgressHeight = 110;
+const availableHeight =
+  height - headerHeight - bottomNavHeight - AnimatedCircularProgressHeight;
+const ITEM_SIZE_v2 = availableHeight / 3 - PADDING * 2;
 
 function Item({ item, onPress, style, changeStatus }) {
   const iconName = item.icon;
@@ -48,7 +56,87 @@ function Item({ item, onPress, style, changeStatus }) {
   const downsize = 20;
   return (
     <>
-      {!item.status ? (
+      {!item.status && item.type === 1 ? (
+        <TouchableOpacity
+          onPress={onPress}
+          onPressIn={() => {
+            setTimeout(() => {
+              setSpinner(true);
+            }, 200);
+            setTimeout(() => {
+              setSpinner(false);
+              setCheck(true);
+            }, 700);
+          }}
+          onLongPress={() => {
+            // item.goals[4] = 1;
+
+            setTimeout(() => {
+              changeStatus(true, item);
+            }, 1000);
+          }}
+          onPressOut={() => {
+            setSpinner(false);
+            setTimeout(() => {
+              setCheck(false);
+            }, 1000);
+          }}
+          style={[styles.item, style]}
+        >
+          {!check && (
+            <Text category="h6" style={styles.title}>
+              {item.title}
+            </Text>
+          )}
+
+          {!check && icon}
+
+          {spinner && (
+            <Image
+              style={{
+                width: ITEM_SIZE,
+                height: ITEM_SIZE,
+                left: 0,
+                bottom: 0,
+                zIndex: 1,
+                position: 'absolute',
+              }}
+              source={require('../../img/spinner4.gif')}
+            />
+          )}
+
+          {check && (
+            <Image
+              style={{
+                width: ITEM_SIZE - downsize,
+                height: ITEM_SIZE - downsize,
+                left: downsize / 2,
+                bottom: downsize / 2,
+                zIndex: 1,
+                position: 'absolute',
+              }}
+              source={require('../../img/check1.png')}
+            />
+          )}
+
+          {/* {!check && <Layout style={styles.goals}>
+            {item.goals.map((goal, i) => {
+              let color = '';
+              let type = '';
+              if (goal === 1) {
+                color = '#8BEE88';
+                type = 'checkmark';
+              } else {
+                color = '#DE4E57';
+                type = 'close';
+              }
+              return (
+                <Icon key={i} style={styles.icon} fill={color} name={type} />
+              );
+            })}
+          </Layout>} */}
+        </TouchableOpacity>
+      ) : item.status && item.type === 0 ? (
         <TouchableOpacity
           onPress={onPress}
           onPressIn={() => {
@@ -192,6 +280,7 @@ function Item({ item, onPress, style, changeStatus }) {
 
 function ItemBack({ item, onPress, style, handleOpen }) {
   const handlePress = () => {
+    details()
     handleOpen(item.id, item.icon, item.title, item.type);
   };
   const renderZoomIcon = () => {
@@ -331,6 +420,12 @@ const Home = (props) => {
 
   const uid = firebase.auth().currentUser.uid;
 
+  useEffect(() => {
+    if (progressBar === 100) {
+      donatDone()
+    }
+  }, [progressBar])
+
   useFocusEffect(
     React.useCallback(() => {
       const unsubscribe = firebase
@@ -340,9 +435,9 @@ const Home = (props) => {
         .collection('habits')
         .onSnapshot((snap) => {
           let firestoreHabits = [];
-          snap.docs.forEach((d) => {
+          snap.docs.forEach((d, index) => {
             const newData = { ...d.data(), id: d.id };
-            firestoreHabits.push(newData);
+            firestoreHabits.splice(index, 0, newData);
           });
           const totalHabits = firestoreHabits.length
             ? firestoreHabits.length
@@ -356,7 +451,7 @@ const Home = (props) => {
             }, 0) /
               totalHabits) *
             100;
-          setProgressBar(donat);
+            setProgressBar(donat);
           setHabits(firestoreHabits);
           console.log('set');
         });
@@ -452,8 +547,9 @@ const Home = (props) => {
       type,
     });
   };
-
+  
   const handleChangeStatus = async (status, item) => {
+    playSound()
     const { title, type, id } = item;
 
     const oneHabit = habits.filter((el) => el.id === id);
@@ -461,12 +557,17 @@ const Home = (props) => {
     const check = oneHabit[0].dates[format(new Date(), 'dd-MM-yyyy')];
 
     const variable = status ? 1 : 0;
+    let statusLoad =
+      status && type === 1 ? true : !status && type === 0 ? true : false;
+
+    console.log('statusLoad', statusLoad);
+
     let payload;
     if (variable === 1) {
-      payload = { status };
+      payload = { status: statusLoad };
       payload[`dates.${dataToday}`] = variable;
     } else if (variable === 0) {
-      payload = { status };
+      payload = { status: statusLoad };
       payload[`dates.${dataToday}`] = firebase.firestore.FieldValue.delete();
     }
     const habitUpdateStatus = await firebase
@@ -511,16 +612,7 @@ const Home = (props) => {
     );
   };
 
-  // const playSound = async () => {
-  //   try {
-  //     await Audio.setIsEnabledAsync(true);
-  //     const soundObject = new Audio.Sound();
-  //     await soundObject.loadAsync(require("../../audio/click.mp3"));
-  //     await soundObject.playAsync();
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+
 
   return (
     <Layout style={[styles.container, { paddingTop }]}>
@@ -530,6 +622,7 @@ const Home = (props) => {
           style={{
             flexDirection: 'row',
             flexWrap: 'wrap',
+            justifyContent: 'center',
           }}
         >
           {habits.map((h) => {
@@ -558,9 +651,11 @@ const Home = (props) => {
         {/* sounds button */}
         {/* <Button onPress={playSound} title="Play sound" /> */}
       </View>
-      <Layout style={{ alignItems: 'center' }}>
+      <Layout
+        style={{ alignItems: 'center', position: 'absolute', left: 0, right: 0, bottom: 0 }}
+      >
         <AnimatedCircularProgress
-          size={110}
+          size={AnimatedCircularProgressHeight}
           width={15}
           backgroundWidth={5}
           fill={progressBar}
@@ -571,7 +666,11 @@ const Home = (props) => {
           rotation={240}
           lineCap="round"
         >
-          {(fill) => <Text>{`${Math.round(fill)}%`}</Text>}
+          {(fill) => (
+            <Text style={{ color: 'white' }} category="h6">{`${Math.round(
+              fill
+            )}%`}</Text>
+          )}
         </AnimatedCircularProgress>
       </Layout>
     </Layout>
@@ -587,10 +686,10 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: PADDING,
-    marginVertical: PADDING,
-    marginHorizontal: PADDING,
-    height: ITEM_SIZE,
-    width: ITEM_SIZE,
+    marginBottom: PADDING,
+    marginHorizontal: PADDING / 2,
+    height: ITEM_SIZE_v2,
+    width: ITEM_SIZE_v2,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -605,10 +704,10 @@ const styles = StyleSheet.create({
   },
   itemBack: {
     padding: PADDING,
-    marginVertical: PADDING,
-    marginHorizontal: PADDING,
-    height: ITEM_SIZE,
-    width: ITEM_SIZE,
+    marginBottom: PADDING,
+    marginHorizontal: PADDING / 2,
+    height: ITEM_SIZE_v2,
+    width: ITEM_SIZE_v2,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',

@@ -48,36 +48,38 @@ export const TopNavMain = ({ navigation }) => {
       : console.log('logout is successfullllllll');
   };
 
-  useEffect(() => {
-    const unsubscribe = firebase
-      .firestore()
-      .collection('users')
-      .doc(firebase.auth().currentUser.uid)
-      .onSnapshot(async (snap) => {
-        const user = await snap.data();
-        setDisplayName(user.displayName);
-        if (user.photoURL.slice(0, 4) !== 'http') {
-          await FileSystem.writeAsStringAsync(
-            FileSystem.documentDirectory + "avatar.jpeg",
-            user.photoURL,
-            { encoding: FileSystem.EncodingType.Base64 }
-          );
-          setPhoto(FileSystem.documentDirectory + "avatar.jpeg");
-        } else {
-          const imageFromGoogle = await Asset.fromModule(dataFromStorage.photoURL).downloadAsync();
-          setPhoto(imageFromGoogle.localUri);
-        }
-      });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  // useEffect(() => {
+    
+  //   return () => {
+      
+  //   };
+  // }, []);
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log('focused ✅');
+      const unsubscribe = firebase
+        .firestore()
+        .collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .onSnapshot(async (snap) => {
+          const user = await snap.data();
+          setDisplayName(user.displayName);
+          if (user.photoURL.slice(0, 4) !== 'http') {
+            await FileSystem.writeAsStringAsync(
+              FileSystem.documentDirectory + 'avatar.jpeg',
+              user.photoURL,
+              { encoding: FileSystem.EncodingType.Base64 }
+            );
+            setPhoto(FileSystem.documentDirectory + 'avatar.jpeg');
+          } else {
+            const imageFromGoogle = await Asset.fromModule(
+              dataFromStorage.photoURL
+            ).downloadAsync();
+            setPhoto(imageFromGoogle.localUri);
+          }
+        });
       return () => {
-        console.log('unfocused ❌');
+        unsubscribe();
       };
     }, [])
   );
@@ -110,6 +112,7 @@ export const TopNavMain = ({ navigation }) => {
   const derivedPhoto = typeof photo === 'string' ? { uri: photo } : photo;
 
   const renderTitle = (props) => (
+    
     <View style={styles.titleContainer}>
       <TouchableOpacity onPress={navigateToProfile}>
         <Avatar
