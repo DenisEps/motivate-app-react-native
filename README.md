@@ -37,7 +37,7 @@ MOTIVATE является прототипом мобильного прилож
 
 ### Над приложением работали:
 
--[Денис Эпштейн](https://github.com/DenisEps)
--[Никита Ламбин](https://github.com/LamNik324)
--[Дмитрий Куприн](https://github.com/Dmitry-Kuprin)
--[Егор Богданов](https://github.com/YegorBogdanov)
+* [Денис Эпштейн](https://github.com/DenisEps)
+* [Никита Ламбин](https://github.com/LamNik324)
+* [Дмитрий Куприн](https://github.com/Dmitry-Kuprin)
+* [Егор Богданов](https://github.com/YegorBogdanov)
