@@ -230,7 +230,7 @@ const StatsMain = () => {
       ((countsBadDays + 1 - allPerformedNegativeNum) / thisDay) * 100; // ПЛЮС 1 - КОСТЫЛЬ ЕСТЬ КОСЯК С ДАТАМИ
     // console.log(countsBadDays - allPerformedNegativeNum);
     let percentPerformedInMonth = (percentOfPositive + percentOfNegative) / 2;
-    setPercentPerformedInMonthShow(percentPerformedInMonth);
+    setPercentPerformedInMonthShow(Math.floor(percentPerformedInMonth));
     // console.log('999', percentPerformedInMonth);
 
     const datas = {
