@@ -24,6 +24,7 @@
     "@ui-kitten/components": "^5.0.0",
     "@ui-kitten/eva-icons": "^5.0.0",
     "date-fns": "^2.16.1",
+    "dotenv": "^8.2.0",
     "expo": "~38.0.8",
     "expo-asset": "^8.2.0",
     "expo-av": "^8.4.0",
