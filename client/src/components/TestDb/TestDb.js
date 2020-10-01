@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Layout, Button, Input, Submit, Text } from "@ui-kitten/components";
 import {firebase} from '../../../firebase';
+import { getAppLoadingLifecycleEmitter } from "expo/build/launch/AppLoading";
 
 export default function TestDb() {
   const [displayName, setDisplayName] = useState(null);
