@@ -267,9 +267,9 @@ const styles = StyleSheet.create({
     right: 40,
   },
   avatar: {
-    width: 200,
-    height: 200,
-    borderRadius: 200/2,
+    width: 170  ,
+    height: 170,
+    borderRadius: 170/2,
     borderWidth: 10,
     borderColor: '#F39B6D',
   },

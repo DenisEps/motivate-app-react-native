@@ -25,10 +25,6 @@ const AddHabit = ({ navigation }) => {
 
   const [type, setType] = useState(0)
 
-  //radio
-  // const successRadioState = useRadioState();
-  // const dangerRadioState = useRadioState();
-
   const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
 
   const handlePress = () => {

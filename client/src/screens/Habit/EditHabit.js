@@ -28,7 +28,6 @@ const typeFromHabit = route.params.type;
   const [titleInput, setTitleInput] = React.useState(title);
   const [type, setType] = useState(typeFromHabit)
 
-console.log(typeFromHabit);
   const { top: paddingTop, bottom: paddingBottom } = useSafeAreaInsets();
 
   const handlePress = () => {
@@ -50,26 +49,6 @@ console.log(typeFromHabit);
       console.log(error);
     }
   };
-
-  // const CreateHabitAlert = () => {
-  //   Alert.alert('Habit menu', 'What would you like to do?', [
-  //     { text: 'Delete', onPress: () => console.log('Delete'), style: 'cancel' },
-  //     {
-  //       text: 'Cancel',
-  //       onPress: () => console.log('Delete'),
-  //       style: 'default',
-  //     },а
-  //   ]);
-  // };
-
-  // const renderRightActions = () => (
-  //   <React.Fragment>
-  //     <TopNavigationAction
-  //       icon={kittenIcons.MenuIcon}
-  //       onPress={CreateHabitAlert}
-  //     />
-  //   </React.Fragment>
-  // );
 
   const back = () => {
     navigation.goBack();

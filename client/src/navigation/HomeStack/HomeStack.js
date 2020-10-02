@@ -23,7 +23,6 @@ const HomeStackScreen = () => {
           headerShown: false,
         }}
       />
-      {/* ROUTES.createNewHabit */}
       <HomeStack.Screen
         name={ROUTES.habitDetails}
         component={Habit}

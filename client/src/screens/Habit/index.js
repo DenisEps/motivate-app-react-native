@@ -133,47 +133,6 @@ const Habit = ({ navigation, route }) => {
     }
   }, [id]);
 
-  // React.useEffect(() => {
-
-  //   const fetchHabitById = async () => {
-  //     setLoading(true)
-
-  //     const habit = await firebase
-  //         .firestore()
-  //         .collection(userId) // брать from redux - id аутентифифрованного юзера
-  //         .doc('habits')
-  //         .collection('habits')
-  //         .orderBy('date', 'desc')
-  //         setHabit(habit)
-  //         setLoading(false)
-  //   }
-
-  //   fetchHabitById()
-  // }, [id]);
-
-  // const handleAddRecord = async () => {
-  //   const uid = firebase.auth().currentUser.uid;
-  //   const ref = firebase
-  //     .firestore()
-  //     .collection('users')
-  //     .doc(uid)
-  //     .collection('habits')
-  //     .doc(id);
-
-  //   const key = format(date, 'dd-MM-yyyy');
-
-  //   try {
-  //     await ref.update({
-  //       dates: {
-  //         ...habit.dates,
-  //         [key]: 1,
-  //       },
-  //     });
-  //     navigation.navigate(ROUTES.home);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   if (habit === null) {
     return (
@@ -238,7 +197,6 @@ const Habit = ({ navigation, route }) => {
         <ScrollView>
           <Layout style={styles.iconLayout}>
             <Layout style={styles.circle}>
-              {/* {vectorIcons.smoke({ size: 75, color: '#7983a4' })} */}
               {vectorIcons[icon]({ size: 75, color: '#7983a4' })}
             </Layout>
           </Layout>
