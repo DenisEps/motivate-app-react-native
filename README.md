@@ -20,8 +20,9 @@ MOTIVATE is a prototype of an iOS/Android app that helps you form good habits an
 ### Built Using (Stack)
 * React Native
 * Redux
-* Firebase
+* Firebase / Firestore
 * Figma
+* Motivational Quotes API
 
 ### Team:
 
