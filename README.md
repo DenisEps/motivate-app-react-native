@@ -1,43 +1,31 @@
 ![screenshot](readme-assets/logo.jpg)
 
-MOTIVATE является прототипом мобильного приложения для iOS/Android, которое призвано помочь в формировании полезных привычек и избавлении от вредных
+MOTIVATE is a prototype of an iOS/Android app that helps you form good habits and get rid of bad ones.
 
-#### Аутентифицируйся, зарегистрируйся или выполни вход через Google account.
-
+#### Authenticate, register or login with Google
 ![screenshot](readme-assets/Auth.gif)
 
-#### Заполни свой профиль.
+#### Fill out your profile details
 
 ![screenshot](readme-assets/Profile.gif)
 
-#### Добавь привычки, над которыми ты хочешь работать. <br/>Фиксируй свои достижения в одно касание.
+#### Add habits that you want to work on<br/>Mark the ones you have completed or not with a simple press & hold
 
 ![screenshot](readme-assets/Habits.gif)
 
-#### Редактируй и удаляй привычки в разделе "Details". <br/>Следи за своим прогрессом в разделе статистики. <br/>Мотивируйся цитатами великих людей в разделе "Quote".
+#### Edit or delete habits<br/>View your stats<br/>Visit the Quotes page to get instant motivation
 
 ![screenshot](readme-assets/Stat.gif)
 
-### MVP функционал:
-
-* создание, редактирование удаление привычек,
-* фиксирование достижений
-* просмотр прогресса
-
-### Следующие шаги:
-
-* деплой приложения в AppStore, GooglePlay
-* расширение игрофикации приложения;
-* создание web версии для более удобной работы со статистикой;
-
-### Использованные технологии (Stack)
+### Built Using (Stack)
 * React Native
-* Firebase
 * Redux
+* Firebase
+* Figma
 
-### Над приложением работали:
+### Team:
 
-* [Денис Эпштейн](https://github.com/DenisEps)
-* [Никита Ламбин](https://github.com/LamNik324)
-* [Дмитрий Куприн](https://github.com/Dmitry-Kuprin)
-* [Егор Богданов](https://github.com/YegorBogdanov)
+* [Denis](https://github.com/DenisEps)
+* [Nick](https://github.com/LamNik324)
+* [Dima](https://github.com/Dmitry-Kuprin)
+* [Egor](https://github.com/YegorBogdanov)
