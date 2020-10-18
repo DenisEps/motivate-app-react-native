@@ -23,10 +23,3 @@ MOTIVATE is a prototype of an iOS/Android app that helps you form good habits an
 * Firebase / Firestore
 * Figma
 * Motivational Quotes API
-
-### Team:
-
-* [Denis](https://github.com/DenisEps)
-* [Nick](https://github.com/LamNik324)
-* [Dima](https://github.com/Dmitry-Kuprin)
-* [Egor](https://github.com/YegorBogdanov)
